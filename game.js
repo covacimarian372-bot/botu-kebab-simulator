@@ -12,108 +12,36 @@ let boostProgress = document.getElementById("boostProgress");
 
 
 
-// PARTICULE
-
-let containerParticule = document.getElementById("particule");
-
-
-
-// AUDIO
-
-let audioCtx;
-
-
-function sunet(frecventa,timp,volum){
-
-if(!audioCtx){
-
-audioCtx = new AudioContext();
-
-}
-
-
-let osc = audioCtx.createOscillator();
-
-let gain = audioCtx.createGain();
-
-
-osc.type="square";
-
-osc.frequency.value=frecventa;
-
-
-gain.gain.value=volum;
-
-
-osc.connect(gain);
-
-gain.connect(audioCtx.destination);
-
-
-osc.start();
-
-
-setTimeout(()=>{
-
-osc.stop();
-
-},timp);
-
-
-}
-
-
-
-
-function vibratie(v){
-
-if(navigator.vibrate){
-
-navigator.vibrate(v);
-
-}
-
-}
-
-
-
-
-
-
-
-// STARE JOC
-
+// STARE
 
 let pornit=false;
-
 let terminat=false;
-
 let apasat=false;
-
-
-
 
 
 
 // SHAORMA
 
-
 let y=window.innerHeight/2;
-
 let viteza=0;
 
 let gravitatie=0.45;
-
 let fortaZbor=-7;
 
 
 
+// SCOR
+
+let scor=0;
+
+let record=Number(localStorage.getItem("recordShaorma")) || 0;
+
+recordText.innerHTML="Record: "+record;
 
 
 
 
 // BOOST
-
 
 let boostActiv=false;
 
@@ -122,51 +50,14 @@ let timpBoost=15000;
 let fortaBoost=-10;
 
 
-let vitezaNormalaDrona=5;
-
-let vitezaBoostDrona=10;
-
-
-let vitezaNormalaIngredient=6;
-
-let vitezaBoostIngredient=12;
-
-
-
-
-
-
-
-// SCOR + RECORD
-
-
-let scor=0;
-
-
-let record=Number(localStorage.getItem("recordShaorma")) || 0;
-
-
-recordText.innerHTML="Record: "+record;
-
-
-
-
-
-
 
 // DRONA
 
-
-let xObstacol=window.innerWidth+400;
+let xObstacol=window.innerWidth;
 
 let yObstacol=250;
 
-
-let vitezaObstacol=vitezaNormalaDrona;
-
-
-
-
+let vitezaObstacol=5;
 
 
 
@@ -203,7 +94,6 @@ puncte:5
 ];
 
 
-
 let ingredientActual;
 
 
@@ -211,58 +101,19 @@ let xIngredient=0;
 
 let yIngredient=300;
 
-
-let vitezaIngredient=vitezaNormalaIngredient;
-
+let vitezaIngredient=6;
 
 
 
 
-// SOS IUTE
-
-
-let ultimaAparitieSos=0;
-
-let timpSos=60000;
-
-
-
-
+// CREARE INGREDIENT
 
 
 function creeazaIngredient(){
 
 
-let acum=Date.now();
-
-
-
-if(acum-ultimaAparitieSos>=timpSos && Math.random()<0.3){
-
-
-ingredientActual={
-
-nume:"sos_iute.png",
-
-puncte:30
-
-};
-
-
-ultimaAparitieSos=acum;
-
-
-}
-
-else{
-
-
-ingredientActual=
+ingredientActual =
 ingrediente[Math.floor(Math.random()*ingrediente.length)];
-
-
-}
-
 
 
 ingredient.src="images/"+ingredientActual.nume;
@@ -271,11 +122,10 @@ ingredient.src="images/"+ingredientActual.nume;
 ingredient.style.display="block";
 
 
-xIngredient=window.innerWidth+100;
+xIngredient=window.innerWidth;
 
 
-yIngredient=Math.random()*(window.innerHeight-120);
-
+yIngredient=Math.random()*(window.innerHeight-100);
 
 
 ingredient.style.left=xIngredient+"px";
@@ -284,6 +134,7 @@ ingredient.style.top=yIngredient+"px";
 
 
 }
+
 
 
 
@@ -306,60 +157,15 @@ creeazaIngredient();
 }
 
 
-}function creeazaParticule(){
-
-
-let poz=shaorma.getBoundingClientRect();
-
-
-
-for(let i=0;i<10;i++){
-
-
-let p=document.createElement("div");
-
-
-p.className="particula";
-
-
-p.style.left=poz.left+80+"px";
-
-p.style.top=poz.top+50+"px";
-
-
-
-p.style.setProperty("--x",
-(Math.random()*120-60)+"px"
-);
-
-
-
-p.style.setProperty("--y",
-(Math.random()*120-60)+"px"
-);
-
-
-
-containerParticule.appendChild(p);
-
-
-
-setTimeout(()=>{
-
-p.remove();
-
-},600);
-
-
-}
-
-
 }
 
 
 
 
 
+
+
+// COLECTARE
 
 
 function verificaIngredient(){
@@ -367,187 +173,37 @@ function verificaIngredient(){
 
 let s=shaorma.getBoundingClientRect();
 
-let ing=ingredient.getBoundingClientRect();
+let i=ingredient.getBoundingClientRect();
 
 
 
 if(
 
-s.left < ing.right &&
-
-s.right > ing.left &&
-
-s.top < ing.bottom &&
-
-s.bottom > ing.top
+s.left<i.right &&
+s.right>i.left &&
+s.top<i.bottom &&
+s.bottom>i.top
 
 ){
 
 
-
-scor += ingredientActual.puncte;
-
+scor+=ingredientActual.puncte;
 
 
 scorText.innerHTML="Scor: "+scor;
 
 
 
-
-// RECORD
-
-if(scor > record){
-
+if(scor>record){
 
 record=scor;
 
-
 localStorage.setItem("recordShaorma",record);
-
 
 }
 
 
 recordText.innerHTML="Record: "+record;
-
-
-
-
-
-// SUNET INGREDIENT
-
-sunet(600,120,0.05);
-
-
-vibratie(30);
-
-
-
-creeazaParticule();
-
-
-
-
-
-
-// BOOST SOS IUTE
-
-
-if(ingredientActual.nume=="sos_iute.png"){
-
-
-
-boostActiv=true;
-
-
-shaorma.classList.add("boost");
-
-
-
-vitezaObstacol=vitezaBoostDrona;
-
-
-vitezaIngredient=vitezaBoostIngredient;
-
-
-
-
-
-sunet(1000,300,0.1);
-
-
-
-vibratie([
-100,
-50,
-100
-]);
-
-
-
-
-boostBar.style.display="block";
-
-
-boostProgress.style.width="100%";
-
-
-
-let inceput=Date.now();
-
-
-
-let interval=setInterval(()=>{
-
-
-let trecut=Date.now()-inceput;
-
-
-let ramas=100-(trecut/timpBoost*100);
-
-
-
-boostProgress.style.width=ramas+"%";
-
-
-
-if(ramas<=0){
-
-clearInterval(interval);
-
-}
-
-
-},100);
-
-
-
-
-
-
-setTimeout(()=>{
-
-
-boostActiv=false;
-
-
-shaorma.classList.remove("boost");
-
-
-
-vitezaObstacol=vitezaNormalaDrona;
-
-
-vitezaIngredient=vitezaNormalaIngredient;
-
-
-
-boostBar.style.display="none";
-
-
-
-},timpBoost);
-
-
-
-}
-
-
-
-
-
-
-shaorma.classList.add("ia-ingredient");
-
-
-
-setTimeout(()=>{
-
-shaorma.classList.remove("ia-ingredient");
-
-},200);
-
-
 
 
 
@@ -567,190 +223,10 @@ creeazaIngredient();
 
 
 
-// EXPLOZIE DRONA
+// COLIZIUNE DRONA
 
 
-function explozieDrona(){
-
-
-let poz=obstacol.getBoundingClientRect();
-
-
-
-
-sunet(80,700,0.2);
-
-
-vibratie([
-300,
-100,
-500,
-100,
-300
-]);
-
-
-
-
-
-
-// FLASH
-
-
-let flash=document.createElement("div");
-
-
-flash.style.position="fixed";
-
-flash.style.left="0";
-
-flash.style.top="0";
-
-flash.style.width="100%";
-
-flash.style.height="100%";
-
-flash.style.background="white";
-
-flash.style.zIndex="999";
-
-
-
-document.body.appendChild(flash);
-
-
-
-flash.animate(
-[
-{
-opacity:0.8
-},
-{
-opacity:0
-}
-],
-{
-duration:300
-}
-);
-
-
-
-setTimeout(()=>{
-
-flash.remove();
-
-},300);
-
-
-
-
-
-
-
-
-// FUM + FOC
-
-
-for(let i=0;i<40;i++){
-
-
-let p=document.createElement("div");
-
-
-p.style.position="absolute";
-
-
-p.style.left=poz.left+50+"px";
-
-
-p.style.top=poz.top+30+"px";
-
-
-p.style.width="20px";
-
-
-p.style.height="20px";
-
-
-p.style.borderRadius="50%";
-
-
-p.style.background=Math.random()>0.5 ? "orange":"black";
-
-
-p.style.zIndex="500";
-
-
-
-document.body.appendChild(p);
-
-
-
-let x=Math.random()*300-150;
-
-let y=Math.random()*300-150;
-
-
-
-p.animate(
-[
-{
-transform:"translate(0,0)",
-opacity:1
-},
-{
-transform:`translate(${x}px,${y}px)`,
-opacity:0
-}
-],
-{
-duration:1000
-}
-);
-
-
-
-setTimeout(()=>{
-
-p.remove();
-
-},1100);
-
-
-
-}
-
-
-
-
-
-
-obstacol.animate(
-[
-{
-transform:"rotate(0deg) scale(1)"
-},
-{
-transform:"rotate(360deg) scale(0)"
-}
-],
-{
-duration:700
-}
-);
-
-
-
-setTimeout(()=>{
-
-obstacol.style.display="none";
-
-},700);
-
-
-
-}function verificaColiziune(){
+function verificaColiziune(){
 
 
 let s=shaorma.getBoundingClientRect();
@@ -759,45 +235,12 @@ let d=obstacol.getBoundingClientRect();
 
 
 
-let shaormaHit={
-
-left:s.left+20,
-
-right:s.left+157,
-
-top:s.top+15,
-
-bottom:s.top+81
-
-};
-
-
-
-let dronaHit={
-
-left:d.left+10,
-
-right:d.left+113,
-
-top:d.top+10,
-
-bottom:d.top+42
-
-};
-
-
-
-
-
 if(
 
-shaormaHit.left < dronaHit.right &&
-
-shaormaHit.right > dronaHit.left &&
-
-shaormaHit.top < dronaHit.bottom &&
-
-shaormaHit.bottom > dronaHit.top
+s.left<d.right &&
+s.right>d.left &&
+s.top<d.bottom &&
+s.bottom>d.top
 
 ){
 
@@ -817,25 +260,14 @@ gameOver();
 
 
 
-
 function gameOver(){
-
-
-explozieDrona();
 
 
 terminat=true;
 
-
 pornit=false;
 
-
-apasat=false;
-
-
-
 start.style.display="block";
-
 
 start.innerHTML="GAME OVER<br><br>RESTART";
 
@@ -855,59 +287,23 @@ function restart(){
 
 terminat=false;
 
-
 pornit=true;
-
 
 
 scor=0;
 
-
 scorText.innerHTML="Scor: 0";
-
 
 
 y=window.innerHeight/2;
 
-
 viteza=0;
 
 
-
-xObstacol=window.innerWidth+400;
-
-
-yObstacol=250;
-
-
-
-obstacol.style.display="block";
-
-
-obstacol.style.transform="";
-
-
-
-boostActiv=false;
-
-
-shaorma.classList.remove("boost");
-
-
-
-vitezaObstacol=vitezaNormalaDrona;
-
-
-vitezaIngredient=vitezaNormalaIngredient;
-
-
-
-boostBar.style.display="none";
-
+xObstacol=window.innerWidth;
 
 
 start.style.display="none";
-
 
 
 creeazaIngredient();
@@ -926,22 +322,12 @@ creeazaIngredient();
 function incepe(){
 
 
-if(terminat){
-
-return;
-
-}
-
-
-
-if(!pornit){
+if(!pornit && !terminat){
 
 
 pornit=true;
 
-
 start.style.display="none";
-
 
 creeazaIngredient();
 
@@ -957,14 +343,17 @@ creeazaIngredient();
 
 
 
-
-// CONTROALE PC
-
-
 document.addEventListener("keydown",function(e){
 
 
-if(e.code=="Space" && !terminat){
+if(e.code=="Space"){
+
+
+if(terminat){
+
+restart();
+
+}
 
 
 incepe();
@@ -977,6 +366,7 @@ apasat=true;
 
 
 });
+
 
 
 
@@ -986,9 +376,7 @@ document.addEventListener("keyup",function(e){
 
 if(e.code=="Space"){
 
-
 apasat=false;
-
 
 }
 
@@ -998,52 +386,6 @@ apasat=false;
 
 
 
-
-
-
-
-
-// CONTROALE TELEFON
-
-
-document.addEventListener("touchstart",function(){
-
-
-if(!terminat){
-
-
-incepe();
-
-
-apasat=true;
-
-
-}
-
-
-});
-
-
-
-
-
-document.addEventListener("touchend",function(){
-
-
-apasat=false;
-
-
-});
-
-
-
-
-
-
-
-
-
-// BUTON START / RESTART
 
 
 start.addEventListener("click",function(){
@@ -1051,17 +393,13 @@ start.addEventListener("click",function(){
 
 if(terminat){
 
-
 restart();
-
 
 }
 
 else{
 
-
 incepe();
-
 
 }
 
@@ -1082,31 +420,12 @@ function joc(){
 if(pornit){
 
 
-
 if(apasat){
-
-
-if(boostActiv){
-
-
-viteza=fortaBoost;
-
-
-}
-
-else{
-
 
 viteza=fortaZbor;
 
 
 }
-
-
-}
-
-
-
 
 
 viteza+=gravitatie;
@@ -1120,59 +439,32 @@ shaorma.style.top=y+"px";
 
 
 
-
-
-
-// BARA BOOST
-
-
-boostBar.style.left=(shaorma.offsetLeft+25)+"px";
-
-
-boostBar.style.top=(y+90)+"px";
-
-
-
-
-
-
-
-
-
 // DRONA
 
 
 xObstacol-=vitezaObstacol;
 
 
-
 if(xObstacol<-150){
 
 
-xObstacol=window.innerWidth+400;
+xObstacol=window.innerWidth;
 
 
-yObstacol=Math.random()*(window.innerHeight-200);
+yObstacol=Math.random()*(window.innerHeight-150);
 
 
 }
 
 
-
 obstacol.style.left=xObstacol+"px";
-
 
 obstacol.style.top=yObstacol+"px";
 
 
 
 
-
-
-
-
-
-// INGREDIENTE
+// INGREDIENT
 
 
 miscaIngredient();
@@ -1184,7 +476,6 @@ verificaIngredient();
 verificaColiziune();
 
 
-
 }
 
 
@@ -1193,10 +484,6 @@ requestAnimationFrame(joc);
 
 
 }
-
-
-
-
 
 
 
