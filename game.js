@@ -3,12 +3,23 @@ const shaorma = document.getElementById("shaorma");
 
 
 
-
 function incepeJocul(){
 
 document.getElementById("meniu").style.display="none";
 
 document.getElementById("game").style.display="block";
+
+}
+
+
+
+
+
+function inapoiMeniu(){
+
+document.getElementById("game").style.display="none";
+
+document.getElementById("meniu").style.display="flex";
 
 }
 
