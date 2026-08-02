@@ -10,8 +10,6 @@ let recordText = document.getElementById("record");
 let boostBar = document.getElementById("boostBar");
 let boostProgress = document.getElementById("boostProgress");
 
-let particule = document.getElementById("particule");
-
 
 
 // AUDIO
@@ -21,50 +19,39 @@ let audioCtx;
 
 function sunet(freq,timp,volum){
 
-if(!audioCtx){
-
-audioCtx=new AudioContext();
-
-}
+    if(!audioCtx){
+        audioCtx=new AudioContext();
+    }
 
 
-let osc=audioCtx.createOscillator();
-
-let gain=audioCtx.createGain();
-
-
-osc.frequency.value=freq;
-
-gain.gain.value=volum;
+    let osc=audioCtx.createOscillator();
+    let gain=audioCtx.createGain();
 
 
-osc.connect(gain);
-
-gain.connect(audioCtx.destination);
-
-
-osc.start();
+    osc.frequency.value=freq;
+    gain.gain.value=volum;
 
 
-setTimeout(()=>{
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
 
-osc.stop();
 
-},timp);
+    osc.start();
+
+
+    setTimeout(()=>{
+        osc.stop();
+    },timp);
 
 }
-
-
 
 
 
 function vibratie(t){
 
-if(navigator.vibrate){
-
-navigator.vibrate(t);
-
-}
+    if(navigator.vibrate){
+        navigator.vibrate(t);
+    }
 
 }
 
@@ -72,14 +59,10 @@ navigator.vibrate(t);
 
 
 
-
-
-// JOC
+// STARE JOC
 
 let pornit=false;
-
 let terminat=false;
-
 let apasat=false;
 
 
@@ -100,7 +83,6 @@ let fortaZbor=-7;
 
 
 
-
 // BOOST
 
 let boostActiv=false;
@@ -113,12 +95,13 @@ let fortaBoost=-10;
 
 
 
+
 // SCOR
 
 let scor=0;
 
-
-let record=Number(localStorage.getItem("recordShaorma")) || 0;
+let record=
+Number(localStorage.getItem("recordShaorma")) || 0;
 
 
 recordText.innerHTML="Record: "+record;
@@ -128,13 +111,12 @@ recordText.innerHTML="Record: "+record;
 
 
 
-// DRONA
 
+// DRONA
 
 let xObstacol=window.innerWidth;
 
 let yObstacol=250;
-
 
 let vitezaObstacol=5;
 
@@ -149,30 +131,36 @@ let vitezaObstacol=5;
 
 let ingrediente=[
 
+
 {
 nume:"rosie.png",
 puncte:10
 },
+
 
 {
 nume:"carne.png",
 puncte:20
 },
 
+
 {
 nume:"cartof.png",
 puncte:15
 },
+
 
 {
 nume:"varza.png",
 puncte:5
 },
 
+
 {
 nume:"ceapa.png",
 puncte:5
 },
+
 
 {
 nume:"sos_iute.png",
@@ -180,17 +168,19 @@ puncte:30,
 boost:true
 }
 
+
 ];
+
 
 
 
 let ingredientActual;
 
 
-
 let xIngredient=0;
 
 let yIngredient=300;
+
 
 let vitezaIngredient=6;
 
@@ -212,7 +202,9 @@ Math.floor(Math.random()*ingrediente.length)
 
 
 
-ingredient.src="images/"+ingredientActual.nume;
+ingredient.src=
+"images/"+ingredientActual.nume;
+
 
 
 ingredient.style.display="block";
@@ -222,7 +214,9 @@ ingredient.style.display="block";
 xIngredient=window.innerWidth;
 
 
-yIngredient=Math.random()*(window.innerHeight-100);
+
+yIngredient=
+Math.random()*(window.innerHeight-100);
 
 
 
@@ -232,6 +226,7 @@ ingredient.style.top=yIngredient+"px";
 
 
 }
+
 
 
 
@@ -266,11 +261,10 @@ creeazaIngredient();
 
 
 
-function particuleExplozie(x,y,c="orange"){
+function efectParticule(x,y,c="orange",nr=25){
 
 
-
-for(let i=0;i<25;i++){
+for(let i=0;i<nr;i++){
 
 
 let p=document.createElement("div");
@@ -287,27 +281,28 @@ p.style.top=y+"px";
 p.style.background=c;
 
 
-
 document.body.appendChild(p);
 
 
 
-let dx=Math.random()*300-150;
+let dx=Math.random()*350-175;
 
-let dy=Math.random()*300-150;
+let dy=Math.random()*350-175;
 
 
 
 p.animate(
 
 [
+
 {
-transform:"translate(0,0)",
+transform:"translate(0,0) scale(1)",
 opacity:1
 },
 
 {
-transform:`translate(${dx}px,${dy}px)`,
+transform:
+`translate(${dx}px,${dy}px) scale(0)`,
 opacity:0
 }
 
@@ -315,7 +310,7 @@ opacity:0
 
 {
 
-duration:800
+duration:1000
 
 }
 
@@ -327,23 +322,13 @@ setTimeout(()=>{
 
 p.remove();
 
-},800);
-
-
-
-}
+},1000);
 
 
 }
 
 
-
-
-
-
-
-
-function verificaIngredient(){
+}function verificaIngredient(){
 
 
 let s=shaorma.getBoundingClientRect();
@@ -362,12 +347,10 @@ s.bottom>i.top
 ){
 
 
-
 scor+=ingredientActual.puncte;
 
 
 scorText.innerHTML="Scor: "+scor;
-
 
 
 
@@ -384,15 +367,17 @@ recordText.innerHTML="Record: "+record;
 
 
 
-sunet(700,120,0.1);
+sunet(700,150,0.1);
 
-vibratie(40);
+vibratie(50);
 
 
 
-particuleExplozie(
-s.left+50,
-s.top+40
+efectParticule(
+s.left+60,
+s.top+40,
+"yellow",
+20
 );
 
 
@@ -415,15 +400,16 @@ boostProgress.style.width="100%";
 
 
 
-let inceput=Date.now();
+let startBoost=Date.now();
 
 
 
-let timer=setInterval(()=>{
+let interval=setInterval(()=>{
 
 
-let ramas=100-
-((Date.now()-inceput)/timpBoost*100);
+let ramas=
+100-
+((Date.now()-startBoost)/timpBoost*100);
 
 
 
@@ -433,10 +419,9 @@ boostProgress.style.width=ramas+"%";
 
 if(ramas<=0){
 
-clearInterval(timer);
+clearInterval(interval);
 
 }
-
 
 
 },100);
@@ -465,8 +450,8 @@ boostBar.style.display="none";
 
 
 
-shaorma.classList.add("ia-ingredient");
 
+shaorma.classList.add("ia-ingredient");
 
 
 setTimeout(()=>{
@@ -483,7 +468,6 @@ creeazaIngredient();
 }
 
 
-
 }
 
 
@@ -493,6 +477,9 @@ creeazaIngredient();
 
 
 
+// 💣 EXPLOZIE DRONA
+
+
 function explozieDrona(){
 
 
@@ -500,19 +487,170 @@ let d=obstacol.getBoundingClientRect();
 
 
 
-sunet(100,600,0.3);
+
+sunet(80,900,0.4);
 
 
-vibratie([200,100,300]);
+vibratie([300,150,500]);
 
 
 
-particuleExplozie(
-d.left+50,
-d.top+40,
-"red"
+
+
+// FLASH
+
+
+let flash=document.createElement("div");
+
+
+flash.style.position="fixed";
+
+flash.style.left="0";
+
+flash.style.top="0";
+
+flash.style.width="100%";
+
+flash.style.height="100%";
+
+flash.style.background="white";
+
+flash.style.opacity="0.8";
+
+flash.style.zIndex="999";
+
+
+
+document.body.appendChild(flash);
+
+
+
+flash.animate(
+
+[
+{
+opacity:0.8
+},
+{
+opacity:0
+}
+],
+
+{
+duration:400
+}
+
 );
 
+
+
+setTimeout(()=>{
+
+flash.remove();
+
+},400);
+
+
+
+
+
+
+
+
+// BOMBA MARE
+
+
+let bomba=document.createElement("div");
+
+
+bomba.style.position="absolute";
+
+bomba.style.left=d.left+20+"px";
+
+bomba.style.top=d.top+"px";
+
+bomba.style.width="80px";
+
+bomba.style.height="80px";
+
+bomba.style.borderRadius="50%";
+
+
+bomba.style.background=
+"radial-gradient(circle,yellow,orange,red)";
+
+
+bomba.style.boxShadow=
+"0 0 50px red";
+
+
+bomba.style.zIndex="500";
+
+
+
+document.body.appendChild(bomba);
+
+
+
+bomba.animate(
+
+[
+{
+transform:"scale(0)"
+},
+
+{
+transform:"scale(3)",
+opacity:0
+}
+
+],
+
+{
+duration:700
+}
+
+);
+
+
+
+setTimeout(()=>{
+
+bomba.remove();
+
+},700);
+
+
+
+
+
+
+
+
+// FOC + FUM
+
+
+efectParticule(
+d.left+60,
+d.top+40,
+"orange",
+60
+);
+
+
+efectParticule(
+d.left+60,
+d.top+40,
+"black",
+30
+);
+
+
+
+
+
+
+// ROTIRE DRONA
 
 
 obstacol.animate(
@@ -524,14 +662,17 @@ transform:"rotate(0deg) scale(1)"
 },
 
 {
-transform:"rotate(720deg) scale(0)"
+transform:"rotate(1080deg) scale(0)",
+opacity:0
 }
 
 ],
 
 {
 
-duration:700
+duration:900,
+
+easing:"ease-out"
 
 }
 
@@ -567,9 +708,12 @@ s.bottom>d.top
 
 ){
 
+
 explozieDrona();
 
+
 gameOver();
+
 
 }
 
@@ -595,10 +739,13 @@ pornit=false;
 start.style.display="block";
 
 
-start.innerHTML="GAME OVER<br><br>RESTART";
+start.innerHTML=
+"GAME OVER<br><br>RESTART";
 
 
 }
+
+
 
 
 
@@ -630,6 +777,8 @@ xObstacol=window.innerWidth;
 
 obstacol.style.transform="scale(1)";
 
+obstacol.style.display="block";
+
 
 start.style.display="none";
 
@@ -651,24 +800,30 @@ function incepe(){
 
 if(!pornit){
 
+
 pornit=true;
+
 
 start.style.display="none";
 
+
 creeazaIngredient();
 
-}
-
 
 }
 
 
+}
 
 
 
 
 
-document.addEventListener("keydown",e=>{
+
+
+
+
+document.addEventListener("keydown",function(e){
 
 
 if(e.code=="Space"){
@@ -695,7 +850,9 @@ apasat=true;
 
 
 
-document.addEventListener("keyup",e=>{
+
+
+document.addEventListener("keyup",function(e){
 
 
 if(e.code=="Space"){
@@ -712,10 +869,13 @@ apasat=false;
 
 
 
-document.addEventListener("touchstart",()=>{
+
+
+document.addEventListener("touchstart",function(){
 
 
 incepe();
+
 
 apasat=true;
 
@@ -724,7 +884,10 @@ apasat=true;
 
 
 
-document.addEventListener("touchend",()=>{
+
+
+
+document.addEventListener("touchend",function(){
 
 
 apasat=false;
@@ -737,7 +900,9 @@ apasat=false;
 
 
 
-start.addEventListener("click",()=>{
+
+
+start.addEventListener("click",function(){
 
 
 if(terminat){
@@ -762,6 +927,7 @@ incepe();
 
 
 
+
 function joc(){
 
 
@@ -772,7 +938,7 @@ if(pornit){
 if(apasat){
 
 
-viteza =
+viteza=
 boostActiv ?
 fortaBoost :
 fortaZbor;
@@ -795,8 +961,9 @@ shaorma.style.top=y+"px";
 
 
 xObstacol-=
-
 boostActiv ? 10 : 5;
+
+
 
 
 
@@ -806,7 +973,8 @@ if(xObstacol<-150){
 xObstacol=window.innerWidth;
 
 
-yObstacol=Math.random()*(window.innerHeight-150);
+yObstacol=
+Math.random()*(window.innerHeight-150);
 
 
 obstacol.style.transform="scale(1)";
@@ -823,6 +991,9 @@ obstacol.style.top=yObstacol+"px";
 
 
 
+
+
+
 boostBar.style.left=
 shaorma.offsetLeft+"px";
 
@@ -833,9 +1004,13 @@ boostBar.style.top=
 
 
 
+
+
 miscaIngredient();
 
+
 verificaIngredient();
+
 
 verificaColiziune();
 
