@@ -10,9 +10,9 @@ let fundal2 = document.getElementById("fundal2");
 
 
 
-let pozitieFundal1 = 0;
+let x1 = 0;
 
-let pozitieFundal2 = window.innerWidth;
+let x2 = window.innerWidth;
 
 
 
@@ -26,15 +26,16 @@ let y = window.innerHeight / 2;
 let viteza = 0;
 
 
+
 let gravitatie = 0.45;
 
 let fortaZbor = -7;
 
 
+
 let apasat = false;
 
 let pornit = false;
-
 
 
 
@@ -51,17 +52,16 @@ shaorma.style.top = y + "px";
 function incepe(){
 
 
-if(!pornit){
+    if(!pornit){
 
-pornit=true;
+        pornit=true;
 
-start.style.display="none";
+        start.style.display="none";
+
+    }
+
 
 }
-
-
-}
-
 
 
 
@@ -72,19 +72,18 @@ start.style.display="none";
 document.addEventListener("keydown",function(e){
 
 
-if(e.code==="Space"){
+    if(e.code==="Space"){
 
 
-incepe();
+        incepe();
 
-apasat=true;
+        apasat=true;
 
 
-}
+    }
 
 
 });
-
 
 
 
@@ -92,13 +91,13 @@ apasat=true;
 document.addEventListener("keyup",function(e){
 
 
-if(e.code==="Space"){
+    if(e.code==="Space"){
 
 
-apasat=false;
+        apasat=false;
 
 
-}
+    }
 
 
 });
@@ -108,14 +107,15 @@ apasat=false;
 
 
 
-// MOBIL
+
+// Telefon
 
 document.addEventListener("touchstart",function(){
 
 
-incepe();
+    incepe();
 
-apasat=true;
+    apasat=true;
 
 
 });
@@ -126,10 +126,11 @@ apasat=true;
 document.addEventListener("touchend",function(){
 
 
-apasat=false;
+    apasat=false;
 
 
 });
+
 
 
 
@@ -142,56 +143,51 @@ function joc(){
 
 
 
-// FUNDAL INFINIT
-
-
 if(pornit){
 
 
-pozitieFundal1 -= vitezaFundal;
 
-pozitieFundal2 -= vitezaFundal;
-
+// MISCARE FUNDAL
 
 
-if(pozitieFundal1 <= -window.innerWidth){
+x1 -= vitezaFundal;
 
-
-pozitieFundal1 = window.innerWidth;
-
-
-}
+x2 -= vitezaFundal;
 
 
 
-if(pozitieFundal2 <= -window.innerWidth){
 
+if(x1 <= -window.innerWidth){
 
-pozitieFundal2 = window.innerWidth;
-
+    x1 = window.innerWidth;
 
 }
 
 
 
-fundal1.style.left = pozitieFundal1 + "px";
+if(x2 <= -window.innerWidth){
+
+    x2 = window.innerWidth;
+
+}
 
 
-fundal2.style.left = pozitieFundal2 + "px";
+
+
+fundal1.style.left = x1 + "px";
+
+fundal2.style.left = x2 + "px";
 
 
 
 
 
-// ZBOR SHAORMA
-
+// ZBOR
 
 
 if(apasat){
 
-
-viteza = fortaZbor;
-
+    viteza = fortaZbor;
 
 }
 
@@ -204,14 +200,11 @@ y += viteza;
 
 
 
-
 if(y < 0){
 
+    y = 0;
 
-y=0;
-
-viteza=0;
-
+    viteza = 0;
 
 }
 
@@ -219,11 +212,9 @@ viteza=0;
 
 if(y > window.innerHeight - 150){
 
+    y = window.innerHeight - 150;
 
-y=window.innerHeight-150;
-
-viteza=0;
-
+    viteza = 0;
 
 }
 
@@ -237,11 +228,13 @@ shaorma.style.top = y + "px";
 
 
 
+
+
 requestAnimationFrame(joc);
 
 
-}
 
+}
 
 
 
