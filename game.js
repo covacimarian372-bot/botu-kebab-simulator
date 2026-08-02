@@ -5,15 +5,16 @@ let y = 300;
 
 let viteza = 0;
 
+let gravitatie = 0.25;
 
-let gravitatie = 0.5;
-
-let fortaZbor = -8;
+let fortaZbor = -5;
 
 
 let apasat = false;
 
 
+
+// PC - SPACE
 
 document.addEventListener("keydown", function(e){
 
@@ -40,7 +41,7 @@ document.addEventListener("keyup", function(e){
 
 
 
-// control mobil
+// Telefon - atingere ecran
 
 document.addEventListener("touchstart", function(){
 
@@ -60,8 +61,10 @@ document.addEventListener("touchend", function(){
 
 
 
-
 function joc(){
+
+
+    // când ții apăsat, shaorma zboară
 
     if(apasat){
 
@@ -70,10 +73,41 @@ function joc(){
     }
 
 
+
+    // gravitație
+
     viteza += gravitatie;
 
 
+
+    // poziția shaormei
+
     y += viteza;
+
+
+
+    // limite sus
+
+    if(y < 0){
+
+        y = 0;
+
+        viteza = 0;
+
+    }
+
+
+
+    // limite jos
+
+    if(y > window.innerHeight - 200){
+
+        y = window.innerHeight - 200;
+
+        viteza = 0;
+
+    }
+
 
 
     shaorma.style.top = y + "px";
@@ -81,6 +115,7 @@ function joc(){
 
 
     requestAnimationFrame(joc);
+
 
 }
 
