@@ -1,2 +1,2 @@
-# botu-kebab-simulator
+# flying-botu
 Joc Botu Kebab
