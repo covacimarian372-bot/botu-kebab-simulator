@@ -7,16 +7,20 @@ let scorText = document.getElementById("scor");
 let boostBar = document.getElementById("boostBar");
 let boostProgress = document.getElementById("boostProgress");
 
+
 let containerParticule = document.getElementById("particule");
 
 if(!containerParticule){
+
     containerParticule = document.createElement("div");
     containerParticule.id="particule";
     document.body.appendChild(containerParticule);
+
 }
 
 
-// JOC
+
+// STARE JOC
 
 let pornit=false;
 let terminat=false;
@@ -33,6 +37,7 @@ let viteza=0;
 let gravitatie=0.45;
 
 let fortaZbor=-7;
+
 
 
 
@@ -77,7 +82,6 @@ let vitezaObstacol=vitezaNormalaDrona;
 
 
 // INGREDIENTE
-
 
 let ingrediente=[
 
@@ -183,6 +187,7 @@ yIngredient=Math.random()*(window.innerHeight-120);
 
 ingredient.style.left=xIngredient+"px";
 
+
 ingredient.style.top=yIngredient+"px";
 
 
@@ -210,12 +215,7 @@ creeazaIngredient();
 }
 
 
-}
-
-
-
-
-function creeazaParticule(){
+}function creeazaParticule(){
 
 
 let poz=shaorma.getBoundingClientRect();
@@ -242,6 +242,7 @@ p.style.setProperty("--x",
 );
 
 
+
 p.style.setProperty("--y",
 (Math.random()*120-60)+"px"
 );
@@ -261,7 +262,15 @@ p.remove();
 
 }
 
-}function verificaIngredient(){
+
+}
+
+
+
+
+
+
+function verificaIngredient(){
 
 
 let s=shaorma.getBoundingClientRect();
@@ -296,6 +305,8 @@ creeazaParticule();
 
 
 
+
+// BOOST SOS IUTE
 
 if(ingredientActual.nume=="sos_iute.png"){
 
@@ -394,6 +405,7 @@ shaorma.classList.remove("ia-ingredient");
 
 
 
+
 creeazaIngredient();
 
 
@@ -409,41 +421,113 @@ creeazaIngredient();
 
 
 
-function explozieShaorma(){
+
+// EXPLOZIE DRONA
+
+function explozieDrona(){
 
 
-let poz=shaorma.getBoundingClientRect();
+let poz=obstacol.getBoundingClientRect();
 
 
 
-for(let i=0;i<30;i++){
+
+// FLASH ALB
+
+let flash=document.createElement("div");
+
+
+flash.style.position="fixed";
+
+flash.style.left="0";
+
+flash.style.top="0";
+
+flash.style.width="100%";
+
+flash.style.height="100%";
+
+flash.style.background="white";
+
+flash.style.opacity="0.8";
+
+flash.style.zIndex="999";
+
+
+document.body.appendChild(flash);
+
+
+
+flash.animate([
+
+{
+opacity:0.8
+},
+
+{
+opacity:0
+}
+
+],{
+
+duration:300
+
+});
+
+
+
+setTimeout(()=>{
+
+flash.remove();
+
+},300);
+
+
+
+
+
+
+// FOC SI FUM
+
+
+for(let i=0;i<45;i++){
 
 
 let p=document.createElement("div");
 
+
+
 p.style.position="absolute";
 
-p.style.width="20px";
 
-p.style.height="20px";
+p.style.width=Math.random()*20+10+"px";
 
-p.style.background="orange";
+
+p.style.height=Math.random()*20+10+"px";
+
+
 
 p.style.borderRadius="50%";
 
-p.style.zIndex="999";
+
+p.style.background=
+
+Math.random()>0.5 ?
+
+"orange" :
+
+"#444";
 
 
 
-p.style.left=poz.left+80+"px";
-
-p.style.top=poz.top+50+"px";
+p.style.zIndex="500";
 
 
 
-let x=Math.random()*300-150;
+p.style.left=poz.left+50+"px";
 
-let y=Math.random()*300-150;
+
+p.style.top=poz.top+30+"px";
 
 
 
@@ -451,11 +535,17 @@ document.body.appendChild(p);
 
 
 
+let x=Math.random()*400-200;
+
+let y=Math.random()*400-200;
+
+
+
 p.animate([
 
 {
 
-transform:"translate(0,0)",
+transform:"translate(0,0) scale(1)",
 
 opacity:1
 
@@ -463,7 +553,7 @@ opacity:1
 
 {
 
-transform:`translate(${x}px,${y}px)`,
+transform:`translate(${x}px,${y}px) scale(0)`,
 
 opacity:0
 
@@ -471,7 +561,7 @@ opacity:0
 
 ],{
 
-duration:800
+duration:1000
 
 });
 
@@ -481,27 +571,87 @@ setTimeout(()=>{
 
 p.remove();
 
-},800);
+},1200);
 
 
 }
 
 
 
+
+
+
+// DRONA SE ROTESTE
+
+obstacol.animate([
+
+{
+
+transform:"rotate(0deg) scale(1)"
+
+},
+
+{
+
+transform:"rotate(360deg) scale(0)"
+
 }
 
+],{
+
+duration:700
+
+});
+
+
+
+setTimeout(()=>{
+
+obstacol.style.display="none";
+
+},700);
 
 
 
 
 
 
+// TREPIDEAZA ECRANUL
+
+document.body.animate([
+
+{
+transform:"translate(0)"
+},
+
+{
+transform:"translate(-15px,10px)"
+},
+
+{
+transform:"translate(15px,-10px)"
+},
+
+{
+transform:"translate(0)"
+}
+
+],{
+
+duration:400
+
+});
+
+
+
+}
 function verificaColiziune(){
 
 
 let s=shaorma.getBoundingClientRect();
 
 let d=obstacol.getBoundingClientRect();
+
 
 
 
@@ -516,6 +666,7 @@ top:s.top+15,
 bottom:s.top+81
 
 };
+
 
 
 
@@ -563,10 +714,12 @@ gameOver();
 
 
 
+
 function gameOver(){
 
 
-explozieShaorma();
+explozieDrona();
+
 
 
 terminat=true;
@@ -583,6 +736,7 @@ start.style.display="block";
 
 
 start.innerHTML="GAME OVER<br><br>RESTART";
+
 
 
 }
@@ -625,6 +779,13 @@ yObstacol=250;
 
 
 
+obstacol.style.display="block";
+
+
+obstacol.style.transform="";
+
+
+
 boostActiv=false;
 
 
@@ -646,10 +807,12 @@ boostBar.style.display="none";
 start.style.display="none";
 
 
+
 creeazaIngredient();
 
 
 }
+
 
 
 
@@ -714,6 +877,7 @@ apasat=true;
 
 
 
+
 document.addEventListener("keyup",function(e){
 
 
@@ -727,6 +891,8 @@ apasat=false;
 
 
 });
+
+
 
 
 
@@ -753,6 +919,7 @@ apasat=true;
 
 
 
+
 document.addEventListener("touchend",function(){
 
 
@@ -760,6 +927,7 @@ apasat=false;
 
 
 });
+
 
 
 
@@ -828,6 +996,7 @@ viteza=fortaZbor;
 
 
 
+
 viteza+=gravitatie;
 
 
@@ -840,6 +1009,10 @@ shaorma.style.top=y+"px";
 
 
 
+
+
+// BARA BOOST
+
 boostBar.style.left=(shaorma.offsetLeft+25)+"px";
 
 
@@ -848,6 +1021,10 @@ boostBar.style.top=(y+90)+"px";
 
 
 
+
+
+
+// DRONA
 
 
 xObstacol-=vitezaObstacol;
@@ -875,6 +1052,11 @@ obstacol.style.top=yObstacol+"px";
 
 
 
+
+
+
+
+// INGREDIENTE
 
 
 miscaIngredient();
