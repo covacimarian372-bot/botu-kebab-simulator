@@ -1,6 +1,9 @@
 let shaorma = document.getElementById("shaorma");
 let obstacol = document.getElementById("obstacol");
+let ingredient = document.getElementById("ingredient");
 let start = document.getElementById("start");
+let scorText = document.getElementById("scor");
+
 
 
 let y = window.innerHeight / 2;
@@ -17,6 +20,14 @@ let terminat = false;
 
 
 
+// SCOR
+
+let scor = 0;
+
+
+
+
+
 // DRONA
 
 let xObstacol = window.innerWidth + 200;
@@ -25,7 +36,30 @@ let vitezaObstacol = 5;
 
 
 
-shaorma.style.top = y + "px";
+
+
+
+// INGREDIENTE
+
+let ingrediente = [
+
+"rosie.png",
+
+"carne.png",
+
+"cartof.png",
+
+"salata.png"
+
+];
+
+
+let xIngredient = window.innerWidth + 400;
+
+let yIngredient = 300;
+
+let vitezaIngredient = 5;
+
 
 
 
@@ -36,30 +70,44 @@ function incepe(){
 
 if(!pornit && !terminat){
 
+
 pornit = true;
 
-start.style.display = "none";
+start.style.display="none";
+
+
+creeazaIngredient();
+
 
 }
 
+
 }
 
 
 
 
 
-// PC
+
+
+
+
+// CONTROL PC
+
 
 document.addEventListener("keydown",function(e){
 
 
-if(e.code === "Space"){
+if(e.code==="Space"){
+
 
 incepe();
 
-apasat = true;
+apasat=true;
+
 
 }
+
 
 });
 
@@ -68,11 +116,14 @@ apasat = true;
 document.addEventListener("keyup",function(e){
 
 
-if(e.code === "Space"){
+if(e.code==="Space"){
 
-apasat = false;
+
+apasat=false;
+
 
 }
+
 
 });
 
@@ -81,13 +132,18 @@ apasat = false;
 
 
 
-// MOBIL
+
+
+// CONTROL MOBIL
+
 
 document.addEventListener("touchstart",function(){
 
+
 incepe();
 
-apasat = true;
+apasat=true;
+
 
 });
 
@@ -95,7 +151,9 @@ apasat = true;
 
 document.addEventListener("touchend",function(){
 
-apasat = false;
+
+apasat=false;
+
 
 });
 
@@ -107,7 +165,9 @@ apasat = false;
 
 
 
-// HITBOXURI CORECTE
+
+
+// COLIZIUNE DRONA
 
 function verificaColiziune(){
 
@@ -119,22 +179,23 @@ let dronaBox = obstacol.getBoundingClientRect();
 
 
 
-
 // SHAORMA 137x66
 
 let shaormaHit = {
+
 
 left: shaormaBox.left + (shaormaBox.width - 137) / 2,
 
 right: shaormaBox.left + (shaormaBox.width - 137) / 2 + 137,
 
+
 top: shaormaBox.top + (shaormaBox.height - 66) / 2,
+
 
 bottom: shaormaBox.top + (shaormaBox.height - 66) / 2 + 66
 
+
 };
-
-
 
 
 
@@ -143,17 +204,20 @@ bottom: shaormaBox.top + (shaormaBox.height - 66) / 2 + 66
 
 let dronaHit = {
 
+
 left: dronaBox.left + (dronaBox.width - 123) / 2,
+
 
 right: dronaBox.left + (dronaBox.width - 123) / 2 + 123,
 
+
 top: dronaBox.top + (dronaBox.height - 52) / 2,
+
 
 bottom: dronaBox.top + (dronaBox.height - 52) / 2 + 52
 
+
 };
-
-
 
 
 
@@ -171,9 +235,123 @@ shaormaHit.bottom > dronaHit.top
 
 ){
 
+
 gameOver();
 
+
 }
+
+
+}
+
+
+
+
+
+
+
+
+
+// INGREDIENT NOU
+
+function creeazaIngredient(){
+
+
+let ales = ingrediente[Math.floor(Math.random()*ingrediente.length)];
+
+
+ingredient.src = "images/" + ales;
+
+
+xIngredient = window.innerWidth + 200;
+
+
+yIngredient = Math.random() * (window.innerHeight - 150);
+
+
+ingredient.style.display="block";
+
+
+}
+
+
+
+
+
+
+
+
+function miscaIngredient(){
+
+
+
+xIngredient -= vitezaIngredient;
+
+
+
+if(xIngredient < -100){
+
+
+creeazaIngredient();
+
+
+}
+
+
+
+ingredient.style.left = xIngredient + "px";
+
+
+ingredient.style.top = yIngredient + "px";
+
+
+
+}
+
+
+
+
+
+
+
+
+function verificaIngredient(){
+
+
+
+let shaormaBox = shaorma.getBoundingClientRect();
+
+let ingredientBox = ingredient.getBoundingClientRect();
+
+
+
+
+
+if(
+
+shaormaBox.left < ingredientBox.right &&
+
+shaormaBox.right > ingredientBox.left &&
+
+shaormaBox.top < ingredientBox.bottom &&
+
+shaormaBox.bottom > ingredientBox.top
+
+){
+
+
+scor += 10;
+
+
+scorText.innerHTML="Scor: " + scor;
+
+
+
+creeazaIngredient();
+
+
+}
+
 
 
 }
@@ -189,18 +367,18 @@ gameOver();
 function gameOver(){
 
 
-terminat = true;
+terminat=true;
 
-pornit = false;
+pornit=false;
 
 
-start.style.display = "block";
+start.style.display="block";
 
-start.innerHTML = "GAME OVER<br><br>APASĂ PENTRU RESTART";
+
+start.innerHTML="GAME OVER<br><br>APASĂ PENTRU RESTART";
 
 
 }
-
 
 
 
@@ -215,25 +393,40 @@ function restart(){
 if(terminat){
 
 
-terminat = false;
 
-pornit = true;
-
-
-start.style.display = "none";
+terminat=false;
 
 
-
-y = window.innerHeight / 2;
-
-viteza = 0;
+pornit=true;
 
 
 
-xObstacol = window.innerWidth + 200;
+scor=0;
+
+
+scorText.innerHTML="Scor: 0";
+
+
+start.style.display="none";
+
+
+
+y=window.innerHeight/2;
+
+
+viteza=0;
+
+
+
+xObstacol=window.innerWidth+200;
+
+
+creeazaIngredient();
+
 
 
 }
+
 
 
 }
@@ -254,86 +447,107 @@ if(pornit){
 
 
 
-// ZBOR SHAORMA
-
+// ZBOR
 
 if(apasat){
 
-viteza = fortaZbor;
 
-}
-
-
-
-viteza += gravitatie;
-
-y += viteza;
-
-
-
-
-
-
-if(y < 0){
-
-y = 0;
-
-}
-
-
-
-
-
-if(y > window.innerHeight - 150){
-
-y = window.innerHeight - 150;
-
-}
-
-
-
-shaorma.style.top = y + "px";
-
-
-
-
-
-
-
-
-
-// MISCARE DRONA
-
-
-xObstacol -= vitezaObstacol;
-
-
-
-if(xObstacol < -150){
-
-
-xObstacol = window.innerWidth + 200;
-
-
-yObstacol = Math.random() * (window.innerHeight - 200);
+viteza=fortaZbor;
 
 
 }
 
 
 
-obstacol.style.left = xObstacol + "px";
-
-obstacol.style.top = yObstacol + "px";
+viteza+=gravitatie;
 
 
-
+y+=viteza;
 
 
 
 
 
-// COLIZIUNE
+if(y<0){
+
+
+y=0;
+
+
+}
+
+
+
+if(y>window.innerHeight-150){
+
+
+y=window.innerHeight-150;
+
+
+}
+
+
+
+shaorma.style.top=y+"px";
+
+
+
+
+
+
+
+
+
+// DRONA
+
+
+xObstacol-=vitezaObstacol;
+
+
+
+if(xObstacol<-150){
+
+
+xObstacol=window.innerWidth+200;
+
+
+yObstacol=Math.random()*(window.innerHeight-200);
+
+
+}
+
+
+
+obstacol.style.left=xObstacol+"px";
+
+
+obstacol.style.top=yObstacol+"px";
+
+
+
+
+
+
+
+
+
+// INGREDIENT
+
+
+miscaIngredient();
+
+
+verificaIngredient();
+
+
+
+
+
+
+
+
+
+// COLIZIUNI
 
 verificaColiziune();
 
@@ -344,12 +558,12 @@ verificaColiziune();
 
 
 
-
 requestAnimationFrame(joc);
 
 
-
 }
+
+
 
 
 
@@ -364,6 +578,8 @@ restart();
 
 
 });
+
+
 
 
 
