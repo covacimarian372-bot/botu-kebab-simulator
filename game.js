@@ -4,26 +4,40 @@ let start = document.getElementById("start");
 
 
 
-let y = window.innerHeight / 2;
+let fundal1 = document.getElementById("fundal1");
 
+let fundal2 = document.getElementById("fundal2");
+
+
+
+let pozitieFundal1 = 0;
+
+let pozitieFundal2 = window.innerWidth;
+
+
+
+let vitezaFundal = 2;
+
+
+
+
+let y = window.innerHeight / 2;
 
 let viteza = 0;
 
 
 let gravitatie = 0.45;
 
-
 let fortaZbor = -7;
 
 
 let apasat = false;
 
-
 let pornit = false;
 
 
 
-// pozitia de start
+
 
 shaorma.style.left = "200px";
 
@@ -33,16 +47,17 @@ shaorma.style.top = y + "px";
 
 
 
+
 function incepe(){
 
 
-    if(!pornit){
+if(!pornit){
 
-        pornit = true;
+pornit=true;
 
-        start.style.display = "none";
+start.style.display="none";
 
-    }
+}
 
 
 }
@@ -54,41 +69,39 @@ function incepe(){
 
 // PC
 
-document.addEventListener("keydown", function(e){
+document.addEventListener("keydown",function(e){
 
 
-    if(e.code === "Space"){
+if(e.code==="Space"){
 
 
-        incepe();
+incepe();
+
+apasat=true;
 
 
-        apasat = true;
-
-
-    }
-
-
-});
-
-
-
-
-
-document.addEventListener("keyup", function(e){
-
-
-    if(e.code === "Space"){
-
-
-        apasat = false;
-
-
-    }
+}
 
 
 });
 
+
+
+
+
+document.addEventListener("keyup",function(e){
+
+
+if(e.code==="Space"){
+
+
+apasat=false;
+
+
+}
+
+
+});
 
 
 
@@ -97,27 +110,27 @@ document.addEventListener("keyup", function(e){
 
 // MOBIL
 
-document.addEventListener("touchstart", function(){
+document.addEventListener("touchstart",function(){
 
 
-    incepe();
+incepe();
+
+apasat=true;
 
 
-    apasat = true;
+});
+
+
+
+
+document.addEventListener("touchend",function(){
+
+
+apasat=false;
 
 
 });
 
-
-
-
-document.addEventListener("touchend", function(){
-
-
-    apasat = false;
-
-
-});
 
 
 
@@ -129,74 +142,105 @@ function joc(){
 
 
 
-    if(pornit){
+// FUNDAL INFINIT
+
+
+if(pornit){
+
+
+pozitieFundal1 -= vitezaFundal;
+
+pozitieFundal2 -= vitezaFundal;
 
 
 
-        if(apasat){
+if(pozitieFundal1 <= -window.innerWidth){
 
 
-            viteza = fortaZbor;
+pozitieFundal1 = window.innerWidth;
 
 
-        }
-
-
-
-
-
-        viteza += gravitatie;
+}
 
 
 
-        y += viteza;
+if(pozitieFundal2 <= -window.innerWidth){
+
+
+pozitieFundal2 = window.innerWidth;
+
+
+}
 
 
 
+fundal1.style.left = pozitieFundal1 + "px";
 
 
-        // limite ecran
-
-
-        if(y < 0){
-
-            y = 0;
-
-            viteza = 0;
-
-        }
-
-
-
-        if(y > window.innerHeight - 150){
-
-
-            y = window.innerHeight - 150;
-
-            viteza = 0;
-
-
-        }
+fundal2.style.left = pozitieFundal2 + "px";
 
 
 
 
 
-        shaorma.style.top = y + "px";
+// ZBOR SHAORMA
 
 
 
-    }
+if(apasat){
+
+
+viteza = fortaZbor;
+
+
+}
+
+
+
+viteza += gravitatie;
+
+
+y += viteza;
 
 
 
 
-    requestAnimationFrame(joc);
+if(y < 0){
+
+
+y=0;
+
+viteza=0;
+
+
+}
+
+
+
+if(y > window.innerHeight - 150){
+
+
+y=window.innerHeight-150;
+
+viteza=0;
+
+
+}
+
+
+
+shaorma.style.top = y + "px";
 
 
 
 }
 
+
+
+requestAnimationFrame(joc);
+
+
+}
 
 
 
