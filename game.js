@@ -1,37 +1,63 @@
 const shaorma = document.getElementById("shaorma");
 
-let ingrediente = [];
+
+function adauga(nume){
 
 
-function adauga(nume) {
-
-    let imagine = document.createElement("img");
-
-    imagine.className = "ingredient";
-
-    imagine.src = "images/" + nume + ".png";
+let img=document.createElement("img");
 
 
-    shaorma.appendChild(imagine);
+img.src="images/"+nume+".png";
 
 
-    ingrediente.push(nume);
+img.className="ingredient";
+
+
+shaorma.appendChild(img);
+
 
 }
 
 
 
-function gata() {
-
-    if (ingrediente.length === 0) {
-
-        alert("Alege ingrediente pentru shaorma!");
-
-        return;
-
-    }
+function gataComanda(){
 
 
-    alert("🌯 Shaorma este gata!");
+let tranzitie=document.createElement("div");
+
+
+tranzitie.id="tranzitie";
+
+
+tranzitie.innerHTML="🌯";
+
+
+document.body.appendChild(tranzitie);
+
+
+
+setTimeout(()=>{
+
+
+tranzitie.innerHTML="";
+
+
+
+let rezultat=document.createElement("img");
+
+
+rezultat.src="images/rezultat.png";
+
+
+rezultat.id="rezultat";
+
+
+tranzitie.appendChild(rezultat);
+
+
+
+},2000);
+
+
 
 }
