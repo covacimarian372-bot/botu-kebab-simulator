@@ -1,31 +1,44 @@
-body{
+*{
 
 margin:0;
 
-overflow:hidden;
+padding:0;
 
-height:100vh;
+box-sizing:border-box;
 
 }
+
+
+
+body{
+
+overflow:hidden;
+
+background:black;
+
+}
+
 
 
 
 
 #joc{
 
-width:100%;
+width:100vw;
 
 height:100vh;
 
-overflow:hidden;
-
 position:relative;
+
+overflow:hidden;
 
 }
 
 
 
 
+
+/* FUNDAL */
 
 #fundal{
 
@@ -41,11 +54,16 @@ background-size:cover;
 
 background-position:center;
 
+z-index:0;
+
 }
 
 
 
 
+
+
+/* SHAORMA */
 
 #shaorma{
 
@@ -53,11 +71,9 @@ position:absolute;
 
 width:180px;
 
-left:200px;
-
-top:300px;
-
 z-index:10;
+
+left:200px;
 
 }
 
@@ -65,15 +81,14 @@ z-index:10;
 
 
 
+
+/* DRONA */
+
 #obstacol{
 
 position:absolute;
 
-width:150px;
-
-left:100%;
-
-top:250px;
+width:123px;
 
 z-index:9;
 
@@ -83,6 +98,62 @@ z-index:9;
 
 
 
+
+/* INGREDIENT */
+
+#ingredient{
+
+position:absolute;
+
+width:60px;
+
+height:60px;
+
+z-index:15;
+
+display:none;
+
+}
+
+
+
+
+
+
+
+/* SCOR */
+
+#scor{
+
+position:absolute;
+
+top:20px;
+
+right:20px;
+
+color:white;
+
+font-size:30px;
+
+font-family:Arial;
+
+font-weight:bold;
+
+z-index:20;
+
+text-shadow:2px 2px 5px black;
+
+}
+
+
+
+
+
+
+
+
+/* START */
+
 #start{
 
 position:absolute;
@@ -91,20 +162,87 @@ top:50%;
 
 left:50%;
 
+
 transform:translate(-50%,-50%);
+
 
 color:white;
 
+
 font-size:35px;
+
 
 font-family:Arial;
 
+
 font-weight:bold;
+
 
 text-align:center;
 
-text-shadow:2px 2px 5px black;
 
-z-index:20;
+z-index:30;
+
+
+cursor:pointer;
+
+
+text-shadow:3px 3px 5px black;
+
+
+}
+
+
+
+
+
+
+/* TELEFON */
+
+@media(max-width:600px){
+
+
+#shaorma{
+
+width:140px;
+
+left:100px;
+
+}
+
+
+
+#obstacol{
+
+width:90px;
+
+}
+
+
+
+#ingredient{
+
+width:45px;
+
+height:45px;
+
+}
+
+
+
+#start{
+
+font-size:25px;
+
+}
+
+
+
+#scor{
+
+font-size:24px;
+
+}
+
 
 }
