@@ -15,25 +15,20 @@ document.body.appendChild(containerParticule);
 }
 
 
-// JOC
+// STARE JOC
 
 let pornit = false;
 let terminat = false;
 let apasat = false;
 
 
-
 // SHAORMA
 
 let y = window.innerHeight / 2;
-
 let viteza = 0;
 
 let gravitatie = 0.45;
-
 let fortaZbor = -7;
-
-
 
 
 
@@ -43,17 +38,11 @@ let scor = 0;
 
 
 
-
-
 // DRONA
 
 let xObstacol = window.innerWidth + 400;
-
 let yObstacol = 250;
-
 let vitezaObstacol = 5;
-
-
 
 
 
@@ -93,26 +82,16 @@ puncte:5
 
 let ingredientActual;
 
-
 let xIngredient = 0;
-
 let yIngredient = 300;
-
 let vitezaIngredient = 6;
-
-
 
 
 
 // SOS IUTE
 
 let ultimaAparitieSos = 0;
-
 let timpSos = 60000;
-
-
-
-
 
 
 
@@ -128,7 +107,7 @@ let acum = Date.now();
 if(acum - ultimaAparitieSos >= timpSos && Math.random()<0.3){
 
 
-ingredientActual = {
+ingredientActual={
 
 nume:"sos_iute.png",
 
@@ -162,9 +141,7 @@ ingredient.style.display="block";
 
 xIngredient = window.innerWidth + 100;
 
-
 yIngredient = Math.random()*(window.innerHeight-120);
-
 
 
 ingredient.style.left=xIngredient+"px";
@@ -173,8 +150,6 @@ ingredient.style.top=yIngredient+"px";
 
 
 }
-
-
 
 
 
@@ -194,16 +169,12 @@ ingredient.style.left=xIngredient+"px";
 
 if(xIngredient < -100){
 
-
 creeazaIngredient();
 
-
 }
 
 
 }
-
-
 
 
 
@@ -254,12 +225,11 @@ p.remove();
 },600);
 
 
-}
-
 
 }
 
 
+}
 
 
 
@@ -276,7 +246,6 @@ let ing = ingredient.getBoundingClientRect();
 
 
 
-
 if(
 
 s.left < ing.right &&
@@ -290,25 +259,17 @@ s.bottom > ing.top
 ){
 
 
-
 scor += ingredientActual.puncte;
 
 
-if(scorText){
-
 scorText.innerHTML="Scor: "+scor;
-
-}
 
 
 
 creeazaParticule();
 
 
-
 shaorma.classList.add("ia-ingredient");
-
-
 
 setTimeout(()=>{
 
@@ -319,13 +280,10 @@ shaorma.classList.remove("ia-ingredient");
 
 
 
-
-
 if(ingredientActual.nume=="sos_iute.png"){
 
 
 shaorma.classList.add("boost");
-
 
 
 setTimeout(()=>{
@@ -354,7 +312,6 @@ creeazaIngredient();
 
 
 
-
 function verificaColiziune(){
 
 
@@ -365,10 +322,7 @@ let d = obstacol.getBoundingClientRect();
 
 
 
-
-// HITBOX SHAORMA 137x66
-
-let shaormaHit = {
+let shaormaHit={
 
 left:s.left+20,
 
@@ -383,9 +337,7 @@ bottom:s.top+81
 
 
 
-// HITBOX DRONA 123x52
-
-let dronaHit = {
+let dronaHit={
 
 left:d.left+10,
 
@@ -396,8 +348,6 @@ top:d.top+10,
 bottom:d.top+42
 
 };
-
-
 
 
 
@@ -415,6 +365,23 @@ shaormaHit.bottom > dronaHit.top
 ){
 
 
+gameOver();
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+function gameOver(){
+
+
 terminat=true;
 
 pornit=false;
@@ -422,15 +389,57 @@ pornit=false;
 
 start.style.display="block";
 
-start.innerHTML="GAME OVER";
+start.innerHTML="GAME OVER<br><br>APASĂ PENTRU RESTART";
 
 
 }
 
 
+
+
+
+
+
+function restart(){
+
+
+terminat=false;
+
+pornit=true;
+
+
+
+// RESET SCOR
+
+scor=0;
+
+scorText.innerHTML="Scor: 0";
+
+
+
+// RESET SHAORMA
+
+y=window.innerHeight/2;
+
+viteza=0;
+
+
+
+// RESET DRONA
+
+xObstacol=window.innerWidth+400;
+
+yObstacol=250;
+
+
+
+start.style.display="none";
+
+
+creeazaIngredient();
+
+
 }
-
-
 
 
 
@@ -443,18 +452,12 @@ function incepe(){
 
 if(!pornit){
 
-
 pornit=true;
-
-terminat=false;
-
 
 start.style.display="none";
 
-
 creeazaIngredient();
 
-
 }
 
 
@@ -467,10 +470,39 @@ creeazaIngredient();
 
 
 
-document.addEventListener("keydown",e=>{
+document.addEventListener("keydown",function(e){
 
 
 if(e.code=="Space"){
+
+incepe();
+
+apasat=true;
+
+}
+
+
+});
+
+
+
+document.addEventListener("keyup",function(e){
+
+
+if(e.code=="Space"){
+
+apasat=false;
+
+}
+
+
+});
+
+
+
+
+
+document.addEventListener("touchstart",function(){
 
 
 incepe();
@@ -478,52 +510,17 @@ incepe();
 apasat=true;
 
 
-}
-
-
 });
 
 
 
-document.addEventListener("keyup",e=>{
-
-
-if(e.code=="Space"){
-
-
-apasat=false;
-
-
-}
-
-
-});
-
-
-
-
-
-document.addEventListener("touchstart",()=>{
-
-
-incepe();
-
-apasat=true;
-
-
-});
-
-
-
-document.addEventListener("touchend",()=>{
+document.addEventListener("touchend",function(){
 
 
 apasat=false;
 
 
 });
-
-
 
 
 
@@ -532,7 +529,6 @@ apasat=false;
 
 
 function joc(){
-
 
 
 if(pornit){
@@ -546,15 +542,12 @@ viteza=fortaZbor;
 }
 
 
-
 viteza+=gravitatie;
-
 
 y+=viteza;
 
 
 shaorma.style.top=y+"px";
-
 
 
 
@@ -571,7 +564,6 @@ if(xObstacol<-150){
 
 xObstacol=window.innerWidth+400;
 
-
 yObstacol=Math.random()*(window.innerHeight-200);
 
 
@@ -580,7 +572,6 @@ yObstacol=Math.random()*(window.innerHeight-200);
 
 
 obstacol.style.left=xObstacol+"px";
-
 
 obstacol.style.top=yObstacol+"px";
 
@@ -596,6 +587,10 @@ miscaIngredient();
 verificaIngredient();
 
 
+
+
+
+// COLIZIUNE
 
 verificaColiziune();
 
@@ -614,9 +609,25 @@ requestAnimationFrame(joc);
 
 
 
+start.addEventListener("click",function(){
 
 
-start.addEventListener("click",incepe);
+if(terminat){
+
+restart();
+
+}
+
+else{
+
+incepe();
+
+}
+
+
+});
+
+
 
 
 
