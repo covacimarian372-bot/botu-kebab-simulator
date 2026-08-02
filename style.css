@@ -12,6 +12,7 @@ background:#63c8ff;
 
 
 
+
 #joc{
 
 width:100%;
@@ -29,6 +30,8 @@ overflow:hidden;
 
 
 
+
+
 #shaorma{
 
 position:absolute;
@@ -37,7 +40,34 @@ width:180px;
 
 left:200px;
 
+animation:aripi 0.35s infinite alternate ease-in-out;
+
 }
+
+
+
+
+@keyframes aripi{
+
+
+from{
+
+transform:rotate(-5deg);
+
+}
+
+
+
+to{
+
+transform:rotate(5deg);
+
+}
+
+
+}
+
+
 
 
 
