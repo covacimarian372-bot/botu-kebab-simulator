@@ -1,14 +1,15 @@
 let shaorma = document.getElementById("shaorma");
 
-let start = document.getElementById("start");
+let obstacol = document.getElementById("obstacol");
 
-let fundal = document.getElementById("fundal");
+let start = document.getElementById("start");
 
 
 
 let y = window.innerHeight / 2;
 
 let viteza = 0;
+
 
 
 let gravitatie = 0.45;
@@ -23,13 +24,19 @@ let pornit = false;
 
 
 
-let pozitieFundal = 0;
 
-let vitezaFundal = 2;
+// DRONA
+
+let xObstacol = window.innerWidth + 200;
+
+let yObstacol = 250;
+
+let vitezaObstacol = 5;
 
 
 
-shaorma.style.left = "200px";
+
+
 
 shaorma.style.top = y + "px";
 
@@ -41,13 +48,13 @@ shaorma.style.top = y + "px";
 function incepe(){
 
 
-    if(!pornit){
+if(!pornit){
 
-        pornit = true;
+pornit=true;
 
-        start.style.display = "none";
+start.style.display="none";
 
-    }
+}
 
 
 }
@@ -59,18 +66,35 @@ function incepe(){
 
 // PC
 
-document.addEventListener("keydown", function(e){
+document.addEventListener("keydown",function(e){
 
 
-    if(e.code === "Space"){
+if(e.code==="Space"){
 
 
-        incepe();
+incepe();
 
-        apasat = true;
+apasat=true;
 
 
-    }
+}
+
+
+});
+
+
+
+
+document.addEventListener("keyup",function(e){
+
+
+if(e.code==="Space"){
+
+
+apasat=false;
+
+
+}
 
 
 });
@@ -79,34 +103,15 @@ document.addEventListener("keydown", function(e){
 
 
 
-document.addEventListener("keyup", function(e){
+
+// TELEFON
+
+document.addEventListener("touchstart",function(){
 
 
-    if(e.code === "Space"){
+incepe();
 
-
-        apasat = false;
-
-
-    }
-
-
-});
-
-
-
-
-
-
-
-// MOBIL
-
-document.addEventListener("touchstart", function(){
-
-
-    incepe();
-
-    apasat = true;
+apasat=true;
 
 
 });
@@ -114,11 +119,10 @@ document.addEventListener("touchstart", function(){
 
 
 
+document.addEventListener("touchend",function(){
 
-document.addEventListener("touchend", function(){
 
-
-    apasat = false;
+apasat=false;
 
 
 });
@@ -139,37 +143,13 @@ if(pornit){
 
 
 
-// FUNDAL INFINIT
-
-
-pozitieFundal -= vitezaFundal;
-
-
-
-if(pozitieFundal <= -window.innerWidth){
-
-
-    pozitieFundal = 0;
-
-
-}
-
-
-
-fundal.style.left = pozitieFundal + "px";
-
-
-
-
-
-
 // ZBOR SHAORMA
 
 
 if(apasat){
 
 
-    viteza = fortaZbor;
+viteza=fortaZbor;
 
 
 }
@@ -188,9 +168,7 @@ y += viteza;
 if(y < 0){
 
 
-    y = 0;
-
-    viteza = 0;
+y=0;
 
 
 }
@@ -199,12 +177,39 @@ if(y < 0){
 
 
 
-if(y > window.innerHeight - 150){
+if(y > window.innerHeight-150){
 
 
-    y = window.innerHeight - 150;
+y=window.innerHeight-150;
 
-    viteza = 0;
+
+}
+
+
+
+shaorma.style.top=y+"px";
+
+
+
+
+
+
+
+// MISCARE DRONA
+
+
+xObstacol -= vitezaObstacol;
+
+
+
+
+if(xObstacol < -150){
+
+
+xObstacol = window.innerWidth + 200;
+
+
+yObstacol = Math.random() * (window.innerHeight-200);
 
 
 }
@@ -212,12 +217,15 @@ if(y > window.innerHeight - 150){
 
 
 
-shaorma.style.top = y + "px";
+
+obstacol.style.left=xObstacol+"px";
+
+
+obstacol.style.top=yObstacol+"px";
 
 
 
 }
-
 
 
 
@@ -227,6 +235,7 @@ requestAnimationFrame(joc);
 
 
 }
+
 
 
 
