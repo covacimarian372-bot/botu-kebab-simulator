@@ -7,20 +7,17 @@ let scorText = document.getElementById("scor");
 let containerParticule = document.getElementById("particule");
 
 if(!containerParticule){
-
-containerParticule = document.createElement("div");
-containerParticule.id = "particule";
-document.body.appendChild(containerParticule);
-
+    containerParticule = document.createElement("div");
+    containerParticule.id="particule";
+    document.body.appendChild(containerParticule);
 }
 
 
-// STARE JOC
+// JOC
 
 let pornit = false;
 let terminat = false;
 let apasat = false;
-
 
 
 // SHAORMA
@@ -32,6 +29,14 @@ let gravitatie = 0.45;
 let fortaZbor = -7;
 
 
+// BOOST
+
+let boostActiv = false;
+
+let timpBoost = 5000;
+
+let fortaBoost = -10;
+
 
 
 // SCOR
@@ -40,13 +45,11 @@ let scor = 0;
 
 
 
-
 // DRONA
 
 let xObstacol = window.innerWidth + 400;
 let yObstacol = 250;
 let vitezaObstacol = 5;
-
 
 
 
@@ -85,13 +88,14 @@ puncte:5
 
 let ingredientActual;
 
+
 let xIngredient = 0;
 let yIngredient = 300;
 let vitezaIngredient = 6;
 
 
 
-// SOS
+// SOS IUTE
 
 let ultimaAparitieSos = 0;
 let timpSos = 60000;
@@ -102,7 +106,6 @@ let timpSos = 60000;
 
 function creeazaIngredient(){
 
-
 let acum = Date.now();
 
 
@@ -110,7 +113,7 @@ let acum = Date.now();
 if(acum - ultimaAparitieSos >= timpSos && Math.random()<0.3){
 
 
-ingredientActual = {
+ingredientActual={
 
 nume:"sos_iute.png",
 
@@ -136,17 +139,16 @@ Math.floor(Math.random()*ingrediente.length)
 
 
 
-
-ingredient.src = "images/" + ingredientActual.nume;
+ingredient.src="images/"+ingredientActual.nume;
 
 
 ingredient.style.display="block";
 
 
-xIngredient = window.innerWidth + 100;
+xIngredient=window.innerWidth+100;
 
 
-yIngredient = Math.random()*(window.innerHeight-120);
+yIngredient=Math.random()*(window.innerHeight-120);
 
 
 
@@ -166,11 +168,10 @@ ingredient.style.top=yIngredient+"px";
 function miscaIngredient(){
 
 
-xIngredient -= vitezaIngredient;
+xIngredient-=vitezaIngredient;
 
 
 ingredient.style.left=xIngredient+"px";
-
 
 
 if(xIngredient < -100){
@@ -191,7 +192,7 @@ creeazaIngredient();
 function creeazaParticule(){
 
 
-let poz = shaorma.getBoundingClientRect();
+let poz=shaorma.getBoundingClientRect();
 
 
 
@@ -207,7 +208,6 @@ p.className="particula";
 p.style.left=poz.left+80+"px";
 
 p.style.top=poz.top+50+"px";
-
 
 
 p.style.setProperty("--x",
@@ -243,7 +243,6 @@ p.remove();
 
 
 
-
 function verificaIngredient(){
 
 
@@ -266,7 +265,7 @@ s.bottom > ing.top
 ){
 
 
-scor += ingredientActual.puncte;
+scor+=ingredientActual.puncte;
 
 
 scorText.innerHTML="Scor: "+scor;
@@ -279,8 +278,6 @@ creeazaParticule();
 
 shaorma.classList.add("ia-ingredient");
 
-
-
 setTimeout(()=>{
 
 shaorma.classList.remove("ia-ingredient");
@@ -290,7 +287,13 @@ shaorma.classList.remove("ia-ingredient");
 
 
 
+
+// BOOST SOS IUTE
+
 if(ingredientActual.nume=="sos_iute.png"){
+
+
+boostActiv=true;
 
 
 shaorma.classList.add("boost");
@@ -299,12 +302,18 @@ shaorma.classList.add("boost");
 
 setTimeout(()=>{
 
+
+boostActiv=false;
+
+
 shaorma.classList.remove("boost");
 
-},5000);
+
+},timpBoost);
 
 
 }
+
 
 
 
@@ -361,7 +370,6 @@ bottom:d.top+42
 
 
 
-
 if(
 
 shaormaHit.left < dronaHit.right &&
@@ -374,15 +382,12 @@ shaormaHit.bottom > dronaHit.top
 
 ){
 
-
 gameOver();
 
-
 }
 
 
 }
-
 
 
 
@@ -400,15 +405,12 @@ pornit=false;
 apasat=false;
 
 
-
 start.style.display="block";
-
 
 start.innerHTML="GAME OVER<br><br>RESTART";
 
 
 }
-
 
 
 
@@ -426,9 +428,7 @@ pornit=true;
 
 scor=0;
 
-
 scorText.innerHTML="Scor: 0";
-
 
 
 y=window.innerHeight/2;
@@ -443,6 +443,12 @@ yObstacol=250;
 
 
 
+boostActiv=false;
+
+shaorma.classList.remove("boost");
+
+
+
 start.style.display="none";
 
 
@@ -450,7 +456,6 @@ creeazaIngredient();
 
 
 }
-
 
 
 
@@ -468,15 +473,12 @@ return;
 }
 
 
-
 if(!pornit){
 
 
 pornit=true;
 
-
 start.style.display="none";
-
 
 creeazaIngredient();
 
@@ -492,28 +494,15 @@ creeazaIngredient();
 
 
 
-
-// CONTROALE
-
 document.addEventListener("keydown",function(e){
 
 
-if(e.code=="Space"){
-
-
-
-if(terminat){
-
-return;
-
-}
-
+if(e.code=="Space" && !terminat){
 
 
 incepe();
 
 apasat=true;
-
 
 
 }
@@ -523,15 +512,12 @@ apasat=true;
 
 
 
-
 document.addEventListener("keyup",function(e){
 
 
 if(e.code=="Space"){
 
-
 apasat=false;
-
 
 }
 
@@ -545,34 +531,24 @@ apasat=false;
 document.addEventListener("touchstart",function(){
 
 
-if(terminat){
-
-return;
-
-}
-
-
+if(!terminat){
 
 incepe();
 
 apasat=true;
 
+}
+
 
 });
-
-
 
 
 
 document.addEventListener("touchend",function(){
 
-
 apasat=false;
 
-
 });
-
-
 
 
 
@@ -605,7 +581,6 @@ incepe();
 
 
 
-
 function joc(){
 
 
@@ -615,7 +590,19 @@ if(pornit){
 
 if(apasat){
 
+
+if(boostActiv){
+
+viteza=fortaBoost;
+
+}
+
+else{
+
 viteza=fortaZbor;
+
+}
+
 
 }
 
@@ -661,18 +648,11 @@ obstacol.style.top=yObstacol+"px";
 
 
 
-// INGREDIENT
+// INGREDIENTE
 
 miscaIngredient();
 
-
 verificaIngredient();
-
-
-
-
-
-// COLIZIUNE
 
 verificaColiziune();
 
@@ -686,8 +666,6 @@ requestAnimationFrame(joc);
 
 
 }
-
-
 
 
 
