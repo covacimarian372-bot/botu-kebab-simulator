@@ -10,9 +10,52 @@ let recordText = document.getElementById("record");
 let boostBar = document.getElementById("boostBar");
 let boostProgress = document.getElementById("boostProgress");
 
+let containerParticule = document.getElementById("particule");
 
 
-// STARE
+
+// AUDIO
+
+let audioCtx;
+
+
+function sunet(freq, timp, volum){
+
+    if(!audioCtx){
+        audioCtx = new AudioContext();
+    }
+
+    let osc = audioCtx.createOscillator();
+    let gain = audioCtx.createGain();
+
+    osc.frequency.value = freq;
+    gain.gain.value = volum;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+
+    setTimeout(()=>{
+        osc.stop();
+    }, timp);
+
+}
+
+
+
+function vibratie(t){
+
+    if(navigator.vibrate){
+        navigator.vibrate(t);
+    }
+
+}
+
+
+
+
+// STARE JOC
 
 let pornit=false;
 let terminat=false;
@@ -20,23 +63,17 @@ let apasat=false;
 
 
 
+
 // SHAORMA
 
 let y=window.innerHeight/2;
+
 let viteza=0;
 
 let gravitatie=0.45;
+
 let fortaZbor=-7;
 
-
-
-// SCOR
-
-let scor=0;
-
-let record=Number(localStorage.getItem("recordShaorma")) || 0;
-
-recordText.innerHTML="Record: "+record;
 
 
 
@@ -50,14 +87,45 @@ let timpBoost=15000;
 let fortaBoost=-10;
 
 
+let vitezaNormalaDrona=5;
+let vitezaBoostDrona=10;
+
+
+let vitezaNormalaIngredient=6;
+let vitezaBoostIngredient=12;
+
+
+
+
+
+// SCOR
+
+let scor=0;
+
+
+let record=Number(localStorage.getItem("recordShaorma")) || 0;
+
+
+recordText.innerHTML="Record: "+record;
+
+
+
+
+
+
 
 // DRONA
 
-let xObstacol=window.innerWidth;
+let xObstacol=window.innerWidth+300;
 
 let yObstacol=250;
 
-let vitezaObstacol=5;
+
+let vitezaObstacol=vitezaNormalaDrona;
+
+
+
+
 
 
 
@@ -101,12 +169,13 @@ let xIngredient=0;
 
 let yIngredient=300;
 
-let vitezaIngredient=6;
+
+let vitezaIngredient=vitezaNormalaIngredient;
 
 
 
 
-// CREARE INGREDIENT
+
 
 
 function creeazaIngredient(){
@@ -126,6 +195,7 @@ xIngredient=window.innerWidth;
 
 
 yIngredient=Math.random()*(window.innerHeight-100);
+
 
 
 ingredient.style.left=xIngredient+"px";
@@ -152,7 +222,7 @@ ingredient.style.left=xIngredient+"px";
 
 if(xIngredient<-100){
 
-creeazaIngredient();
+    creeazaIngredient();
 
 }
 
@@ -164,11 +234,53 @@ creeazaIngredient();
 
 
 
+function creeazaParticule(){
 
-// COLECTARE
+
+let poz=shaorma.getBoundingClientRect();
 
 
-function verificaIngredient(){
+
+for(let i=0;i<15;i++){
+
+
+let p=document.createElement("div");
+
+
+p.className="particula";
+
+
+p.style.left=poz.left+60+"px";
+
+p.style.top=poz.top+40+"px";
+
+
+p.style.setProperty("--x",
+(Math.random()*120-60)+"px"
+);
+
+
+p.style.setProperty("--y",
+(Math.random()*120-60)+"px"
+);
+
+
+
+containerParticule.appendChild(p);
+
+
+
+setTimeout(()=>{
+
+p.remove();
+
+},700);
+
+
+}
+
+
+}function verificaIngredient(){
 
 
 let s=shaorma.getBoundingClientRect();
@@ -207,6 +319,104 @@ recordText.innerHTML="Record: "+record;
 
 
 
+sunet(700,120,0.08);
+
+vibratie(40);
+
+
+creeazaParticule();
+
+
+
+
+if(ingredientActual.nume=="sos_iute.png"){
+
+
+boostActiv=true;
+
+
+shaorma.classList.add("boost");
+
+
+vitezaObstacol=vitezaBoostDrona;
+
+vitezaIngredient=vitezaBoostIngredient;
+
+
+
+boostBar.style.display="block";
+
+
+boostProgress.style.width="100%";
+
+
+
+let startBoost=Date.now();
+
+
+
+let interval=setInterval(()=>{
+
+
+let trecut=Date.now()-startBoost;
+
+
+let ramas=100-(trecut/timpBoost*100);
+
+
+boostProgress.style.width=ramas+"%";
+
+
+
+if(ramas<=0){
+
+clearInterval(interval);
+
+}
+
+
+},100);
+
+
+
+
+
+setTimeout(()=>{
+
+
+boostActiv=false;
+
+
+shaorma.classList.remove("boost");
+
+
+vitezaObstacol=vitezaNormalaDrona;
+
+vitezaIngredient=vitezaNormalaIngredient;
+
+
+boostBar.style.display="none";
+
+
+},timpBoost);
+
+
+
+}
+
+
+
+shaorma.classList.add("ia-ingredient");
+
+
+setTimeout(()=>{
+
+shaorma.classList.remove("ia-ingredient");
+
+},200);
+
+
+
 creeazaIngredient();
 
 
@@ -221,9 +431,73 @@ creeazaIngredient();
 
 
 
+function explozieDrona(){
 
 
-// COLIZIUNE DRONA
+let poz=obstacol.getBoundingClientRect();
+
+
+
+sunet(100,500,0.2);
+
+vibratie([200,100,300]);
+
+
+
+for(let i=0;i<30;i++){
+
+
+let p=document.createElement("div");
+
+
+p.className="particula";
+
+
+p.style.left=poz.left+50+"px";
+
+p.style.top=poz.top+40+"px";
+
+
+p.style.background="red";
+
+
+
+p.style.setProperty("--x",
+(Math.random()*300-150)+"px"
+);
+
+
+p.style.setProperty("--y",
+(Math.random()*300-150)+"px"
+);
+
+
+
+document.body.appendChild(p);
+
+
+
+setTimeout(()=>{
+
+p.remove();
+
+},700);
+
+
+}
+
+
+
+obstacol.style.transform="scale(0) rotate(360deg)";
+
+
+}
+
+
+
+
+
+
 
 
 function verificaColiziune(){
@@ -245,6 +519,8 @@ s.bottom>d.top
 ){
 
 
+explozieDrona();
+
 gameOver();
 
 
@@ -259,7 +535,6 @@ gameOver();
 
 
 
-
 function gameOver(){
 
 
@@ -267,15 +542,15 @@ terminat=true;
 
 pornit=false;
 
+apasat=false;
+
+
 start.style.display="block";
 
 start.innerHTML="GAME OVER<br><br>RESTART";
 
 
 }
-
-
-
 
 
 
@@ -300,7 +575,22 @@ y=window.innerHeight/2;
 viteza=0;
 
 
-xObstacol=window.innerWidth;
+xObstacol=window.innerWidth+300;
+
+
+obstacol.style.transform="scale(1)";
+
+
+obstacol.style.display="block";
+
+
+boostActiv=false;
+
+
+vitezaObstacol=vitezaNormalaDrona;
+
+vitezaIngredient=vitezaNormalaIngredient;
+
 
 
 start.style.display="none";
@@ -310,8 +600,6 @@ creeazaIngredient();
 
 
 }
-
-
 
 
 
@@ -329,6 +617,7 @@ pornit=true;
 
 start.style.display="none";
 
+
 creeazaIngredient();
 
 
@@ -336,7 +625,6 @@ creeazaIngredient();
 
 
 }
-
 
 
 
@@ -388,6 +676,39 @@ apasat=false;
 
 
 
+
+document.addEventListener("touchstart",function(){
+
+
+if(!terminat){
+
+
+incepe();
+
+apasat=true;
+
+
+}
+
+
+});
+
+
+
+
+
+document.addEventListener("touchend",function(){
+
+apasat=false;
+
+});
+
+
+
+
+
+
+
 start.addEventListener("click",function(){
 
 
@@ -413,19 +734,31 @@ incepe();
 
 
 
-
 function joc(){
 
 
 if(pornit){
 
 
+
 if(apasat){
+
+
+if(boostActiv){
+
+viteza=fortaBoost;
+
+}
+
+else{
 
 viteza=fortaZbor;
 
+}
+
 
 }
+
 
 
 viteza+=gravitatie;
@@ -439,22 +772,40 @@ shaorma.style.top=y+"px";
 
 
 
+
+// BARA BOOST
+
+boostBar.style.left=(shaorma.offsetLeft+20)+"px";
+
+boostBar.style.top=(y+100)+"px";
+
+
+
+
+
+
+
 // DRONA
 
 
 xObstacol-=vitezaObstacol;
 
 
+
 if(xObstacol<-150){
 
 
-xObstacol=window.innerWidth;
+xObstacol=window.innerWidth+300;
 
 
 yObstacol=Math.random()*(window.innerHeight-150);
 
 
+obstacol.style.transform="scale(1)";
+
+
 }
+
 
 
 obstacol.style.left=xObstacol+"px";
@@ -464,7 +815,6 @@ obstacol.style.top=yObstacol+"px";
 
 
 
-// INGREDIENT
 
 
 miscaIngredient();
@@ -476,6 +826,7 @@ verificaIngredient();
 verificaColiziune();
 
 
+
 }
 
 
@@ -484,6 +835,8 @@ requestAnimationFrame(joc);
 
 
 }
+
+
 
 
 
