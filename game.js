@@ -1,92 +1,77 @@
 let shaorma = document.getElementById("shaorma");
 let obstacol = document.getElementById("obstacol");
 let ingredient = document.getElementById("ingredient");
+
 let start = document.getElementById("start");
+
 let scorText = document.getElementById("scor");
+let recordText = document.getElementById("record");
 
 let boostBar = document.getElementById("boostBar");
 let boostProgress = document.getElementById("boostProgress");
 
+
+
+// PARTICULE
+
 let containerParticule = document.getElementById("particule");
 
 
-if(!containerParticule){
 
-    containerParticule=document.createElement("div");
-    containerParticule.id="particule";
-    document.body.appendChild(containerParticule);
-
-}
-
-
-
-
-
-// =====================
-// SUNETE
-// =====================
-
+// AUDIO
 
 let audioCtx;
 
 
-function pornesteAudio(){
+function sunet(frecventa,timp,volum){
 
-    if(!audioCtx){
+if(!audioCtx){
 
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    }
+audioCtx = new AudioContext();
 
 }
 
 
+let osc = audioCtx.createOscillator();
 
-function sunet(freq,timp,volum){
-
-    pornesteAudio();
-
-
-    let osc=audioCtx.createOscillator();
-
-    let gain=audioCtx.createGain();
+let gain = audioCtx.createGain();
 
 
-    osc.type="square";
+osc.type="square";
 
-    osc.frequency.value=freq;
-
-
-    gain.gain.value=volum;
+osc.frequency.value=frecventa;
 
 
-    osc.connect(gain);
-
-    gain.connect(audioCtx.destination);
+gain.gain.value=volum;
 
 
-    osc.start();
+osc.connect(gain);
+
+gain.connect(audioCtx.destination);
 
 
-    setTimeout(()=>{
+osc.start();
 
-        osc.stop();
 
-    },timp);
+setTimeout(()=>{
+
+osc.stop();
+
+},timp);
+
 
 }
 
 
 
 
+function vibratie(v){
 
-function vibratie(model){
+if(navigator.vibrate){
 
-    if(navigator.vibrate){
+navigator.vibrate(v);
 
-        navigator.vibrate(model);
-
-    }
+}
 
 }
 
@@ -96,9 +81,7 @@ function vibratie(model){
 
 
 
-// =====================
 // STARE JOC
-// =====================
 
 
 let pornit=false;
@@ -112,9 +95,7 @@ let apasat=false;
 
 
 
-// =====================
 // SHAORMA
-// =====================
 
 
 let y=window.innerHeight/2;
@@ -131,9 +112,7 @@ let fortaZbor=-7;
 
 
 
-// =====================
 // BOOST
-// =====================
 
 
 let boostActiv=false;
@@ -158,39 +137,24 @@ let vitezaBoostIngredient=12;
 
 
 
-// =====================
 // SCOR + RECORD
-// =====================
 
 
 let scor=0;
 
 
-let record = localStorage.getItem("recordShaorma") || 0;
-
-
-
-let recordText=document.createElement("div");
-
-
-recordText.id="record";
+let record=Number(localStorage.getItem("recordShaorma")) || 0;
 
 
 recordText.innerHTML="Record: "+record;
 
 
-document.body.appendChild(recordText);
 
 
 
 
 
-
-
-
-// =====================
 // DRONA
-// =====================
 
 
 let xObstacol=window.innerWidth+400;
@@ -206,43 +170,35 @@ let vitezaObstacol=vitezaNormalaDrona;
 
 
 
-// =====================
 // INGREDIENTE
-// =====================
 
 
 let ingrediente=[
-
 
 {
 nume:"rosie.png",
 puncte:10
 },
 
-
 {
 nume:"carne.png",
 puncte:20
 },
-
 
 {
 nume:"cartof.png",
 puncte:15
 },
 
-
 {
 nume:"varza.png",
 puncte:5
 },
 
-
 {
 nume:"ceapa.png",
 puncte:5
 }
-
 
 ];
 
@@ -253,7 +209,6 @@ let ingredientActual;
 
 let xIngredient=0;
 
-
 let yIngredient=300;
 
 
@@ -263,11 +218,7 @@ let vitezaIngredient=vitezaNormalaIngredient;
 
 
 
-
-
-// =====================
 // SOS IUTE
-// =====================
 
 
 let ultimaAparitieSos=0;
@@ -298,7 +249,6 @@ puncte:30
 };
 
 
-
 ultimaAparitieSos=acum;
 
 
@@ -307,9 +257,8 @@ ultimaAparitieSos=acum;
 else{
 
 
-ingredientActual=ingrediente[
-Math.floor(Math.random()*ingrediente.length)
-];
+ingredientActual=
+ingrediente[Math.floor(Math.random()*ingrediente.length)];
 
 
 }
@@ -331,12 +280,10 @@ yIngredient=Math.random()*(window.innerHeight-120);
 
 ingredient.style.left=xIngredient+"px";
 
-
 ingredient.style.top=yIngredient+"px";
 
 
 }
-
 
 
 
@@ -354,9 +301,7 @@ ingredient.style.left=xIngredient+"px";
 
 if(xIngredient<-100){
 
-
 creeazaIngredient();
-
 
 }
 
@@ -378,7 +323,6 @@ p.className="particula";
 
 
 p.style.left=poz.left+80+"px";
-
 
 p.style.top=poz.top+50+"px";
 
@@ -418,7 +362,6 @@ p.remove();
 
 
 
-
 function verificaIngredient(){
 
 
@@ -442,14 +385,16 @@ s.bottom > ing.top
 
 
 
-scor+=ingredientActual.puncte;
+scor += ingredientActual.puncte;
+
 
 
 scorText.innerHTML="Scor: "+scor;
 
 
 
-// RECORD NOU
+
+// RECORD
 
 if(scor > record){
 
@@ -474,8 +419,7 @@ recordText.innerHTML="Record: "+record;
 sunet(600,120,0.05);
 
 
-vibratie(40);
-
+vibratie(30);
 
 
 
@@ -496,7 +440,6 @@ if(ingredientActual.nume=="sos_iute.png"){
 boostActiv=true;
 
 
-
 shaorma.classList.add("boost");
 
 
@@ -508,18 +451,16 @@ vitezaIngredient=vitezaBoostIngredient;
 
 
 
+
+
 sunet(1000,300,0.1);
 
 
 
 vibratie([
-
 100,
-
 50,
-
 100
-
 ]);
 
 
@@ -532,14 +473,14 @@ boostProgress.style.width="100%";
 
 
 
-let inceputBoost=Date.now();
+let inceput=Date.now();
 
 
 
-let bara=setInterval(()=>{
+let interval=setInterval(()=>{
 
 
-let trecut=Date.now()-inceputBoost;
+let trecut=Date.now()-inceput;
 
 
 let ramas=100-(trecut/timpBoost*100);
@@ -552,12 +493,9 @@ boostProgress.style.width=ramas+"%";
 
 if(ramas<=0){
 
-
-clearInterval(bara);
-
+clearInterval(interval);
 
 }
-
 
 
 },100);
@@ -605,9 +543,7 @@ shaorma.classList.add("ia-ingredient");
 
 setTimeout(()=>{
 
-
 shaorma.classList.remove("ia-ingredient");
-
 
 },200);
 
@@ -618,12 +554,10 @@ shaorma.classList.remove("ia-ingredient");
 creeazaIngredient();
 
 
-
-}
-
 }
 
 
+}
 
 
 
@@ -631,9 +565,9 @@ creeazaIngredient();
 
 
 
-// ======================
+
+
 // EXPLOZIE DRONA
-// ======================
 
 
 function explozieDrona(){
@@ -643,25 +577,17 @@ let poz=obstacol.getBoundingClientRect();
 
 
 
-// SUNET + VIBRATIE
 
 sunet(80,700,0.2);
 
 
 vibratie([
-
 300,
-
 100,
-
 500,
-
 100,
-
 300
-
 ]);
-
 
 
 
@@ -676,21 +602,15 @@ let flash=document.createElement("div");
 
 flash.style.position="fixed";
 
-
 flash.style.left="0";
-
 
 flash.style.top="0";
 
-
 flash.style.width="100%";
-
 
 flash.style.height="100%";
 
-
 flash.style.background="white";
-
 
 flash.style.zIndex="999";
 
@@ -700,21 +620,19 @@ document.body.appendChild(flash);
 
 
 
-flash.animate([
-
+flash.animate(
+[
 {
 opacity:0.8
 },
-
 {
 opacity:0
 }
-
-],{
-
+],
+{
 duration:300
-
-});
+}
+);
 
 
 
@@ -730,14 +648,14 @@ flash.remove();
 
 
 
-// FOC + FUM
+
+// FUM + FOC
 
 
-for(let i=0;i<50;i++){
+for(let i=0;i<40;i++){
 
 
 let p=document.createElement("div");
-
 
 
 p.style.position="absolute";
@@ -749,24 +667,16 @@ p.style.left=poz.left+50+"px";
 p.style.top=poz.top+30+"px";
 
 
+p.style.width="20px";
 
-p.style.width=Math.random()*25+10+"px";
 
-
-p.style.height=Math.random()*25+10+"px";
-
+p.style.height="20px";
 
 
 p.style.borderRadius="50%";
 
 
-
-p.style.background=Math.random()>0.5 ?
-
-"orange" :
-
-"#333";
-
+p.style.background=Math.random()>0.5 ? "orange":"black";
 
 
 p.style.zIndex="500";
@@ -777,36 +687,27 @@ document.body.appendChild(p);
 
 
 
-let x=Math.random()*400-200;
+let x=Math.random()*300-150;
+
+let y=Math.random()*300-150;
 
 
-let y=Math.random()*400-200;
 
-
-
-p.animate([
-
+p.animate(
+[
 {
-
-transform:"translate(0,0) scale(1)",
-
+transform:"translate(0,0)",
 opacity:1
-
 },
-
 {
-
-transform:`translate(${x}px,${y}px) scale(0)`,
-
+transform:`translate(${x}px,${y}px)`,
 opacity:0
-
 }
-
-],{
-
+],
+{
 duration:1000
-
-});
+}
+);
 
 
 
@@ -814,7 +715,7 @@ setTimeout(()=>{
 
 p.remove();
 
-},1200);
+},1100);
 
 
 
@@ -825,70 +726,27 @@ p.remove();
 
 
 
-// DRONA DISPARE
-
-
-obstacol.animate([
-
+obstacol.animate(
+[
 {
-
 transform:"rotate(0deg) scale(1)"
-
 },
-
 {
-
 transform:"rotate(360deg) scale(0)"
-
 }
-
-],{
-
+],
+{
 duration:700
-
-});
+}
+);
 
 
 
 setTimeout(()=>{
 
-
 obstacol.style.display="none";
 
-
 },700);
-
-
-
-
-
-
-// TREPIDAȚIE ECRAN
-
-
-document.body.animate([
-
-{
-transform:"translate(0)"
-},
-
-{
-transform:"translate(-15px,10px)"
-},
-
-{
-transform:"translate(15px,-10px)"
-},
-
-{
-transform:"translate(0)"
-}
-
-],{
-
-duration:400
-
-});
 
 
 
@@ -959,11 +817,11 @@ gameOver();
 
 
 
+
 function gameOver(){
 
 
 explozieDrona();
-
 
 
 terminat=true;
@@ -991,6 +849,7 @@ start.innerHTML="GAME OVER<br><br>RESTART";
 
 
 
+
 function restart(){
 
 
@@ -1005,6 +864,7 @@ scor=0;
 
 
 scorText.innerHTML="Scor: 0";
+
 
 
 y=window.innerHeight/2;
@@ -1062,6 +922,7 @@ creeazaIngredient();
 
 
 
+
 function incepe(){
 
 
@@ -1097,7 +958,7 @@ creeazaIngredient();
 
 
 
-// TASTATURA
+// CONTROALE PC
 
 
 document.addEventListener("keydown",function(e){
@@ -1116,7 +977,6 @@ apasat=true;
 
 
 });
-
 
 
 
@@ -1142,7 +1002,8 @@ apasat=false;
 
 
 
-// TELEFON TOUCH
+
+// CONTROALE TELEFON
 
 
 document.addEventListener("touchstart",function(){
@@ -1180,6 +1041,9 @@ apasat=false;
 
 
 
+
+
+// BUTON START / RESTART
 
 
 start.addEventListener("click",function(){
@@ -1244,6 +1108,7 @@ viteza=fortaZbor;
 
 
 
+
 viteza+=gravitatie;
 
 
@@ -1265,6 +1130,7 @@ boostBar.style.left=(shaorma.offsetLeft+25)+"px";
 
 
 boostBar.style.top=(y+90)+"px";
+
 
 
 
@@ -1327,6 +1193,8 @@ requestAnimationFrame(joc);
 
 
 }
+
+
 
 
 
