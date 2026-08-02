@@ -50,7 +50,7 @@ h1 {
 
 
 
-/* zona unde este shaorma */
+/* locul unde se face shaorma */
 
 #masa {
 
@@ -64,35 +64,55 @@ h1 {
 
 
 
-/* lipia + ingredientele */
+/* baza shaormei */
 
 #shaorma {
 
     position: relative;
 
-    width: 600px;
+    width: 700px;
 
-    height: 330px;
+    height: 400px;
 
 }
 
 
 
-/* toate imaginile */
+/* imaginea lipiei */
+
+#shaorma > img:first-child {
+
+    position: absolute;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    left: 0;
+
+    top: 0;
+
+}
+
+
+
+/* ingredientele */
 
 .strat {
 
     position: absolute;
 
-    width: 75%;
+    width: 70%;
 
-    height: 75%;
+    height: 70%;
 
     object-fit: contain;
 
-    left: 12.5%;
+    left: 15%;
 
-    top: 12.5%;
+    top: 15%;
 
 }
 
