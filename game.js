@@ -20,9 +20,11 @@ if(!containerParticule){
 
 
 
-// =================
+
+
+// =====================
 // SUNETE
-// =================
+// =====================
 
 
 let audioCtx;
@@ -37,7 +39,6 @@ function pornesteAudio(){
     }
 
 }
-
 
 
 
@@ -73,16 +74,13 @@ function sunet(freq,timp,volum){
 
     },timp);
 
-
 }
 
 
 
 
 
-
 function vibratie(model){
-
 
     if(navigator.vibrate){
 
@@ -98,10 +96,9 @@ function vibratie(model){
 
 
 
-
-// =================
+// =====================
 // STARE JOC
-// =================
+// =====================
 
 
 let pornit=false;
@@ -115,10 +112,9 @@ let apasat=false;
 
 
 
-
-// =================
+// =====================
 // SHAORMA
-// =================
+// =====================
 
 
 let y=window.innerHeight/2;
@@ -135,9 +131,9 @@ let fortaZbor=-7;
 
 
 
-// =================
+// =====================
 // BOOST
-// =================
+// =====================
 
 
 let boostActiv=false;
@@ -162,22 +158,39 @@ let vitezaBoostIngredient=12;
 
 
 
-// =================
-// SCOR
-// =================
+// =====================
+// SCOR + RECORD
+// =====================
 
 
 let scor=0;
 
 
+let record = localStorage.getItem("recordShaorma") || 0;
+
+
+
+let recordText=document.createElement("div");
+
+
+recordText.id="record";
+
+
+recordText.innerHTML="Record: "+record;
+
+
+document.body.appendChild(recordText);
 
 
 
 
 
-// =================
+
+
+
+// =====================
 // DRONA
-// =================
+// =====================
 
 
 let xObstacol=window.innerWidth+400;
@@ -193,9 +206,9 @@ let vitezaObstacol=vitezaNormalaDrona;
 
 
 
-// =================
+// =====================
 // INGREDIENTE
-// =================
+// =====================
 
 
 let ingrediente=[
@@ -240,6 +253,7 @@ let ingredientActual;
 
 let xIngredient=0;
 
+
 let yIngredient=300;
 
 
@@ -251,9 +265,9 @@ let vitezaIngredient=vitezaNormalaIngredient;
 
 
 
-// =================
+// =====================
 // SOS IUTE
-// =================
+// =====================
 
 
 let ultimaAparitieSos=0;
@@ -322,7 +336,6 @@ ingredient.style.top=yIngredient+"px";
 
 
 }
-
 
 
 
@@ -405,6 +418,7 @@ p.remove();
 
 
 
+
 function verificaIngredient(){
 
 
@@ -435,7 +449,27 @@ scorText.innerHTML="Scor: "+scor;
 
 
 
-// sunet ingredient
+// RECORD NOU
+
+if(scor > record){
+
+
+record=scor;
+
+
+localStorage.setItem("recordShaorma",record);
+
+
+}
+
+
+recordText.innerHTML="Record: "+record;
+
+
+
+
+
+// SUNET INGREDIENT
 
 sunet(600,120,0.05);
 
@@ -452,7 +486,8 @@ creeazaParticule();
 
 
 
-// SOS IUTE BOOST
+// BOOST SOS IUTE
+
 
 if(ingredientActual.nume=="sos_iute.png"){
 
@@ -473,16 +508,18 @@ vitezaIngredient=vitezaBoostIngredient;
 
 
 
-// sunet boost
-
 sunet(1000,300,0.1);
 
 
 
 vibratie([
+
 100,
+
 50,
+
 100
+
 ]);
 
 
@@ -515,15 +552,15 @@ boostProgress.style.width=ramas+"%";
 
 if(ramas<=0){
 
+
 clearInterval(bara);
+
 
 }
 
 
 
 },100);
-
-
 
 
 
@@ -555,7 +592,6 @@ boostBar.style.display="none";
 
 
 
-
 }
 
 
@@ -569,10 +605,12 @@ shaorma.classList.add("ia-ingredient");
 
 setTimeout(()=>{
 
+
 shaorma.classList.remove("ia-ingredient");
 
 
 },200);
+
 
 
 
@@ -583,7 +621,6 @@ creeazaIngredient();
 
 }
 
-
 }
 
 
@@ -594,9 +631,9 @@ creeazaIngredient();
 
 
 
-// =================
+// ======================
 // EXPLOZIE DRONA
-// =================
+// ======================
 
 
 function explozieDrona(){
@@ -606,10 +643,9 @@ let poz=obstacol.getBoundingClientRect();
 
 
 
-// SUNET EXPLOZIE
+// SUNET + VIBRATIE
 
 sunet(80,700,0.2);
-
 
 
 vibratie([
@@ -630,6 +666,8 @@ vibratie([
 
 
 
+
+
 // FLASH
 
 
@@ -638,17 +676,24 @@ let flash=document.createElement("div");
 
 flash.style.position="fixed";
 
+
 flash.style.left="0";
+
 
 flash.style.top="0";
 
+
 flash.style.width="100%";
+
 
 flash.style.height="100%";
 
+
 flash.style.background="white";
 
+
 flash.style.zIndex="999";
+
 
 
 document.body.appendChild(flash);
@@ -685,8 +730,7 @@ flash.remove();
 
 
 
-
-// FOC SI FUM
+// FOC + FUM
 
 
 for(let i=0;i<50;i++){
@@ -698,9 +742,12 @@ let p=document.createElement("div");
 
 p.style.position="absolute";
 
+
 p.style.left=poz.left+50+"px";
 
+
 p.style.top=poz.top+30+"px";
+
 
 
 p.style.width=Math.random()*25+10+"px";
@@ -709,7 +756,9 @@ p.style.width=Math.random()*25+10+"px";
 p.style.height=Math.random()*25+10+"px";
 
 
+
 p.style.borderRadius="50%";
+
 
 
 p.style.background=Math.random()>0.5 ?
@@ -729,6 +778,7 @@ document.body.appendChild(p);
 
 
 let x=Math.random()*400-200;
+
 
 let y=Math.random()*400-200;
 
@@ -775,7 +825,7 @@ p.remove();
 
 
 
-// ROTIRE DRONA
+// DRONA DISPARE
 
 
 obstacol.animate([
@@ -813,8 +863,7 @@ obstacol.style.display="none";
 
 
 
-
-// CUTREMUR ECRAN
+// TREPIDAȚIE ECRAN
 
 
 document.body.animate([
@@ -910,7 +959,6 @@ gameOver();
 
 
 
-
 function gameOver(){
 
 
@@ -959,7 +1007,6 @@ scor=0;
 scorText.innerHTML="Scor: 0";
 
 
-
 y=window.innerHeight/2;
 
 
@@ -982,7 +1029,6 @@ obstacol.style.transform="";
 
 
 boostActiv=false;
-
 
 
 shaorma.classList.remove("boost");
@@ -1051,8 +1097,7 @@ creeazaIngredient();
 
 
 
-
-// CONTROALE TASTATURA
+// TASTATURA
 
 
 document.addEventListener("keydown",function(e){
@@ -1097,8 +1142,7 @@ apasat=false;
 
 
 
-
-// TELEFON
+// TELEFON TOUCH
 
 
 document.addEventListener("touchstart",function(){
@@ -1128,10 +1172,8 @@ document.addEventListener("touchend",function(){
 apasat=false;
 
 
-}
+});
 
-
-);
 
 
 
@@ -1202,7 +1244,6 @@ viteza=fortaZbor;
 
 
 
-
 viteza+=gravitatie;
 
 
@@ -1217,15 +1258,13 @@ shaorma.style.top=y+"px";
 
 
 
-
-// BARA BOOST URMARESTE SHAORMA
+// BARA BOOST
 
 
 boostBar.style.left=(shaorma.offsetLeft+25)+"px";
 
 
 boostBar.style.top=(y+90)+"px";
-
 
 
 
@@ -1288,6 +1327,8 @@ requestAnimationFrame(joc);
 
 
 }
+
+
 
 
 
