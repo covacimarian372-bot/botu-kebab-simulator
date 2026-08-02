@@ -43,7 +43,6 @@ shaorma.style.top = y + "px";
 
 
 
-
 function incepe(){
 
 
@@ -65,9 +64,10 @@ start.style.display = "none";
 
 
 
+
 // PC
 
-document.addEventListener("keydown",function(e){
+document.addEventListener("keydown", function(e){
 
 
 if(e.code === "Space"){
@@ -86,7 +86,8 @@ apasat = true;
 
 
 
-document.addEventListener("keyup",function(e){
+
+document.addEventListener("keyup", function(e){
 
 
 if(e.code === "Space"){
@@ -99,6 +100,8 @@ apasat = false;
 
 
 });
+
+
 
 
 
@@ -108,7 +111,7 @@ apasat = false;
 
 // MOBIL
 
-document.addEventListener("touchstart",function(){
+document.addEventListener("touchstart", function(){
 
 
 incepe();
@@ -120,7 +123,9 @@ apasat = true;
 
 
 
-document.addEventListener("touchend",function(){
+
+
+document.addEventListener("touchend", function(){
 
 
 apasat = false;
@@ -136,7 +141,7 @@ apasat = false;
 
 
 
-// HITBOX 127x59
+// HITBOX SHAORMA 123x68
 
 function verificaColiziune(){
 
@@ -153,19 +158,20 @@ let dronaBox = obstacol.getBoundingClientRect();
 let shaormaHit = {
 
 
-left: shaormaBox.left + (shaormaBox.width - 127) / 2,
+left: shaormaBox.left + (shaormaBox.width - 123) / 2,
 
 
-right: shaormaBox.left + (shaormaBox.width - 127) / 2 + 127,
+right: shaormaBox.left + (shaormaBox.width - 123) / 2 + 123,
 
 
-top: shaormaBox.top + (shaormaBox.height - 59) / 2,
+top: shaormaBox.top + (shaormaBox.height - 68) / 2,
 
 
-bottom: shaormaBox.top + (shaormaBox.height - 59) / 2 + 59
+bottom: shaormaBox.top + (shaormaBox.height - 68) / 2 + 68
 
 
 };
+
 
 
 
@@ -187,6 +193,7 @@ bottom: dronaBox.bottom
 
 
 };
+
 
 
 
@@ -260,7 +267,6 @@ function restart(){
 if(terminat){
 
 
-
 terminat = false;
 
 
@@ -328,6 +334,7 @@ y += viteza;
 
 
 
+
 if(y < 0){
 
 
@@ -335,6 +342,7 @@ y = 0;
 
 
 }
+
 
 
 
@@ -350,6 +358,7 @@ y = window.innerHeight - 150;
 
 
 
+
 shaorma.style.top = y + "px";
 
 
@@ -360,7 +369,6 @@ shaorma.style.top = y + "px";
 
 
 // DRONA
-
 
 xObstacol -= vitezaObstacol;
 
@@ -393,14 +401,14 @@ obstacol.style.top = yObstacol + "px";
 
 
 
-// COLIZIUNE
-
+// VERIFICARE LOVIRE
 
 verificaColiziune();
 
 
 
 }
+
 
 
 
@@ -418,7 +426,7 @@ requestAnimationFrame(joc);
 
 
 
-start.addEventListener("click",function(){
+start.addEventListener("click", function(){
 
 
 restart();
