@@ -1,12 +1,17 @@
 let shaorma = document.getElementById("shaorma");
 
+let start = document.getElementById("start");
 
-let y = 300;
+
+
+let y = window.innerHeight / 2;
+
 
 let viteza = 0;
 
 
 let gravitatie = 0.45;
+
 
 let fortaZbor = -7;
 
@@ -14,10 +19,36 @@ let fortaZbor = -7;
 let apasat = false;
 
 
+let pornit = false;
 
-// pozitia fixa pe orizontala
+
+
+// pozitia de start
 
 shaorma.style.left = "200px";
+
+shaorma.style.top = y + "px";
+
+
+
+
+
+function incepe(){
+
+
+    if(!pornit){
+
+        pornit = true;
+
+        start.style.display = "none";
+
+    }
+
+
+}
+
+
+
 
 
 
@@ -25,41 +56,70 @@ shaorma.style.left = "200px";
 
 document.addEventListener("keydown", function(e){
 
+
     if(e.code === "Space"){
+
+
+        incepe();
+
 
         apasat = true;
 
+
     }
 
+
 });
+
+
+
 
 
 document.addEventListener("keyup", function(e){
 
+
     if(e.code === "Space"){
+
 
         apasat = false;
 
+
     }
+
 
 });
 
 
 
-// Mobil
+
+
+
+
+// MOBIL
 
 document.addEventListener("touchstart", function(){
 
+
+    incepe();
+
+
     apasat = true;
 
+
 });
+
+
 
 
 document.addEventListener("touchend", function(){
 
+
     apasat = false;
 
+
 });
+
+
 
 
 
@@ -68,55 +128,77 @@ document.addEventListener("touchend", function(){
 function joc(){
 
 
-    if(apasat){
 
-        viteza = fortaZbor;
+    if(pornit){
+
+
+
+        if(apasat){
+
+
+            viteza = fortaZbor;
+
+
+        }
+
+
+
+
+
+        viteza += gravitatie;
+
+
+
+        y += viteza;
+
+
+
+
+
+        // limite ecran
+
+
+        if(y < 0){
+
+            y = 0;
+
+            viteza = 0;
+
+        }
+
+
+
+        if(y > window.innerHeight - 150){
+
+
+            y = window.innerHeight - 150;
+
+            viteza = 0;
+
+
+        }
+
+
+
+
+
+        shaorma.style.top = y + "px";
+
+
 
     }
 
-
-
-    viteza += gravitatie;
-
-
-    y += viteza;
-
-
-
-    // limita sus
-
-    if(y < 0){
-
-        y = 0;
-
-        viteza = 0;
-
-    }
-
-
-
-    // limita jos
-
-    if(y > window.innerHeight - 200){
-
-        y = window.innerHeight - 200;
-
-        viteza = 0;
-
-    }
-
-
-
-    // aplicam doar miscarea verticala
-
-    shaorma.style.top = y + "px";
 
 
 
     requestAnimationFrame(joc);
 
 
+
 }
+
+
+
 
 
 joc();
