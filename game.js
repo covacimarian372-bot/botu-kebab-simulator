@@ -4,21 +4,18 @@ let ingredient = document.getElementById("ingredient");
 let start = document.getElementById("start");
 let scorText = document.getElementById("scor");
 
-
 let containerParticule = document.getElementById("particule");
-
 
 if(!containerParticule){
 
-    containerParticule = document.createElement("div");
-
-    containerParticule.id = "particule";
-
-    document.body.appendChild(containerParticule);
+containerParticule = document.createElement("div");
+containerParticule.id="particule";
+document.body.appendChild(containerParticule);
 
 }
 
 
+// JOC
 
 let pornit = false;
 let terminat = false;
@@ -50,7 +47,7 @@ let scor = 0;
 
 // DRONA
 
-let xObstacol = window.innerWidth + 200;
+let xObstacol = window.innerWidth + 400;
 
 let yObstacol = 250;
 
@@ -94,7 +91,6 @@ puncte:5
 ];
 
 
-
 let ingredientActual;
 
 
@@ -103,7 +99,6 @@ let xIngredient = 0;
 let yIngredient = 300;
 
 let vitezaIngredient = 6;
-
 
 
 
@@ -130,7 +125,7 @@ let acum = Date.now();
 
 
 
-if(acum - ultimaAparitieSos > timpSos && Math.random()<0.3){
+if(acum - ultimaAparitieSos >= timpSos && Math.random()<0.3){
 
 
 ingredientActual = {
@@ -159,7 +154,7 @@ Math.floor(Math.random()*ingrediente.length)
 
 
 
-ingredient.src = "images/" + ingredientActual.nume;
+ingredient.src="images/"+ingredientActual.nume;
 
 
 ingredient.style.display="block";
@@ -168,13 +163,13 @@ ingredient.style.display="block";
 xIngredient = window.innerWidth + 100;
 
 
-yIngredient = Math.random() * (window.innerHeight - 120);
+yIngredient = Math.random()*(window.innerHeight-120);
 
 
 
-ingredient.style.left = xIngredient+"px";
+ingredient.style.left=xIngredient+"px";
 
-ingredient.style.top = yIngredient+"px";
+ingredient.style.top=yIngredient+"px";
 
 
 }
@@ -186,32 +181,60 @@ ingredient.style.top = yIngredient+"px";
 
 
 
+
+function miscaIngredient(){
+
+
+xIngredient -= vitezaIngredient;
+
+
+ingredient.style.left=xIngredient+"px";
+
+
+
+if(xIngredient < -100){
+
+
+creeazaIngredient();
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
 function creeazaParticule(){
 
 
-let pozitie = shaorma.getBoundingClientRect();
+let poz = shaorma.getBoundingClientRect();
 
 
 
 for(let i=0;i<10;i++){
 
 
-let p = document.createElement("div");
+let p=document.createElement("div");
 
 
 p.className="particula";
 
 
-p.style.left = pozitie.left + 80 + "px";
+p.style.left=poz.left+80+"px";
 
-p.style.top = pozitie.top + 50 + "px";
-
+p.style.top=poz.top+50+"px";
 
 
 p.style.setProperty("--x",
 (Math.random()*120-60)+"px"
 );
-
 
 
 p.style.setProperty("--y",
@@ -224,19 +247,18 @@ containerParticule.appendChild(p);
 
 
 
-setTimeout(function(){
+setTimeout(()=>{
 
 p.remove();
 
 },600);
 
 
-
 }
 
 
-
 }
+
 
 
 
@@ -251,6 +273,7 @@ function verificaIngredient(){
 let s = shaorma.getBoundingClientRect();
 
 let ing = ingredient.getBoundingClientRect();
+
 
 
 
@@ -287,11 +310,12 @@ shaorma.classList.add("ia-ingredient");
 
 
 
-setTimeout(function(){
+setTimeout(()=>{
 
 shaorma.classList.remove("ia-ingredient");
 
 },200);
+
 
 
 
@@ -304,7 +328,7 @@ shaorma.classList.add("boost");
 
 
 
-setTimeout(function(){
+setTimeout(()=>{
 
 shaorma.classList.remove("boost");
 
@@ -315,8 +339,6 @@ shaorma.classList.remove("boost");
 
 
 
-
-
 creeazaIngredient();
 
 
@@ -332,20 +354,75 @@ creeazaIngredient();
 
 
 
-function miscaIngredient(){
+
+function verificaColiziune(){
 
 
-xIngredient -= vitezaIngredient;
+let s = shaorma.getBoundingClientRect();
+
+let d = obstacol.getBoundingClientRect();
 
 
-ingredient.style.left=xIngredient+"px";
 
 
 
-if(xIngredient < -100){
+// HITBOX SHAORMA 137x66
+
+let shaormaHit = {
+
+left:s.left+20,
+
+right:s.left+157,
+
+top:s.top+15,
+
+bottom:s.top+81
+
+};
 
 
-creeazaIngredient();
+
+
+// HITBOX DRONA 123x52
+
+let dronaHit = {
+
+left:d.left+10,
+
+right:d.left+113,
+
+top:d.top+10,
+
+bottom:d.top+42
+
+};
+
+
+
+
+
+
+if(
+
+shaormaHit.left < dronaHit.right &&
+
+shaormaHit.right > dronaHit.left &&
+
+shaormaHit.top < dronaHit.bottom &&
+
+shaormaHit.bottom > dronaHit.top
+
+){
+
+
+terminat=true;
+
+pornit=false;
+
+
+start.style.display="block";
+
+start.innerHTML="GAME OVER";
 
 
 }
@@ -390,7 +467,7 @@ creeazaIngredient();
 
 
 
-document.addEventListener("keydown",function(e){
+document.addEventListener("keydown",e=>{
 
 
 if(e.code=="Space"){
@@ -408,7 +485,7 @@ apasat=true;
 
 
 
-document.addEventListener("keyup",function(e){
+document.addEventListener("keyup",e=>{
 
 
 if(e.code=="Space"){
@@ -426,7 +503,7 @@ apasat=false;
 
 
 
-document.addEventListener("touchstart",function(){
+document.addEventListener("touchstart",()=>{
 
 
 incepe();
@@ -438,7 +515,7 @@ apasat=true;
 
 
 
-document.addEventListener("touchend",function(){
+document.addEventListener("touchend",()=>{
 
 
 apasat=false;
@@ -446,51 +523,6 @@ apasat=false;
 
 });
 
-
-
-
-
-
-
-
-
-function verificaColiziune(){
-
-
-let s = shaorma.getBoundingClientRect();
-
-let d = obstacol.getBoundingClientRect();
-
-
-
-if(
-
-s.left < d.right &&
-
-s.right > d.left &&
-
-s.top < d.bottom &&
-
-s.bottom > d.top
-
-){
-
-
-terminat=true;
-
-pornit=false;
-
-
-start.style.display="block";
-
-start.innerHTML="GAME OVER";
-
-
-}
-
-
-
-}
 
 
 
@@ -527,6 +559,9 @@ shaorma.style.top=y+"px";
 
 
 
+
+// DRONA
+
 xObstacol-=vitezaObstacol;
 
 
@@ -534,7 +569,7 @@ xObstacol-=vitezaObstacol;
 if(xObstacol<-150){
 
 
-xObstacol=window.innerWidth+200;
+xObstacol=window.innerWidth+400;
 
 
 yObstacol=Math.random()*(window.innerHeight-200);
@@ -546,15 +581,21 @@ yObstacol=Math.random()*(window.innerHeight-200);
 
 obstacol.style.left=xObstacol+"px";
 
+
 obstacol.style.top=yObstacol+"px";
 
 
 
 
 
+
+// INGREDIENT
+
 miscaIngredient();
 
 verificaIngredient();
+
+
 
 verificaColiziune();
 
@@ -568,6 +609,7 @@ requestAnimationFrame(joc);
 
 
 }
+
 
 
 
