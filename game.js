@@ -19,6 +19,7 @@ if(!containerParticule){
 }
 
 
+
 // STARE JOC
 
 let pornit = false;
@@ -27,14 +28,17 @@ let apasat = false;
 
 
 
+
 // SHAORMA
 
 let y = window.innerHeight / 2;
+
 let viteza = 0;
 
 let gravitatie = 0.45;
 
 let fortaZbor = -7;
+
 
 
 
@@ -47,13 +51,15 @@ let timpBoost = 15000;
 let fortaBoost = -10;
 
 
-
 let vitezaNormalaDrona = 5;
+
 let vitezaBoostDrona = 10;
 
 
 let vitezaNormalaIngredient = 6;
+
 let vitezaBoostIngredient = 12;
+
 
 
 
@@ -67,6 +73,7 @@ let scor = 0;
 
 
 
+
 // DRONA
 
 let xObstacol = window.innerWidth + 400;
@@ -75,6 +82,7 @@ let yObstacol = 250;
 
 
 let vitezaObstacol = vitezaNormalaDrona;
+
 
 
 
@@ -136,6 +144,9 @@ let timpSos = 60000;
 
 
 
+
+
+
 function creeazaIngredient(){
 
 
@@ -146,14 +157,13 @@ let acum = Date.now();
 if(acum - ultimaAparitieSos >= timpSos && Math.random()<0.3){
 
 
-ingredientActual = {
+ingredientActual={
 
 nume:"sos_iute.png",
 
 puncte:30
 
 };
-
 
 
 ultimaAparitieSos = acum;
@@ -199,6 +209,7 @@ ingredient.style.top=yIngredient+"px";
 
 
 
+
 function miscaIngredient(){
 
 
@@ -218,7 +229,14 @@ creeazaIngredient();
 }
 
 
-}function creeazaParticule(){
+}
+
+
+
+
+
+
+function creeazaParticule(){
 
 
 let poz=shaorma.getBoundingClientRect();
@@ -235,6 +253,7 @@ p.className="particula";
 
 
 p.style.left=poz.left+80+"px";
+
 
 p.style.top=poz.top+50+"px";
 
@@ -274,7 +293,73 @@ p.remove();
 
 
 
+// EXPLOZIE GAME OVER
 
+function explozieShaorma(){
+
+
+let poz = shaorma.getBoundingClientRect();
+
+
+
+for(let i=0;i<30;i++){
+
+
+let p=document.createElement("div");
+
+
+p.className="explozieParticula";
+
+
+p.style.left=poz.left+80+"px";
+
+
+p.style.top=poz.top+50+"px";
+
+
+
+p.style.setProperty("--x",
+(Math.random()*300-150)+"px"
+);
+
+
+
+p.style.setProperty("--y",
+(Math.random()*300-150)+"px"
+);
+
+
+
+document.body.appendChild(p);
+
+
+
+setTimeout(()=>{
+
+p.remove();
+
+},800);
+
+
+}
+
+
+
+
+document.body.classList.add("tremurat");
+
+
+
+setTimeout(()=>{
+
+
+document.body.classList.remove("tremurat");
+
+
+},400);
+
+
+}
 function verificaIngredient(){
 
 
@@ -310,6 +395,9 @@ creeazaParticule();
 
 
 
+
+// BOOST SOS IUTE
+
 if(ingredientActual.nume=="sos_iute.png"){
 
 
@@ -321,6 +409,7 @@ shaorma.classList.add("boost");
 
 
 vitezaObstacol=vitezaBoostDrona;
+
 
 vitezaIngredient=vitezaBoostIngredient;
 
@@ -353,12 +442,9 @@ boostProgress.style.width=ramas+"%";
 
 if(ramas<=0){
 
-
 clearInterval(bara);
 
-
 }
-
 
 
 },100);
@@ -394,6 +480,7 @@ boostBar.style.display="none";
 
 
 }
+
 
 
 
@@ -494,8 +581,11 @@ gameOver();
 
 
 
-
 function gameOver(){
+
+
+explozieShaorma();
+
 
 
 terminat=true;
@@ -515,6 +605,7 @@ start.innerHTML="GAME OVER<br><br>RESTART";
 
 
 }
+
 
 
 
@@ -694,6 +785,7 @@ apasat=false;
 
 
 
+
 start.addEventListener("click",function(){
 
 
@@ -766,8 +858,7 @@ shaorma.style.top=y+"px";
 
 
 
-
-// pozitie bara boost
+// bara boost urmareste shaorma
 
 boostBar.style.left=(shaorma.offsetLeft+25)+"px";
 
@@ -803,6 +894,7 @@ obstacol.style.left=xObstacol+"px";
 
 
 obstacol.style.top=yObstacol+"px";
+
 
 
 
