@@ -1,6 +1,22 @@
 const shaorma = document.getElementById("shaorma");
 
 
+
+
+
+function incepeJocul(){
+
+document.getElementById("meniu").style.display="none";
+
+document.getElementById("game").style.display="block";
+
+}
+
+
+
+
+
+
 function adauga(nume){
 
 
@@ -20,6 +36,10 @@ shaorma.appendChild(img);
 
 
 
+
+
+
+
 function gataComanda(){
 
 
@@ -33,6 +53,8 @@ tranzitie.innerHTML="🌯";
 
 
 document.body.appendChild(tranzitie);
+
+
 
 
 
