@@ -2,29 +2,13 @@ let shaorma = document.getElementById("shaorma");
 
 let start = document.getElementById("start");
 
-
-
-let fundal1 = document.getElementById("fundal1");
-
-let fundal2 = document.getElementById("fundal2");
-
-
-
-let x1 = 0;
-
-let x2 = window.innerWidth;
-
-
-
-let vitezaFundal = 2;
-
+let fundal = document.getElementById("fundal");
 
 
 
 let y = window.innerHeight / 2;
 
 let viteza = 0;
-
 
 
 let gravitatie = 0.45;
@@ -37,6 +21,11 @@ let apasat = false;
 
 let pornit = false;
 
+
+
+let pozitieFundal = 0;
+
+let vitezaFundal = 2;
 
 
 
@@ -54,9 +43,9 @@ function incepe(){
 
     if(!pornit){
 
-        pornit=true;
+        pornit = true;
 
-        start.style.display="none";
+        start.style.display = "none";
 
     }
 
@@ -67,34 +56,18 @@ function incepe(){
 
 
 
+
 // PC
 
-document.addEventListener("keydown",function(e){
+document.addEventListener("keydown", function(e){
 
 
-    if(e.code==="Space"){
+    if(e.code === "Space"){
 
 
         incepe();
 
-        apasat=true;
-
-
-    }
-
-
-});
-
-
-
-
-document.addEventListener("keyup",function(e){
-
-
-    if(e.code==="Space"){
-
-
-        apasat=false;
+        apasat = true;
 
 
     }
@@ -106,16 +79,34 @@ document.addEventListener("keyup",function(e){
 
 
 
+document.addEventListener("keyup", function(e){
 
 
-// Telefon
+    if(e.code === "Space"){
 
-document.addEventListener("touchstart",function(){
+
+        apasat = false;
+
+
+    }
+
+
+});
+
+
+
+
+
+
+
+// MOBIL
+
+document.addEventListener("touchstart", function(){
 
 
     incepe();
 
-    apasat=true;
+    apasat = true;
 
 
 });
@@ -123,10 +114,11 @@ document.addEventListener("touchstart",function(){
 
 
 
-document.addEventListener("touchend",function(){
+
+document.addEventListener("touchend", function(){
 
 
-    apasat=false;
+    apasat = false;
 
 
 });
@@ -147,47 +139,38 @@ if(pornit){
 
 
 
-// MISCARE FUNDAL
+// FUNDAL INFINIT
 
 
-x1 -= vitezaFundal;
-
-x2 -= vitezaFundal;
-
+pozitieFundal -= vitezaFundal;
 
 
 
-if(x1 <= -window.innerWidth){
+if(pozitieFundal <= -window.innerWidth){
 
-    x1 = window.innerWidth;
+
+    pozitieFundal = 0;
+
 
 }
 
 
 
-if(x2 <= -window.innerWidth){
-
-    x2 = window.innerWidth;
-
-}
-
-
-
-
-fundal1.style.left = x1 + "px";
-
-fundal2.style.left = x2 + "px";
+fundal.style.left = pozitieFundal + "px";
 
 
 
 
 
-// ZBOR
+
+// ZBOR SHAORMA
 
 
 if(apasat){
 
+
     viteza = fortaZbor;
+
 
 }
 
@@ -200,23 +183,32 @@ y += viteza;
 
 
 
+
+
 if(y < 0){
+
 
     y = 0;
 
     viteza = 0;
 
+
 }
+
+
 
 
 
 if(y > window.innerHeight - 150){
 
+
     y = window.innerHeight - 150;
 
     viteza = 0;
 
+
 }
+
 
 
 
