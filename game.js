@@ -33,9 +33,20 @@ let fortaZbor = -7;
 
 let boostActiv = false;
 
-let timpBoost = 5000;
+let timpBoost = 15000;
 
 let fortaBoost = -10;
+
+
+// VITEZE BOOST
+
+let vitezaNormalaDrona = 5;
+let vitezaBoostDrona = 10;
+
+let vitezaNormalaIngredient = 6;
+let vitezaBoostIngredient = 12;
+
+
 
 
 
@@ -49,7 +60,9 @@ let scor = 0;
 
 let xObstacol = window.innerWidth + 400;
 let yObstacol = 250;
-let vitezaObstacol = 5;
+
+let vitezaObstacol = vitezaNormalaDrona;
+
 
 
 
@@ -91,20 +104,25 @@ let ingredientActual;
 
 let xIngredient = 0;
 let yIngredient = 300;
-let vitezaIngredient = 6;
+
+let vitezaIngredient = vitezaNormalaIngredient;
 
 
 
 // SOS IUTE
 
 let ultimaAparitieSos = 0;
+
 let timpSos = 60000;
 
 
 
 
 
+
+
 function creeazaIngredient(){
+
 
 let acum = Date.now();
 
@@ -165,6 +183,7 @@ ingredient.style.top=yIngredient+"px";
 
 
 
+
 function miscaIngredient(){
 
 
@@ -172,6 +191,7 @@ xIngredient-=vitezaIngredient;
 
 
 ingredient.style.left=xIngredient+"px";
+
 
 
 if(xIngredient < -100){
@@ -182,6 +202,7 @@ creeazaIngredient();
 
 
 }
+
 
 
 
@@ -210,9 +231,11 @@ p.style.left=poz.left+80+"px";
 p.style.top=poz.top+50+"px";
 
 
+
 p.style.setProperty("--x",
 (Math.random()*120-60)+"px"
 );
+
 
 
 p.style.setProperty("--y",
@@ -243,12 +266,14 @@ p.remove();
 
 
 
+
 function verificaIngredient(){
 
 
 let s=shaorma.getBoundingClientRect();
 
 let ing=ingredient.getBoundingClientRect();
+
 
 
 
@@ -265,6 +290,7 @@ s.bottom > ing.top
 ){
 
 
+
 scor+=ingredientActual.puncte;
 
 
@@ -278,11 +304,16 @@ creeazaParticule();
 
 shaorma.classList.add("ia-ingredient");
 
+
+
 setTimeout(()=>{
+
 
 shaorma.classList.remove("ia-ingredient");
 
+
 },200);
+
 
 
 
@@ -300,6 +331,12 @@ shaorma.classList.add("boost");
 
 
 
+vitezaObstacol=vitezaBoostDrona;
+
+vitezaIngredient=vitezaBoostIngredient;
+
+
+
 setTimeout(()=>{
 
 
@@ -309,10 +346,19 @@ boostActiv=false;
 shaorma.classList.remove("boost");
 
 
+
+vitezaObstacol=vitezaNormalaDrona;
+
+vitezaIngredient=vitezaNormalaIngredient;
+
+
+
 },timpBoost);
 
 
+
 }
+
 
 
 
@@ -332,12 +378,14 @@ creeazaIngredient();
 
 
 
+
 function verificaColiziune(){
 
 
 let s=shaorma.getBoundingClientRect();
 
 let d=obstacol.getBoundingClientRect();
+
 
 
 
@@ -370,6 +418,7 @@ bottom:d.top+42
 
 
 
+
 if(
 
 shaormaHit.left < dronaHit.right &&
@@ -382,12 +431,15 @@ shaormaHit.bottom > dronaHit.top
 
 ){
 
+
 gameOver();
 
+
 }
 
 
 }
+
 
 
 
@@ -405,12 +457,16 @@ pornit=false;
 apasat=false;
 
 
+
 start.style.display="block";
+
 
 start.innerHTML="GAME OVER<br><br>RESTART";
 
 
 }
+
+
 
 
 
@@ -426,9 +482,12 @@ terminat=false;
 pornit=true;
 
 
+
 scor=0;
 
+
 scorText.innerHTML="Scor: 0";
+
 
 
 y=window.innerHeight/2;
@@ -445,17 +504,26 @@ yObstacol=250;
 
 boostActiv=false;
 
+
 shaorma.classList.remove("boost");
+
+
+
+vitezaObstacol=vitezaNormalaDrona;
+
+vitezaIngredient=vitezaNormalaIngredient;
 
 
 
 start.style.display="none";
 
 
+
 creeazaIngredient();
 
 
 }
+
 
 
 
@@ -473,12 +541,15 @@ return;
 }
 
 
+
 if(!pornit){
 
 
 pornit=true;
 
+
 start.style.display="none";
+
 
 creeazaIngredient();
 
@@ -494,6 +565,7 @@ creeazaIngredient();
 
 
 
+
 document.addEventListener("keydown",function(e){
 
 
@@ -501,6 +573,7 @@ if(e.code=="Space" && !terminat){
 
 
 incepe();
+
 
 apasat=true;
 
@@ -512,12 +585,16 @@ apasat=true;
 
 
 
+
+
 document.addEventListener("keyup",function(e){
 
 
 if(e.code=="Space"){
 
+
 apasat=false;
+
 
 }
 
@@ -533,9 +610,12 @@ document.addEventListener("touchstart",function(){
 
 if(!terminat){
 
+
 incepe();
 
+
 apasat=true;
+
 
 }
 
@@ -544,11 +624,16 @@ apasat=true;
 
 
 
+
+
 document.addEventListener("touchend",function(){
+
 
 apasat=false;
 
+
 });
+
 
 
 
@@ -561,18 +646,23 @@ start.addEventListener("click",function(){
 
 if(terminat){
 
+
 restart();
+
 
 }
 
 else{
 
+
 incepe();
+
 
 }
 
 
 });
+
 
 
 
@@ -591,20 +681,26 @@ if(pornit){
 if(apasat){
 
 
+
 if(boostActiv){
 
+
 viteza=fortaBoost;
+
 
 }
 
 else{
 
+
 viteza=fortaZbor;
 
+
 }
 
 
 }
+
 
 
 
@@ -641,7 +737,9 @@ yObstacol=Math.random()*(window.innerHeight-200);
 
 obstacol.style.left=xObstacol+"px";
 
+
 obstacol.style.top=yObstacol+"px";
+
 
 
 
@@ -652,13 +750,16 @@ obstacol.style.top=yObstacol+"px";
 
 miscaIngredient();
 
+
 verificaIngredient();
+
 
 verificaColiziune();
 
 
 
 }
+
 
 
 
