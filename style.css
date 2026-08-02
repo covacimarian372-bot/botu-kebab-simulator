@@ -11,6 +11,7 @@ background:#63c8ff;
 }
 
 
+
 #joc{
 
 width:100%;
@@ -36,6 +37,30 @@ width:180px;
 
 left:200px;
 
-top:300px;
+}
+
+
+
+#start{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+color:white;
+
+font-size:35px;
+
+font-family:Arial;
+
+font-weight:bold;
+
+text-align:center;
+
+text-shadow:2px 2px 5px black;
 
 }
