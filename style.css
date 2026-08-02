@@ -22,9 +22,6 @@ body {
 }
 
 
-
-/* bara de sus */
-
 header {
 
     height: 80px;
@@ -49,9 +46,6 @@ h1 {
 }
 
 
-
-/* locul unde se face shaorma */
-
 #masa {
 
     height: 70vh;
@@ -63,19 +57,17 @@ h1 {
 }
 
 
-
-/* baza shaormei */
+/* LIPIA MAI MARE */
 
 #shaorma {
 
     position: relative;
 
-    width: 700px;
+    width: 800px;
 
-    height: 400px;
+    height: 450px;
 
 }
-
 
 
 /* imaginea lipiei */
@@ -97,8 +89,7 @@ h1 {
 }
 
 
-
-/* ingredientele */
+/* ingrediente */
 
 .strat {
 
@@ -118,7 +109,7 @@ h1 {
 
 
 
-/* butoanele */
+/* butoane */
 
 #ingrediente {
 
@@ -137,7 +128,6 @@ h1 {
     flex-wrap: wrap;
 
 }
-
 
 
 button {
