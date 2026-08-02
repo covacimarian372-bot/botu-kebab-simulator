@@ -5,15 +5,15 @@
 
 body {
 
-    margin:0;
+    margin: 0;
 
-    height:100vh;
+    height: 100vh;
 
-    overflow:hidden;
+    overflow: hidden;
 
-    font-family:Arial, sans-serif;
+    font-family: Arial, sans-serif;
 
-    background:#3b2414;
+    background: #5a3518;
 
 }
 
@@ -21,24 +21,28 @@ body {
 
 #game {
 
-    width:100%;
+    width: 100%;
 
-    height:100vh;
+    height: 100vh;
 
     background:
+
     linear-gradient(
-        rgba(0,0,0,0.25),
-        rgba(0,0,0,0.4)
+        rgba(0,0,0,0.15),
+        rgba(0,0,0,0.15)
     ),
+
     #8b5a2b;
 
 }
 
 
 
+/* bara de sus */
+
 header {
 
-    height:80px;
+    height: 80px;
 
     background:#171717;
 
@@ -60,9 +64,9 @@ h1 {
 
     margin:0;
 
-    font-size:40px;
-
     color:#ff9800;
+
+    font-size:40px;
 
 }
 
@@ -78,7 +82,7 @@ h1 {
 
 
 
-/* zona unde se face shaorma */
+/* zona lipiei */
 
 #masa {
 
@@ -98,13 +102,11 @@ h1 {
 
 #lipie {
 
-    width:380px;
+    position:relative;
 
-    height:220px;
+    width:450px;
 
-    background:#e7b86b;
-
-    border-radius:50%;
+    height:250px;
 
     display:flex;
 
@@ -112,10 +114,27 @@ h1 {
 
     align-items:center;
 
-    font-size:130px;
+    overflow:hidden;
 
-    box-shadow:
-    0 15px 30px rgba(0,0,0,0.5);
+}
+
+
+
+/* toate imaginile ingredientelor */
+
+.strat {
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+    left:0;
+
+    top:0;
 
 }
 
@@ -157,9 +176,6 @@ button {
 
     cursor:pointer;
 
-    box-shadow:
-    0 5px 10px rgba(0,0,0,0.3);
-
 }
 
 
@@ -167,7 +183,5 @@ button {
 button:hover {
 
     background:#ffc107;
-
-    transform:scale(1.05);
 
 }
