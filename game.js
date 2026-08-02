@@ -5,16 +5,23 @@ let y = 300;
 
 let viteza = 0;
 
-let gravitatie = 0.25;
 
-let fortaZbor = -5;
+let gravitatie = 0.45;
+
+let fortaZbor = -7;
 
 
 let apasat = false;
 
 
 
-// PC - SPACE
+// pozitia fixa pe orizontala
+
+shaorma.style.left = "200px";
+
+
+
+// PC
 
 document.addEventListener("keydown", function(e){
 
@@ -25,7 +32,6 @@ document.addEventListener("keydown", function(e){
     }
 
 });
-
 
 
 document.addEventListener("keyup", function(e){
@@ -40,15 +46,13 @@ document.addEventListener("keyup", function(e){
 
 
 
-
-// Telefon - atingere ecran
+// Mobil
 
 document.addEventListener("touchstart", function(){
 
     apasat = true;
 
 });
-
 
 
 document.addEventListener("touchend", function(){
@@ -64,8 +68,6 @@ document.addEventListener("touchend", function(){
 function joc(){
 
 
-    // când ții apăsat, shaorma zboară
-
     if(apasat){
 
         viteza = fortaZbor;
@@ -74,19 +76,14 @@ function joc(){
 
 
 
-    // gravitație
-
     viteza += gravitatie;
 
-
-
-    // poziția shaormei
 
     y += viteza;
 
 
 
-    // limite sus
+    // limita sus
 
     if(y < 0){
 
@@ -98,7 +95,7 @@ function joc(){
 
 
 
-    // limite jos
+    // limita jos
 
     if(y > window.innerHeight - 200){
 
@@ -110,6 +107,8 @@ function joc(){
 
 
 
+    // aplicam doar miscarea verticala
+
     shaorma.style.top = y + "px";
 
 
@@ -118,7 +117,6 @@ function joc(){
 
 
 }
-
 
 
 joc();
