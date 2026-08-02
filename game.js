@@ -35,7 +35,9 @@ let vitezaObstacol = 5;
 
 
 
+
 shaorma.style.top = y + "px";
+
 
 
 
@@ -63,7 +65,6 @@ start.style.display = "none";
 
 
 
-
 // PC
 
 document.addEventListener("keydown",function(e){
@@ -81,6 +82,7 @@ apasat = true;
 
 
 });
+
 
 
 
@@ -134,9 +136,10 @@ apasat = false;
 
 
 
-// COLIZIUNE
+// HITBOX 127x59
 
 function verificaColiziune(){
+
 
 
 let shaormaBox = shaorma.getBoundingClientRect();
@@ -145,15 +148,65 @@ let dronaBox = obstacol.getBoundingClientRect();
 
 
 
+
+
+let shaormaHit = {
+
+
+left: shaormaBox.left + (shaormaBox.width - 127) / 2,
+
+
+right: shaormaBox.left + (shaormaBox.width - 127) / 2 + 127,
+
+
+top: shaormaBox.top + (shaormaBox.height - 59) / 2,
+
+
+bottom: shaormaBox.top + (shaormaBox.height - 59) / 2 + 59
+
+
+};
+
+
+
+
+
+let dronaHit = {
+
+
+left: dronaBox.left,
+
+
+right: dronaBox.right,
+
+
+top: dronaBox.top,
+
+
+bottom: dronaBox.bottom
+
+
+};
+
+
+
+
+
+
 if(
 
-shaormaBox.left < dronaBox.right &&
 
-shaormaBox.right > dronaBox.left &&
+shaormaHit.left < dronaHit.right &&
 
-shaormaBox.top < dronaBox.bottom &&
 
-shaormaBox.bottom > dronaBox.top
+shaormaHit.right > dronaHit.left &&
+
+
+shaormaHit.top < dronaHit.bottom &&
+
+
+shaormaHit.bottom > dronaHit.top
+
 
 ){
 
@@ -164,7 +217,10 @@ gameOver();
 }
 
 
+
 }
+
+
 
 
 
@@ -182,6 +238,7 @@ pornit = false;
 
 
 start.style.display = "block";
+
 
 start.innerHTML = "GAME OVER<br><br>APASĂ PENTRU RESTART";
 
@@ -203,16 +260,20 @@ function restart(){
 if(terminat){
 
 
+
 terminat = false;
+
 
 pornit = true;
 
 
-start.style.display="none";
+
+start.style.display = "none";
 
 
 
 y = window.innerHeight / 2;
+
 
 viteza = 0;
 
@@ -225,7 +286,11 @@ xObstacol = window.innerWidth + 200;
 }
 
 
+
 }
+
+
+
 
 
 
@@ -262,6 +327,7 @@ y += viteza;
 
 
 
+
 if(y < 0){
 
 
@@ -292,10 +358,12 @@ shaorma.style.top = y + "px";
 
 
 
+
 // DRONA
 
 
 xObstacol -= vitezaObstacol;
+
 
 
 
@@ -313,6 +381,8 @@ yObstacol = Math.random() * (window.innerHeight - 200);
 
 
 
+
+
 obstacol.style.left = xObstacol + "px";
 
 
@@ -322,7 +392,8 @@ obstacol.style.top = yObstacol + "px";
 
 
 
-// VERIFICARE LOVIRE
+
+// COLIZIUNE
 
 
 verificaColiziune();
@@ -338,20 +409,24 @@ verificaColiziune();
 requestAnimationFrame(joc);
 
 
+
 }
 
 
 
 
-// RESTART LA CLICK
 
-start.addEventListener("click", function(){
+
+
+start.addEventListener("click",function(){
 
 
 restart();
 
 
 });
+
+
 
 
 
