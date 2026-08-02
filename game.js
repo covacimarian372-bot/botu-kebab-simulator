@@ -1,96 +1,19 @@
-const shaorma = document.getElementById("shaorma");
+let shaorma = document.getElementById("shaorma");
 
 
+let pozitie = 300;
 
 
-function incepeJocul(){
-
-document.getElementById("meniu").style.display="none";
-
-document.getElementById("game").style.display="block";
-
-}
+document.addEventListener("keydown", function(e){
 
 
+if(e.code === "Space"){
 
+pozitie -= 50;
 
-
-function inapoiMeniu(){
-
-document.getElementById("game").style.display="none";
-
-document.getElementById("meniu").style.display="flex";
+shaorma.style.top = pozitie + "px";
 
 }
 
 
-
-
-
-
-function adauga(nume){
-
-
-let img=document.createElement("img");
-
-
-img.src="images/"+nume+".png";
-
-
-img.className="ingredient";
-
-
-shaorma.appendChild(img);
-
-
-}
-
-
-
-
-
-
-
-function gataComanda(){
-
-
-let tranzitie=document.createElement("div");
-
-
-tranzitie.id="tranzitie";
-
-
-tranzitie.innerHTML="🌯";
-
-
-document.body.appendChild(tranzitie);
-
-
-
-
-
-setTimeout(()=>{
-
-
-tranzitie.innerHTML="";
-
-
-
-let rezultat=document.createElement("img");
-
-
-rezultat.src="images/rezultat.png";
-
-
-rezultat.id="rezultat";
-
-
-tranzitie.appendChild(rezultat);
-
-
-
-},2000);
-
-
-
-}
+});
