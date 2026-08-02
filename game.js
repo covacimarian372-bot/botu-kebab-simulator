@@ -7,12 +7,12 @@ let scorText = document.getElementById("scor");
 let boostBar = document.getElementById("boostBar");
 let boostProgress = document.getElementById("boostProgress");
 
-
 let containerParticule = document.getElementById("particule");
+
 
 if(!containerParticule){
 
-    containerParticule = document.createElement("div");
+    containerParticule=document.createElement("div");
     containerParticule.id="particule";
     document.body.appendChild(containerParticule);
 
@@ -20,15 +20,106 @@ if(!containerParticule){
 
 
 
+// =================
+// SUNETE
+// =================
+
+
+let audioCtx;
+
+
+function pornesteAudio(){
+
+    if(!audioCtx){
+
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    }
+
+}
+
+
+
+
+function sunet(freq,timp,volum){
+
+    pornesteAudio();
+
+
+    let osc=audioCtx.createOscillator();
+
+    let gain=audioCtx.createGain();
+
+
+    osc.type="square";
+
+    osc.frequency.value=freq;
+
+
+    gain.gain.value=volum;
+
+
+    osc.connect(gain);
+
+    gain.connect(audioCtx.destination);
+
+
+    osc.start();
+
+
+    setTimeout(()=>{
+
+        osc.stop();
+
+    },timp);
+
+
+}
+
+
+
+
+
+
+function vibratie(model){
+
+
+    if(navigator.vibrate){
+
+        navigator.vibrate(model);
+
+    }
+
+}
+
+
+
+
+
+
+
+
+// =================
 // STARE JOC
+// =================
+
 
 let pornit=false;
+
 let terminat=false;
+
 let apasat=false;
 
 
 
+
+
+
+
+// =================
 // SHAORMA
+// =================
+
 
 let y=window.innerHeight/2;
 
@@ -41,7 +132,13 @@ let fortaZbor=-7;
 
 
 
+
+
+
+// =================
 // BOOST
+// =================
+
 
 let boostActiv=false;
 
@@ -62,18 +159,31 @@ let vitezaBoostIngredient=12;
 
 
 
+
+
+
+// =================
 // SCOR
+// =================
+
 
 let scor=0;
 
 
 
 
+
+
+
+// =================
 // DRONA
+// =================
+
 
 let xObstacol=window.innerWidth+400;
 
 let yObstacol=250;
+
 
 let vitezaObstacol=vitezaNormalaDrona;
 
@@ -81,34 +191,45 @@ let vitezaObstacol=vitezaNormalaDrona;
 
 
 
+
+
+// =================
 // INGREDIENTE
+// =================
+
 
 let ingrediente=[
+
 
 {
 nume:"rosie.png",
 puncte:10
 },
 
+
 {
 nume:"carne.png",
 puncte:20
 },
+
 
 {
 nume:"cartof.png",
 puncte:15
 },
 
+
 {
 nume:"varza.png",
 puncte:5
 },
 
+
 {
 nume:"ceapa.png",
 puncte:5
 }
+
 
 ];
 
@@ -121,16 +242,24 @@ let xIngredient=0;
 
 let yIngredient=300;
 
+
 let vitezaIngredient=vitezaNormalaIngredient;
 
 
 
 
+
+
+
+// =================
 // SOS IUTE
+// =================
+
 
 let ultimaAparitieSos=0;
 
 let timpSos=60000;
+
 
 
 
@@ -153,6 +282,7 @@ nume:"sos_iute.png",
 puncte:30
 
 };
+
 
 
 ultimaAparitieSos=acum;
@@ -198,6 +328,7 @@ ingredient.style.top=yIngredient+"px";
 
 
 
+
 function miscaIngredient(){
 
 
@@ -210,7 +341,9 @@ ingredient.style.left=xIngredient+"px";
 
 if(xIngredient<-100){
 
+
 creeazaIngredient();
+
 
 }
 
@@ -232,6 +365,7 @@ p.className="particula";
 
 
 p.style.left=poz.left+80+"px";
+
 
 p.style.top=poz.top+50+"px";
 
@@ -270,6 +404,7 @@ p.remove();
 
 
 
+
 function verificaIngredient(){
 
 
@@ -300,18 +435,31 @@ scorText.innerHTML="Scor: "+scor;
 
 
 
+// sunet ingredient
+
+sunet(600,120,0.05);
+
+
+vibratie(40);
+
+
+
+
 creeazaParticule();
 
 
 
 
 
-// BOOST SOS IUTE
+
+// SOS IUTE BOOST
 
 if(ingredientActual.nume=="sos_iute.png"){
 
 
+
 boostActiv=true;
+
 
 
 shaorma.classList.add("boost");
@@ -322,6 +470,21 @@ vitezaObstacol=vitezaBoostDrona;
 
 
 vitezaIngredient=vitezaBoostIngredient;
+
+
+
+// sunet boost
+
+sunet(1000,300,0.1);
+
+
+
+vibratie([
+100,
+50,
+100
+]);
+
 
 
 
@@ -357,7 +520,13 @@ clearInterval(bara);
 }
 
 
+
 },100);
+
+
+
+
+
 
 
 
@@ -381,11 +550,14 @@ vitezaIngredient=vitezaNormalaIngredient;
 boostBar.style.display="none";
 
 
+
 },timpBoost);
 
 
 
+
 }
+
 
 
 
@@ -396,7 +568,6 @@ shaorma.classList.add("ia-ingredient");
 
 
 setTimeout(()=>{
-
 
 shaorma.classList.remove("ia-ingredient");
 
@@ -409,12 +580,11 @@ shaorma.classList.remove("ia-ingredient");
 creeazaIngredient();
 
 
-}
-
 
 }
 
 
+}
 
 
 
@@ -422,7 +592,12 @@ creeazaIngredient();
 
 
 
+
+
+// =================
 // EXPLOZIE DRONA
+// =================
+
 
 function explozieDrona(){
 
@@ -431,8 +606,32 @@ let poz=obstacol.getBoundingClientRect();
 
 
 
+// SUNET EXPLOZIE
 
-// FLASH ALB
+sunet(80,700,0.2);
+
+
+
+vibratie([
+
+300,
+
+100,
+
+500,
+
+100,
+
+300
+
+]);
+
+
+
+
+
+// FLASH
+
 
 let flash=document.createElement("div");
 
@@ -448,8 +647,6 @@ flash.style.width="100%";
 flash.style.height="100%";
 
 flash.style.background="white";
-
-flash.style.opacity="0.8";
 
 flash.style.zIndex="999";
 
@@ -487,10 +684,12 @@ flash.remove();
 
 
 
+
+
 // FOC SI FUM
 
 
-for(let i=0;i<45;i++){
+for(let i=0;i<50;i++){
 
 
 let p=document.createElement("div");
@@ -499,35 +698,29 @@ let p=document.createElement("div");
 
 p.style.position="absolute";
 
+p.style.left=poz.left+50+"px";
 
-p.style.width=Math.random()*20+10+"px";
+p.style.top=poz.top+30+"px";
 
 
-p.style.height=Math.random()*20+10+"px";
+p.style.width=Math.random()*25+10+"px";
 
+
+p.style.height=Math.random()*25+10+"px";
 
 
 p.style.borderRadius="50%";
 
 
-p.style.background=
-
-Math.random()>0.5 ?
+p.style.background=Math.random()>0.5 ?
 
 "orange" :
 
-"#444";
+"#333";
 
 
 
 p.style.zIndex="500";
-
-
-
-p.style.left=poz.left+50+"px";
-
-
-p.style.top=poz.top+30+"px";
 
 
 
@@ -574,6 +767,7 @@ p.remove();
 },1200);
 
 
+
 }
 
 
@@ -581,7 +775,8 @@ p.remove();
 
 
 
-// DRONA SE ROTESTE
+// ROTIRE DRONA
+
 
 obstacol.animate([
 
@@ -607,7 +802,9 @@ duration:700
 
 setTimeout(()=>{
 
+
 obstacol.style.display="none";
+
 
 },700);
 
@@ -616,7 +813,9 @@ obstacol.style.display="none";
 
 
 
-// TREPIDEAZA ECRANUL
+
+// CUTREMUR ECRAN
+
 
 document.body.animate([
 
@@ -644,14 +843,12 @@ duration:400
 
 
 
-}
-function verificaColiziune(){
+}function verificaColiziune(){
 
 
 let s=shaorma.getBoundingClientRect();
 
 let d=obstacol.getBoundingClientRect();
-
 
 
 
@@ -666,7 +863,6 @@ top:s.top+15,
 bottom:s.top+81
 
 };
-
 
 
 
@@ -738,7 +934,6 @@ start.style.display="block";
 start.innerHTML="GAME OVER<br><br>RESTART";
 
 
-
 }
 
 
@@ -789,6 +984,7 @@ obstacol.style.transform="";
 boostActiv=false;
 
 
+
 shaorma.classList.remove("boost");
 
 
@@ -812,7 +1008,6 @@ creeazaIngredient();
 
 
 }
-
 
 
 
@@ -856,6 +1051,10 @@ creeazaIngredient();
 
 
 
+
+// CONTROALE TASTATURA
+
+
 document.addEventListener("keydown",function(e){
 
 
@@ -872,7 +1071,6 @@ apasat=true;
 
 
 });
-
 
 
 
@@ -898,6 +1096,11 @@ apasat=false;
 
 
 
+
+
+// TELEFON
+
+
 document.addEventListener("touchstart",function(){
 
 
@@ -919,14 +1122,16 @@ apasat=true;
 
 
 
-
 document.addEventListener("touchend",function(){
 
 
 apasat=false;
 
 
-});
+}
+
+
+);
 
 
 
@@ -997,6 +1202,7 @@ viteza=fortaZbor;
 
 
 
+
 viteza+=gravitatie;
 
 
@@ -1011,12 +1217,16 @@ shaorma.style.top=y+"px";
 
 
 
-// BARA BOOST
+
+// BARA BOOST URMARESTE SHAORMA
+
 
 boostBar.style.left=(shaorma.offsetLeft+25)+"px";
 
 
 boostBar.style.top=(y+90)+"px";
+
+
 
 
 
@@ -1048,6 +1258,7 @@ obstacol.style.left=xObstacol+"px";
 
 
 obstacol.style.top=yObstacol+"px";
+
 
 
 
