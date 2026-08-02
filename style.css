@@ -11,6 +11,7 @@ height:100vh;
 
 
 
+
 #joc{
 
 width:100%;
@@ -21,52 +22,30 @@ overflow:hidden;
 
 position:relative;
 
-background:#63c8ff;
-
 }
 
 
 
 
-#fundal1,
-#fundal2{
+#fundal{
 
 position:absolute;
 
 top:0;
 
-width:100%;
+left:0;
+
+width:200%;
 
 height:100%;
 
 background-image:url("images/background.png");
 
-background-size:cover;
+background-repeat:repeat-x;
 
-background-position:center;
-
-background-repeat:no-repeat;
+background-size:50% 100%;
 
 }
-
-
-
-
-
-#fundal1{
-
-left:0;
-
-}
-
-
-
-#fundal2{
-
-left:100%;
-
-}
-
 
 
 
@@ -83,7 +62,6 @@ top:300px;
 z-index:10;
 
 }
-
 
 
 
