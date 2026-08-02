@@ -10,7 +10,7 @@ let recordText = document.getElementById("record");
 let boostBar = document.getElementById("boostBar");
 let boostProgress = document.getElementById("boostProgress");
 
-let containerParticule = document.getElementById("particule");
+let particule = document.getElementById("particule");
 
 
 
@@ -19,47 +19,69 @@ let containerParticule = document.getElementById("particule");
 let audioCtx;
 
 
-function sunet(freq, timp, volum){
+function sunet(freq,timp,volum){
 
-    if(!audioCtx){
-        audioCtx = new AudioContext();
-    }
+if(!audioCtx){
 
-    let osc = audioCtx.createOscillator();
-    let gain = audioCtx.createGain();
-
-    osc.frequency.value = freq;
-    gain.gain.value = volum;
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    osc.start();
-
-    setTimeout(()=>{
-        osc.stop();
-    }, timp);
+audioCtx=new AudioContext();
 
 }
+
+
+let osc=audioCtx.createOscillator();
+
+let gain=audioCtx.createGain();
+
+
+osc.frequency.value=freq;
+
+gain.gain.value=volum;
+
+
+osc.connect(gain);
+
+gain.connect(audioCtx.destination);
+
+
+osc.start();
+
+
+setTimeout(()=>{
+
+osc.stop();
+
+},timp);
+
+}
+
+
 
 
 
 function vibratie(t){
 
-    if(navigator.vibrate){
-        navigator.vibrate(t);
-    }
+if(navigator.vibrate){
+
+navigator.vibrate(t);
+
+}
 
 }
 
 
 
 
-// STARE JOC
+
+
+
+// JOC
 
 let pornit=false;
+
 let terminat=false;
+
 let apasat=false;
+
 
 
 
@@ -78,6 +100,7 @@ let fortaZbor=-7;
 
 
 
+
 // BOOST
 
 let boostActiv=false;
@@ -85,14 +108,6 @@ let boostActiv=false;
 let timpBoost=15000;
 
 let fortaBoost=-10;
-
-
-let vitezaNormalaDrona=5;
-let vitezaBoostDrona=10;
-
-
-let vitezaNormalaIngredient=6;
-let vitezaBoostIngredient=12;
 
 
 
@@ -113,15 +128,15 @@ recordText.innerHTML="Record: "+record;
 
 
 
-
 // DRONA
 
-let xObstacol=window.innerWidth+300;
+
+let xObstacol=window.innerWidth;
 
 let yObstacol=250;
 
 
-let vitezaObstacol=vitezaNormalaDrona;
+let vitezaObstacol=5;
 
 
 
@@ -157,20 +172,29 @@ puncte:5
 {
 nume:"ceapa.png",
 puncte:5
+},
+
+{
+nume:"sos_iute.png",
+puncte:30,
+boost:true
 }
 
 ];
 
 
+
 let ingredientActual;
+
 
 
 let xIngredient=0;
 
 let yIngredient=300;
 
+let vitezaIngredient=6;
 
-let vitezaIngredient=vitezaNormalaIngredient;
+
 
 
 
@@ -182,13 +206,17 @@ function creeazaIngredient(){
 
 
 ingredientActual =
-ingrediente[Math.floor(Math.random()*ingrediente.length)];
+ingrediente[
+Math.floor(Math.random()*ingrediente.length)
+];
+
 
 
 ingredient.src="images/"+ingredientActual.nume;
 
 
 ingredient.style.display="block";
+
 
 
 xIngredient=window.innerWidth;
@@ -210,6 +238,8 @@ ingredient.style.top=yIngredient+"px";
 
 
 
+
+
 function miscaIngredient(){
 
 
@@ -222,7 +252,7 @@ ingredient.style.left=xIngredient+"px";
 
 if(xIngredient<-100){
 
-    creeazaIngredient();
+creeazaIngredient();
 
 }
 
@@ -234,14 +264,13 @@ if(xIngredient<-100){
 
 
 
-function creeazaParticule(){
 
 
-let poz=shaorma.getBoundingClientRect();
+function particuleExplozie(x,y,c="orange"){
 
 
 
-for(let i=0;i<15;i++){
+for(let i=0;i<25;i++){
 
 
 let p=document.createElement("div");
@@ -250,23 +279,47 @@ let p=document.createElement("div");
 p.className="particula";
 
 
-p.style.left=poz.left+60+"px";
+p.style.left=x+"px";
 
-p.style.top=poz.top+40+"px";
+p.style.top=y+"px";
 
 
-p.style.setProperty("--x",
-(Math.random()*120-60)+"px"
+p.style.background=c;
+
+
+
+document.body.appendChild(p);
+
+
+
+let dx=Math.random()*300-150;
+
+let dy=Math.random()*300-150;
+
+
+
+p.animate(
+
+[
+{
+transform:"translate(0,0)",
+opacity:1
+},
+
+{
+transform:`translate(${dx}px,${dy}px)`,
+opacity:0
+}
+
+],
+
+{
+
+duration:800
+
+}
+
 );
-
-
-p.style.setProperty("--y",
-(Math.random()*120-60)+"px"
-);
-
-
-
-containerParticule.appendChild(p);
 
 
 
@@ -274,13 +327,23 @@ setTimeout(()=>{
 
 p.remove();
 
-},700);
+},800);
+
 
 
 }
 
 
-}function verificaIngredient(){
+}
+
+
+
+
+
+
+
+
+function verificaIngredient(){
 
 
 let s=shaorma.getBoundingClientRect();
@@ -299,10 +362,12 @@ s.bottom>i.top
 ){
 
 
+
 scor+=ingredientActual.puncte;
 
 
 scorText.innerHTML="Scor: "+scor;
+
 
 
 
@@ -319,29 +384,28 @@ recordText.innerHTML="Record: "+record;
 
 
 
-sunet(700,120,0.08);
+sunet(700,120,0.1);
 
 vibratie(40);
 
 
-creeazaParticule();
+
+particuleExplozie(
+s.left+50,
+s.top+40
+);
 
 
 
 
-if(ingredientActual.nume=="sos_iute.png"){
+
+if(ingredientActual.boost){
 
 
 boostActiv=true;
 
 
 shaorma.classList.add("boost");
-
-
-vitezaObstacol=vitezaBoostDrona;
-
-vitezaIngredient=vitezaBoostIngredient;
-
 
 
 boostBar.style.display="block";
@@ -351,17 +415,16 @@ boostProgress.style.width="100%";
 
 
 
-let startBoost=Date.now();
+let inceput=Date.now();
 
 
 
-let interval=setInterval(()=>{
+let timer=setInterval(()=>{
 
 
-let trecut=Date.now()-startBoost;
+let ramas=100-
+((Date.now()-inceput)/timpBoost*100);
 
-
-let ramas=100-(trecut/timpBoost*100);
 
 
 boostProgress.style.width=ramas+"%";
@@ -370,9 +433,10 @@ boostProgress.style.width=ramas+"%";
 
 if(ramas<=0){
 
-clearInterval(interval);
+clearInterval(timer);
 
 }
+
 
 
 },100);
@@ -390,11 +454,6 @@ boostActiv=false;
 shaorma.classList.remove("boost");
 
 
-vitezaObstacol=vitezaNormalaDrona;
-
-vitezaIngredient=vitezaNormalaIngredient;
-
-
 boostBar.style.display="none";
 
 
@@ -407,6 +466,7 @@ boostBar.style.display="none";
 
 
 shaorma.classList.add("ia-ingredient");
+
 
 
 setTimeout(()=>{
@@ -423,7 +483,9 @@ creeazaIngredient();
 }
 
 
+
 }
+
 
 
 
@@ -434,64 +496,51 @@ creeazaIngredient();
 function explozieDrona(){
 
 
-let poz=obstacol.getBoundingClientRect();
+let d=obstacol.getBoundingClientRect();
 
 
 
-sunet(100,500,0.2);
+sunet(100,600,0.3);
+
 
 vibratie([200,100,300]);
 
 
 
-for(let i=0;i<30;i++){
-
-
-let p=document.createElement("div");
-
-
-p.className="particula";
-
-
-p.style.left=poz.left+50+"px";
-
-p.style.top=poz.top+40+"px";
-
-
-p.style.background="red";
-
-
-
-p.style.setProperty("--x",
-(Math.random()*300-150)+"px"
-);
-
-
-p.style.setProperty("--y",
-(Math.random()*300-150)+"px"
+particuleExplozie(
+d.left+50,
+d.top+40,
+"red"
 );
 
 
 
-document.body.appendChild(p);
+obstacol.animate(
 
+[
 
+{
+transform:"rotate(0deg) scale(1)"
+},
 
-setTimeout(()=>{
+{
+transform:"rotate(720deg) scale(0)"
+}
 
-p.remove();
+],
 
-},700);
+{
+
+duration:700
+
+}
+
+);
+
 
 
 }
 
-
-
-obstacol.style.transform="scale(0) rotate(360deg)";
-
-
-}
 
 
 
@@ -518,16 +567,16 @@ s.bottom>d.top
 
 ){
 
-
 explozieDrona();
 
 gameOver();
 
-
 }
 
 
 }
+
+
 
 
 
@@ -542,15 +591,15 @@ terminat=true;
 
 pornit=false;
 
-apasat=false;
-
 
 start.style.display="block";
+
 
 start.innerHTML="GAME OVER<br><br>RESTART";
 
 
 }
+
 
 
 
@@ -567,6 +616,7 @@ pornit=true;
 
 scor=0;
 
+
 scorText.innerHTML="Scor: 0";
 
 
@@ -575,22 +625,10 @@ y=window.innerHeight/2;
 viteza=0;
 
 
-xObstacol=window.innerWidth+300;
+xObstacol=window.innerWidth;
 
 
 obstacol.style.transform="scale(1)";
-
-
-obstacol.style.display="block";
-
-
-boostActiv=false;
-
-
-vitezaObstacol=vitezaNormalaDrona;
-
-vitezaIngredient=vitezaNormalaIngredient;
-
 
 
 start.style.display="none";
@@ -600,6 +638,7 @@ creeazaIngredient();
 
 
 }
+
 
 
 
@@ -610,17 +649,14 @@ creeazaIngredient();
 function incepe(){
 
 
-if(!pornit && !terminat){
-
+if(!pornit){
 
 pornit=true;
 
 start.style.display="none";
 
-
 creeazaIngredient();
 
-
 }
 
 
@@ -631,7 +667,8 @@ creeazaIngredient();
 
 
 
-document.addEventListener("keydown",function(e){
+
+document.addEventListener("keydown",e=>{
 
 
 if(e.code=="Space"){
@@ -658,8 +695,7 @@ apasat=true;
 
 
 
-
-document.addEventListener("keyup",function(e){
+document.addEventListener("keyup",e=>{
 
 
 if(e.code=="Space"){
@@ -676,11 +712,7 @@ apasat=false;
 
 
 
-
-document.addEventListener("touchstart",function(){
-
-
-if(!terminat){
+document.addEventListener("touchstart",()=>{
 
 
 incepe();
@@ -688,19 +720,16 @@ incepe();
 apasat=true;
 
 
-}
-
-
 });
 
 
 
+document.addEventListener("touchend",()=>{
 
-
-document.addEventListener("touchend",function(){
 
 apasat=false;
 
+
 });
 
 
@@ -708,8 +737,7 @@ apasat=false;
 
 
 
-
-start.addEventListener("click",function(){
+start.addEventListener("click",()=>{
 
 
 if(terminat){
@@ -744,17 +772,10 @@ if(pornit){
 if(apasat){
 
 
-if(boostActiv){
-
-viteza=fortaBoost;
-
-}
-
-else{
-
-viteza=fortaZbor;
-
-}
+viteza =
+boostActiv ?
+fortaBoost :
+fortaZbor;
 
 
 }
@@ -773,29 +794,16 @@ shaorma.style.top=y+"px";
 
 
 
-// BARA BOOST
+xObstacol-=
 
-boostBar.style.left=(shaorma.offsetLeft+20)+"px";
-
-boostBar.style.top=(y+100)+"px";
-
-
-
-
-
-
-
-// DRONA
-
-
-xObstacol-=vitezaObstacol;
+boostActiv ? 10 : 5;
 
 
 
 if(xObstacol<-150){
 
 
-xObstacol=window.innerWidth+300;
+xObstacol=window.innerWidth;
 
 
 yObstacol=Math.random()*(window.innerHeight-150);
@@ -808,20 +816,26 @@ obstacol.style.transform="scale(1)";
 
 
 
+
 obstacol.style.left=xObstacol+"px";
 
 obstacol.style.top=yObstacol+"px";
 
 
 
+boostBar.style.left=
+shaorma.offsetLeft+"px";
+
+
+boostBar.style.top=
+(y+100)+"px";
+
 
 
 
 miscaIngredient();
 
-
 verificaIngredient();
-
 
 verificaColiziune();
 
@@ -835,8 +849,6 @@ requestAnimationFrame(joc);
 
 
 }
-
-
 
 
 
