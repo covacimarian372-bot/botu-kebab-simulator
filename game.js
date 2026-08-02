@@ -7,82 +7,70 @@ let scorText = document.getElementById("scor");
 let boostBar = document.getElementById("boostBar");
 let boostProgress = document.getElementById("boostProgress");
 
-
 let containerParticule = document.getElementById("particule");
 
 if(!containerParticule){
-
     containerParticule = document.createElement("div");
     containerParticule.id="particule";
     document.body.appendChild(containerParticule);
-
 }
 
 
+// JOC
 
-// STARE JOC
-
-let pornit = false;
-let terminat = false;
-let apasat = false;
-
+let pornit=false;
+let terminat=false;
+let apasat=false;
 
 
 
 // SHAORMA
 
-let y = window.innerHeight / 2;
+let y=window.innerHeight/2;
 
-let viteza = 0;
+let viteza=0;
 
-let gravitatie = 0.45;
+let gravitatie=0.45;
 
-let fortaZbor = -7;
-
+let fortaZbor=-7;
 
 
 
 // BOOST
 
-let boostActiv = false;
+let boostActiv=false;
 
-let timpBoost = 15000;
+let timpBoost=15000;
 
-let fortaBoost = -10;
-
-
-let vitezaNormalaDrona = 5;
-
-let vitezaBoostDrona = 10;
+let fortaBoost=-10;
 
 
-let vitezaNormalaIngredient = 6;
+let vitezaNormalaDrona=5;
 
-let vitezaBoostIngredient = 12;
+let vitezaBoostDrona=10;
 
 
+let vitezaNormalaIngredient=6;
+
+let vitezaBoostIngredient=12;
 
 
 
 
 // SCOR
 
-let scor = 0;
-
-
+let scor=0;
 
 
 
 
 // DRONA
 
-let xObstacol = window.innerWidth + 400;
+let xObstacol=window.innerWidth+400;
 
-let yObstacol = 250;
+let yObstacol=250;
 
-
-let vitezaObstacol = vitezaNormalaDrona;
-
+let vitezaObstacol=vitezaNormalaDrona;
 
 
 
@@ -90,7 +78,8 @@ let vitezaObstacol = vitezaNormalaDrona;
 
 // INGREDIENTE
 
-let ingrediente = [
+
+let ingrediente=[
 
 {
 nume:"rosie.png",
@@ -124,24 +113,20 @@ puncte:5
 let ingredientActual;
 
 
-let xIngredient = 0;
+let xIngredient=0;
 
-let yIngredient = 300;
+let yIngredient=300;
 
-
-let vitezaIngredient = vitezaNormalaIngredient;
-
+let vitezaIngredient=vitezaNormalaIngredient;
 
 
 
 
 // SOS IUTE
 
-let ultimaAparitieSos = 0;
+let ultimaAparitieSos=0;
 
-let timpSos = 60000;
-
-
+let timpSos=60000;
 
 
 
@@ -150,11 +135,11 @@ let timpSos = 60000;
 function creeazaIngredient(){
 
 
-let acum = Date.now();
+let acum=Date.now();
 
 
 
-if(acum - ultimaAparitieSos >= timpSos && Math.random()<0.3){
+if(acum-ultimaAparitieSos>=timpSos && Math.random()<0.3){
 
 
 ingredientActual={
@@ -166,7 +151,7 @@ puncte:30
 };
 
 
-ultimaAparitieSos = acum;
+ultimaAparitieSos=acum;
 
 
 }
@@ -174,7 +159,7 @@ ultimaAparitieSos = acum;
 else{
 
 
-ingredientActual = ingrediente[
+ingredientActual=ingrediente[
 Math.floor(Math.random()*ingrediente.length)
 ];
 
@@ -198,12 +183,10 @@ yIngredient=Math.random()*(window.innerHeight-120);
 
 ingredient.style.left=xIngredient+"px";
 
-
 ingredient.style.top=yIngredient+"px";
 
 
 }
-
 
 
 
@@ -220,18 +203,14 @@ ingredient.style.left=xIngredient+"px";
 
 
 
-if(xIngredient < -100){
-
+if(xIngredient<-100){
 
 creeazaIngredient();
 
-
 }
 
 
 }
-
-
 
 
 
@@ -254,7 +233,6 @@ p.className="particula";
 
 p.style.left=poz.left+80+"px";
 
-
 p.style.top=poz.top+50+"px";
 
 
@@ -262,7 +240,6 @@ p.style.top=poz.top+50+"px";
 p.style.setProperty("--x",
 (Math.random()*120-60)+"px"
 );
-
 
 
 p.style.setProperty("--y",
@@ -284,83 +261,7 @@ p.remove();
 
 }
 
-
-}
-
-
-
-
-
-
-
-// EXPLOZIE GAME OVER
-
-function explozieShaorma(){
-
-
-let poz = shaorma.getBoundingClientRect();
-
-
-
-for(let i=0;i<30;i++){
-
-
-let p=document.createElement("div");
-
-
-p.className="explozieParticula";
-
-
-p.style.left=poz.left+80+"px";
-
-
-p.style.top=poz.top+50+"px";
-
-
-
-p.style.setProperty("--x",
-(Math.random()*300-150)+"px"
-);
-
-
-
-p.style.setProperty("--y",
-(Math.random()*300-150)+"px"
-);
-
-
-
-document.body.appendChild(p);
-
-
-
-setTimeout(()=>{
-
-p.remove();
-
-},800);
-
-
-}
-
-
-
-
-document.body.classList.add("tremurat");
-
-
-
-setTimeout(()=>{
-
-
-document.body.classList.remove("tremurat");
-
-
-},400);
-
-
-}
-function verificaIngredient(){
+}function verificaIngredient(){
 
 
 let s=shaorma.getBoundingClientRect();
@@ -395,8 +296,6 @@ creeazaParticule();
 
 
 
-
-// BOOST SOS IUTE
 
 if(ingredientActual.nume=="sos_iute.png"){
 
@@ -451,9 +350,6 @@ clearInterval(bara);
 
 
 
-
-
-
 setTimeout(()=>{
 
 
@@ -474,13 +370,11 @@ vitezaIngredient=vitezaNormalaIngredient;
 boostBar.style.display="none";
 
 
-
 },timpBoost);
 
 
 
 }
-
 
 
 
@@ -492,10 +386,11 @@ shaorma.classList.add("ia-ingredient");
 
 setTimeout(()=>{
 
+
 shaorma.classList.remove("ia-ingredient");
 
-},200);
 
+},200);
 
 
 
@@ -507,6 +402,93 @@ creeazaIngredient();
 
 }
 
+
+
+
+
+
+
+
+function explozieShaorma(){
+
+
+let poz=shaorma.getBoundingClientRect();
+
+
+
+for(let i=0;i<30;i++){
+
+
+let p=document.createElement("div");
+
+p.style.position="absolute";
+
+p.style.width="20px";
+
+p.style.height="20px";
+
+p.style.background="orange";
+
+p.style.borderRadius="50%";
+
+p.style.zIndex="999";
+
+
+
+p.style.left=poz.left+80+"px";
+
+p.style.top=poz.top+50+"px";
+
+
+
+let x=Math.random()*300-150;
+
+let y=Math.random()*300-150;
+
+
+
+document.body.appendChild(p);
+
+
+
+p.animate([
+
+{
+
+transform:"translate(0,0)",
+
+opacity:1
+
+},
+
+{
+
+transform:`translate(${x}px,${y}px)`,
+
+opacity:0
+
+}
+
+],{
+
+duration:800
+
+});
+
+
+
+setTimeout(()=>{
+
+p.remove();
+
+},800);
+
+
+}
+
+
+
+}
 
 
 
@@ -534,7 +516,6 @@ top:s.top+15,
 bottom:s.top+81
 
 };
-
 
 
 
@@ -581,11 +562,11 @@ gameOver();
 
 
 
+
 function gameOver(){
 
 
 explozieShaorma();
-
 
 
 terminat=true;
@@ -711,6 +692,7 @@ creeazaIngredient();
 
 
 
+
 document.addEventListener("keydown",function(e){
 
 
@@ -778,7 +760,6 @@ apasat=false;
 
 
 });
-
 
 
 
@@ -858,7 +839,6 @@ shaorma.style.top=y+"px";
 
 
 
-// bara boost urmareste shaorma
 
 boostBar.style.left=(shaorma.offsetLeft+25)+"px";
 
@@ -869,9 +849,6 @@ boostBar.style.top=(y+90)+"px";
 
 
 
-
-
-// DRONA
 
 xObstacol-=vitezaObstacol;
 
@@ -899,10 +876,6 @@ obstacol.style.top=yObstacol+"px";
 
 
 
-
-
-
-// INGREDIENTE
 
 miscaIngredient();
 
