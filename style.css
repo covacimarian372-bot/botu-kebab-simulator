@@ -46,9 +46,11 @@ h1 {
 }
 
 
+/* zona shaormei */
+
 #masa {
 
-    height: 70vh;
+    height: 75vh;
 
     display: flex;
     justify-content: center;
@@ -57,20 +59,21 @@ h1 {
 }
 
 
-/* LIPIA MAI MARE */
+/* lipia mare */
 
 #shaorma {
 
     position: relative;
 
-    width: 800px;
+    width: 90vw;
 
-    height: 450px;
+    height: 65vh;
 
 }
 
 
-/* imaginea lipiei */
+
+/* lipia */
 
 #shaorma > img:first-child {
 
@@ -89,21 +92,22 @@ h1 {
 }
 
 
-/* ingrediente */
+
+/* ingrediente puse peste */
 
 .strat {
 
     position: absolute;
 
-    width: 70%;
+    width: 75%;
 
-    height: 70%;
+    height: 75%;
 
     object-fit: contain;
 
-    left: 15%;
+    left: 12.5%;
 
-    top: 15%;
+    top: 12.5%;
 
 }
 
@@ -115,7 +119,7 @@ h1 {
 
     position: absolute;
 
-    bottom: 25px;
+    bottom: 20px;
 
     width: 100%;
 
@@ -128,6 +132,7 @@ h1 {
     flex-wrap: wrap;
 
 }
+
 
 
 button {
