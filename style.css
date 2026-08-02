@@ -38,6 +38,7 @@ overflow:hidden;
 
 
 
+
 /* FUNDAL */
 
 #fundal{
@@ -63,6 +64,7 @@ z-index:0;
 
 
 
+
 /* SHAORMA */
 
 #shaorma{
@@ -71,11 +73,16 @@ position:absolute;
 
 width:180px;
 
-z-index:10;
-
 left:200px;
 
+top:50%;
+
+transform:translateY(-50%);
+
+z-index:10;
+
 }
+
 
 
 
@@ -90,9 +97,14 @@ position:absolute;
 
 width:123px;
 
+left:100%;
+
+top:250px;
+
 z-index:9;
 
 }
+
 
 
 
@@ -151,7 +163,6 @@ text-shadow:2px 2px 5px black;
 
 
 
-
 /* START */
 
 #start{
@@ -162,35 +173,26 @@ top:50%;
 
 left:50%;
 
-
 transform:translate(-50%,-50%);
-
 
 color:white;
 
-
 font-size:35px;
-
 
 font-family:Arial;
 
-
 font-weight:bold;
-
 
 text-align:center;
 
-
 z-index:30;
-
 
 cursor:pointer;
 
-
 text-shadow:3px 3px 5px black;
 
-
 }
+
 
 
 
@@ -206,7 +208,7 @@ text-shadow:3px 3px 5px black;
 
 width:140px;
 
-left:100px;
+left:80px;
 
 }
 
