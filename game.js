@@ -1,730 +1,319 @@
-let shaorma = document.getElementById("shaorma");
-let obstacol = document.getElementById("obstacol");
-let ingredient = document.getElementById("ingredient");
+// =====================================
+// SHAORMA ZBURATOARE - GAME ENGINE
+// PARTEA 1/5
+// CONFIG + VARIABILE
+// =====================================
 
-let start = document.getElementById("start");
 
-let scorText = document.getElementById("scor");
-let recordText = document.getElementById("record");
 
-let boostBar = document.getElementById("boostBar");
-let boostProgress = document.getElementById("boostProgress");
+// ELEMENTE HTML
 
+const shaorma = document.getElementById("shaorma");
 
+const drone = document.getElementById("drone");
 
-// =====================
-// AUDIO
-// =====================
+const ingredient = document.getElementById("ingredient");
 
-let audioCtx;
+const scoreText = document.getElementById("score");
 
+const recordText = document.getElementById("record");
 
-function sunet(freq,timp,volum){
+const startButton = document.getElementById("startButton");
 
-if(!audioCtx){
+const boostBar = document.getElementById("boostBar");
 
-audioCtx = new AudioContext();
+const boostFill = document.getElementById("boostFill");
 
-}
 
 
-let osc = audioCtx.createOscillator();
 
-let gain = audioCtx.createGain();
+// =====================================
+// STARE JOC
+// =====================================
 
 
-osc.frequency.value=freq;
+let gameRunning = false;
 
-gain.gain.value=volum;
+let gameOverState = false;
 
+let pressing = false;
 
-osc.connect(gain);
 
-gain.connect(audioCtx.destination);
 
+// =====================================
+// SHAORMA FIZICA
+// =====================================
 
-osc.start();
 
+let shaormaY = window.innerHeight / 2;
 
-setTimeout(()=>{
 
-osc.stop();
+let shaormaVelocity = 0;
 
-},timp);
 
-}
+const gravity = 0.45;
 
 
-
-
-function vibratie(t){
-
-if(navigator.vibrate){
-
-navigator.vibrate(t);
-
-}
-
-}
-
-
-
-
-
-
-
-// =====================
-// JOC
-// =====================
-
-
-let pornit=false;
-
-let terminat=false;
-
-let apasat=false;
-
-
-
-
-
-
-// SHAORMA
-
-
-let y=window.innerHeight/2;
-
-let viteza=0;
-
-let gravitatie=0.45;
-
-let fortaZbor=-7;
-
-
-
-
-
-
-
-// BOOST
-
-
-let boostActiv=false;
-
-let timpBoost=15000;
-
-let fortaBoost=-10;
-
-
-
-
-
-
-
-// SCOR
-
-
-let scor=0;
-
-
-let record =
-Number(localStorage.getItem("recordShaorma")) || 0;
-
-
-recordText.innerHTML=
-"Record: "+record;
-
-
-
-
-
-
-
-// DRONA
-
-
-let xObstacol=window.innerWidth;
-
-let yObstacol=250;
-
-let vitezaObstacol=5;
-
-
-
-
-
-
-
-// INGREDIENTE
-
-
-let ingrediente=[
-
-{
-nume:"rosie.png",
-puncte:10
-},
-
-{
-nume:"carne.png",
-puncte:20
-},
-
-{
-nume:"cartof.png",
-puncte:15
-},
-
-{
-nume:"varza.png",
-puncte:5
-},
-
-{
-nume:"ceapa.png",
-puncte:5
-},
-
-{
-nume:"sos_iute.png",
-puncte:30,
-boost:true
-}
-
-];
-
-
-
-let ingredientActual;
-
-
-let xIngredient=0;
-
-let yIngredient=300;
-
-let vitezaIngredient=6;
-
-
-
-
-
-
-
-function creeazaIngredient(){
-
-
-ingredientActual =
-ingrediente[
-Math.floor(Math.random()*ingrediente.length)
-];
-
-
-ingredient.src =
-"images/"+ingredientActual.nume;
-
-
-ingredient.style.display="block";
-
-
-xIngredient=window.innerWidth;
-
-
-yIngredient=
-Math.random()*(window.innerHeight-100);
-
-
-ingredient.style.left=
-xIngredient+"px";
-
-
-ingredient.style.top=
-yIngredient+"px";
-
-
-}
-
-
-
-
-
-
-
-function miscaIngredient(){
-
-
-xIngredient-=vitezaIngredient;
-
-
-ingredient.style.left=
-xIngredient+"px";
-
-
-
-if(xIngredient<-100){
-
-creeazaIngredient();
-
-}
-
-
-}// =====================
-// EFECTE
-// =====================
-
-
-function particuleExplozie(x,y,c="orange"){
-
-
-for(let i=0;i<25;i++){
-
-
-let p=document.createElement("div");
-
-
-p.className="particula";
-
-
-p.style.left=x+"px";
-
-p.style.top=y+"px";
-
-
-p.style.background=c;
-
-
-document.body.appendChild(p);
-
-
-
-let dx=Math.random()*300-150;
-
-let dy=Math.random()*300-150;
-
-
-
-p.animate(
-
-[
-
-{
-transform:"translate(0,0)",
-opacity:1
-},
-
-{
-transform:`translate(${dx}px,${dy}px)`,
-opacity:0
-}
-
-],
-
-{
-
-duration:800
-
-}
-
-);
-
-
-
-setTimeout(()=>{
-
-p.remove();
-
-},800);
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-// =====================
-// FOC BOOST
-// =====================
-
-
-function efectBoost(){
-
-
-if(!boostActiv)return;
-
-
-
-let foc=document.createElement("div");
-
-
-
-foc.style.position="absolute";
-
-
-foc.style.left=
-shaorma.offsetLeft-20+"px";
-
-
-foc.style.top=
-y+50+"px";
-
-
-
-foc.style.width="35px";
-
-
-foc.style.height="35px";
-
-
-foc.style.borderRadius="50%";
-
-
-
-foc.style.background=
-"radial-gradient(circle,yellow,orange,red)";
-
-
-foc.style.boxShadow=
-"0 0 25px orange";
-
-
-foc.style.zIndex="5";
-
-
-
-document.body.appendChild(foc);
-
-
-
-foc.animate(
-
-[
-
-{
-transform:"scale(1)",
-opacity:1
-},
-
-{
-transform:"scale(0)",
-opacity:0
-}
-
-],
-
-{
-
-duration:400
-
-}
-
-);
-
-
-
-setTimeout(()=>{
-
-foc.remove();
-
-},400);
-
-
-}
-
-
-
-
-
-
-
-
-// =====================
-// INGREDIENTE
-// =====================
-
-
-function verificaIngredient(){
-
-
-let s=shaorma.getBoundingClientRect();
-
-let i=ingredient.getBoundingClientRect();
-
-
-
-if(
-
-s.left<i.right &&
-s.right>i.left &&
-s.top<i.bottom &&
-s.bottom>i.top
-
-){
-
-
-
-scor+=ingredientActual.puncte;
-
-
-scorText.innerHTML=
-"Scor: "+scor;
-
-
-
-if(scor>record){
-
-
-record=scor;
-
-
-localStorage.setItem(
-"recordShaorma",
-record
-);
-
-
-}
-
-
-recordText.innerHTML=
-"Record: "+record;
-
-
-
-
-sunet(700,120,0.1);
-
-
-vibratie(40);
-
-
-
-particuleExplozie(
-s.left+50,
-s.top+40
-);
-
-
-
-
-
-
-if(ingredientActual.boost){
-
-
-boostActiv=true;
-
-
-shaorma.classList.add("boost");
-
-
-boostBar.style.display="block";
-
-
-boostProgress.style.width="100%";
-
-
-
-setTimeout(()=>{
-
-
-boostActiv=false;
-
-
-shaorma.classList.remove("boost");
-
-
-boostBar.style.display="none";
-
-
-
-},timpBoost);
-
-
-
-}
-
-
-
-
-shaorma.classList.add("ia-ingredient");
-
-
-
-setTimeout(()=>{
-
-shaorma.classList.remove("ia-ingredient");
-
-},200);
-
-
-
-creeazaIngredient();
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-// =====================
-// EXPLOZIE DRONA
-// =====================
-
-
-function explozieDrona(){
-
-
-let d=obstacol.getBoundingClientRect();
-
-
-
-sunet(100,600,0.3);
-
-
-vibratie([200,100,300]);
-
-
-
-particuleExplozie(
-d.left+50,
-d.top+40,
-"red"
-);
-
-
-
-obstacol.style.transform=
-"rotate(720deg) scale(0)";
-
-
-
-setTimeout(()=>{
-
-
-obstacol.style.transform=
-"scale(1)";
-
-
-},700);
-
-
-
-}
-
-
-
-
-
-
-
-
-// =====================
-// COLIZIUNE
-// SHAORMA 96x49
-// DRONA 93x53
-// =====================
-
-
-function verificaColiziune(){
-
-
-let s=shaorma.getBoundingClientRect();
-
-let d=obstacol.getBoundingClientRect();
+const jumpPower = -7;
 
 
 
 
 // HITBOX SHAORMA
 
-let shaormaX =
-s.left+(s.width-96)/2;
+const shaormaHitbox = {
+
+width:96,
+
+height:49
+
+};
 
 
-let shaormaY =
-s.top+(s.height-49)/2;
 
 
-let shaormaW=96;
-
-let shaormaH=49;
 
 
+// =====================================
+// DRONA
+// =====================================
+
+
+let droneX = window.innerWidth;
+
+
+let droneY = 250;
+
+
+const droneSpeed = 5;
 
 
 
 // HITBOX DRONA
 
-let dronaX =
-d.left+(d.width-93)/2;
+const droneHitbox = {
 
+width:93,
 
-let dronaY =
-d.top+(d.height-53)/2;
+height:53
 
-
-let dronaW=93;
-
-let dronaH=53;
+};
 
 
 
 
 
-if(
 
-shaormaX < dronaX+dronaW &&
-
-shaormaX+shaormaW > dronaX &&
-
-shaormaY < dronaY+dronaH &&
-
-shaormaY+shaormaH > dronaY
-
-){
+// =====================================
+// SCOR
+// =====================================
 
 
-explozieDrona();
+let score = 0;
 
 
-gameOver();
+let record =
+Number(localStorage.getItem("shaormaRecord")) || 0;
+
+
+
+recordText.innerHTML =
+"Record: " + record;
+
+
+
+
+
+
+
+// =====================================
+// BOOST
+// =====================================
+
+
+let boostActive = false;
+
+
+let boostTime = 15000;
+
+
+let boostStart = 0;
+
+
+const boostPower = -10;
+
+
+
+
+
+
+
+// =====================================
+// INGREDIENTE
+// =====================================
+
+
+
+const ingredients = [
+
+
+{
+image:"rosie.png",
+points:10
+},
+
+
+{
+image:"carne.png",
+points:20
+},
+
+
+{
+image:"cartof.png",
+points:15
+},
+
+
+{
+image:"varza.png",
+points:5
+},
+
+
+{
+image:"ceapa.png",
+points:5
+},
+
+
+{
+image:"sos_iute.png",
+points:30,
+boost:true
+}
+
+
+];
+
+
+
+
+
+let currentIngredient;
+
+
+let ingredientX = 0;
+
+
+let ingredientY = 300;
+
+
+const ingredientSpeed = 6;
+
+
+
+
+
+// =====================================
+// FUNCTIE START INGREDIENT
+// =====================================
+
+
+function spawnIngredient(){
+
+
+currentIngredient =
+ingredients[
+Math.floor(
+Math.random()*ingredients.length
+)
+];
+
+
+
+ingredient.src =
+"images/" + currentIngredient.image;
+
+
+
+ingredient.style.display="block";
+
+
+
+ingredientX = window.innerWidth;
+
+
+ingredientY =
+Math.random() *
+(window.innerHeight-100);
+
+
+
+ingredient.style.left =
+ingredientX + "px";
+
+
+ingredient.style.top =
+ingredientY + "px";
+
+
+}// =====================================
+// PARTEA 2/5
+// FIZICA + MISCAREA OBIECTELOR
+// =====================================
+
+
+
+
+
+// =====================================
+// MISCARE SHAORMA
+// =====================================
+
+
+function updateShaorma(){
+
+
+if(pressing){
+
+
+shaormaVelocity =
+boostActive ?
+boostPower :
+jumpPower;
 
 
 }
 
 
-}// =====================
-// GAME OVER + RESTART
-// =====================
+
+shaormaVelocity += gravity;
 
 
-function gameOver(){
+shaormaY += shaormaVelocity;
 
 
-terminat=true;
+
+// limite ecran
 
 
-pornit=false;
+if(shaormaY < 0){
+
+shaormaY = 0;
+
+shaormaVelocity = 0;
+
+}
 
 
-start.style.display="block";
 
+if(shaormaY > window.innerHeight-80){
 
-start.innerHTML=
-"GAME OVER<br><br>RESTART";
+shaormaY =
+window.innerHeight-80;
 
+shaormaVelocity = 0;
 
 }
 
@@ -732,65 +321,9 @@ start.innerHTML=
 
 
 
+shaorma.style.top =
+shaormaY + "px";
 
-
-function restart(){
-
-
-terminat=false;
-
-
-pornit=true;
-
-
-scor=0;
-
-
-scorText.innerHTML="Scor: 0";
-
-
-y=window.innerHeight/2;
-
-
-viteza=0;
-
-
-xObstacol=window.innerWidth;
-
-
-obstacol.style.transform="scale(1)";
-
-
-start.style.display="none";
-
-
-creeazaIngredient();
-
-
-}
-
-
-
-
-
-
-
-function incepe(){
-
-
-if(!pornit){
-
-
-pornit=true;
-
-
-start.style.display="none";
-
-
-creeazaIngredient";
-
-
-}
 
 
 }
@@ -802,83 +335,50 @@ creeazaIngredient";
 
 
 
-// =====================
-// CONTROALE
-// =====================
+
+// =====================================
+// MISCARE DRONA
+// =====================================
+
+
+function updateDrone(){
 
 
 
-document.addEventListener("keydown",e=>{
-
-
-if(e.code=="Space"){
-
-
-if(terminat){
-
-restart();
-
-}
-
-
-incepe();
-
-
-apasat=true;
-
-
-}
-
-
-});
+droneX -=
+boostActive ? 9 : droneSpeed;
 
 
 
+if(droneX < -150){
 
 
-document.addEventListener("keyup",e=>{
+
+droneX =
+window.innerWidth;
 
 
-if(e.code=="Space"){
 
+droneY =
+Math.random() *
+(window.innerHeight-150);
 
-apasat=false;
 
 
 }
 
 
-});
+
+drone.style.left =
+droneX + "px";
+
+
+drone.style.top =
+droneY + "px";
 
 
 
-
-
-
-
-document.addEventListener("touchstart",()=>{
-
-
-incepe();
-
-
-apasat=true;
-
-
-});
-
-
-
-
-
-
-document.addEventListener("touchend",()=>{
-
-
-apasat=false;
-
-
-});
+}
 
 
 
@@ -887,13 +387,440 @@ apasat=false;
 
 
 
-start.addEventListener("click",()=>{
+
+// =====================================
+// MISCARE INGREDIENT
+// =====================================
 
 
-if(terminat){
+function updateIngredient(){
 
 
-restart();
+
+if(!currentIngredient){
+
+return;
+
+}
+
+
+
+ingredientX -= ingredientSpeed;
+
+
+
+ingredient.style.left =
+ingredientX + "px";
+
+
+
+
+
+if(ingredientX < -100){
+
+
+spawnIngredient();
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// BOOST UPDATE
+// =====================================
+
+
+function updateBoost(){
+
+
+
+if(!boostActive){
+
+return;
+
+}
+
+
+
+let elapsed =
+Date.now()-boostStart;
+
+
+
+let percent =
+100 -
+(elapsed/boostTime*100);
+
+
+
+boostFill.style.width =
+Math.max(percent,0)+"%";
+
+
+
+
+
+if(percent<=0){
+
+
+
+boostActive=false;
+
+
+boostBar.style.display="none";
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// PORNIRE BOOST
+// =====================================
+
+
+function activateBoost(){
+
+
+
+boostActive=true;
+
+
+boostStart=Date.now();
+
+
+
+boostBar.style.display="block";
+
+
+boostFill.style.width="100%";
+
+
+
+}// =====================================
+// PARTEA 3/5
+// COLIZIUNI + INGREDIENTE + BOOST
+// =====================================
+
+
+
+
+
+
+// =====================================
+// HITBOX SHAORMA
+// =====================================
+
+
+function getShaormaBox(){
+
+
+return {
+
+x:
+shaorma.offsetLeft +
+(shaorma.width-shaormaHitbox.width)/2,
+
+
+y:
+shaormaY +
+(shaorma.height-shaormaHitbox.height)/2,
+
+
+width:
+shaormaHitbox.width,
+
+
+height:
+shaormaHitbox.height
+
+
+};
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// HITBOX DRONA
+// =====================================
+
+
+function getDroneBox(){
+
+
+
+return {
+
+
+x:
+droneX+
+(drone.width-droneHitbox.width)/2,
+
+
+y:
+droneY+
+(drone.height-droneHitbox.height)/2,
+
+
+width:
+droneHitbox.width,
+
+
+height:
+droneHitbox.height
+
+
+
+};
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// COLIZIUNE GENERALA
+// =====================================
+
+
+function checkCollision(a,b){
+
+
+
+return (
+
+a.x < b.x+b.width &&
+
+a.x+a.width > b.x &&
+
+a.y < b.y+b.height &&
+
+a.y+a.height > b.y
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// VERIFICA DRONA
+// =====================================
+
+
+function checkDrone(){
+
+
+
+let s =
+getShaormaBox();
+
+
+
+let d =
+getDroneBox();
+
+
+
+if(checkCollision(s,d)){
+
+
+
+endGame();
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// HITBOX INGREDIENT
+// =====================================
+
+
+function checkIngredient(){
+
+
+
+if(!currentIngredient){
+
+return;
+
+}
+
+
+
+let s =
+getShaormaBox();
+
+
+
+let i = {
+
+
+x:ingredientX,
+
+
+y:ingredientY,
+
+
+width:55,
+
+
+height:55
+
+
+
+};
+
+
+
+
+
+if(checkCollision(s,i)){
+
+
+
+score +=
+currentIngredient.points;
+
+
+
+scoreText.innerHTML =
+"Scor: "+score;
+
+
+
+
+
+
+if(score>record){
+
+
+
+record=score;
+
+
+
+localStorage.setItem(
+"shaormaRecord",
+record
+);
+
+
+
+recordText.innerHTML =
+"Record: "+record;
+
+
+
+}
+
+
+
+
+
+
+// BOOST LA SOS IUTE
+
+
+if(currentIngredient.boost){
+
+
+activateBoost();
+
+
+}
+
+
+
+
+
+
+spawnIngredient();
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================
+// BOOST SHAORMA CLASA CSS
+// =====================================
+
+
+function updateBoostEffect(){
+
+
+
+if(boostActive){
+
+
+shaorma.classList.add("boost");
 
 
 }
@@ -901,10 +828,216 @@ restart();
 else{
 
 
-incepe();
+shaorma.classList.remove("boost");
 
 
 }
+
+
+}// =====================================
+// PARTEA 4/5
+// START + GAME OVER + CONTROALE
+// =====================================
+
+
+
+
+
+
+function startGame(){
+
+
+
+gameRunning=true;
+
+
+gameOverState=false;
+
+
+
+startButton.style.display="none";
+
+
+
+score=0;
+
+
+scoreText.innerHTML="Scor: 0";
+
+
+
+shaormaY =
+window.innerHeight/2;
+
+
+
+shaormaVelocity=0;
+
+
+
+droneX =
+window.innerWidth;
+
+
+
+spawnIngredient();
+
+
+
+}
+
+
+
+
+
+
+
+
+function endGame(){
+
+
+
+gameRunning=false;
+
+
+gameOverState=true;
+
+
+
+startButton.style.display="block";
+
+
+
+startButton.innerHTML=
+"GAME OVER<br>RESTART";
+
+
+
+}
+
+
+
+
+
+function restartGame(){
+
+
+
+score=0;
+
+
+
+scoreText.innerHTML=
+"Scor: 0";
+
+
+
+boostActive=false;
+
+
+
+boostBar.style.display="none";
+
+
+
+shaorma.classList.remove("boost");
+
+
+
+droneX =
+window.innerWidth;
+
+
+
+shaormaY =
+window.innerHeight/2;
+
+
+
+shaormaVelocity=0;
+
+
+
+spawnIngredient();
+
+
+
+gameRunning=true;
+
+
+
+gameOverState=false;
+
+
+
+startButton.style.display="none";
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================
+// CONTROALE PC
+// =====================================
+
+
+
+document.addEventListener(
+"keydown",
+function(e){
+
+
+
+if(e.code==="Space"){
+
+
+
+pressing=true;
+
+
+
+if(gameOverState){
+
+restartGame();
+
+}
+
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+document.addEventListener(
+"keyup",
+function(e){
+
+
+
+if(e.code==="Space"){
+
+
+pressing=false;
+
+
+}
+
 
 
 });
@@ -916,109 +1049,124 @@ incepe();
 
 
 
-// =====================
-// BUCLE JOC
-// =====================
 
-
-function joc(){
-
-
-if(pornit){
+// =====================================
+// CONTROALE TELEFON
+// =====================================
 
 
 
-if(apasat){
+document.addEventListener(
+"touchstart",
+function(){
 
 
-viteza =
-boostActiv ?
-fortaBoost :
-fortaZbor;
+
+pressing=true;
+
+
+
+if(gameOverState){
+
+restartGame();
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+document.addEventListener(
+"touchend",
+function(){
+
+
+pressing=false;
+
+
+});
+
+
+
+
+
+
+
+
+
+// =====================================
+// BUTON START
+// =====================================
+
+
+
+startButton.addEventListener(
+"click",
+function(){
+
+
+
+if(gameOverState){
+
+
+restartGame();
+
+
+}
+
+else{
+
+
+startGame();
 
 
 }
 
 
 
-viteza+=gravitatie;
-
-
-y+=viteza;
-
-
-shaorma.style.top=
-y+"px";
+});// =====================================
+// PARTEA 5/5
+// GAME LOOP + PORNIRE
+// =====================================
 
 
 
 
 
-
-// DRONA
-
-
-xObstacol-=
-
-boostActiv ? 10 : vitezaObstacol;
+function gameLoop(){
 
 
 
-if(xObstacol<-150){
-
-
-xObstacol=window.innerWidth;
-
-
-yObstacol=
-Math.random()*(window.innerHeight-150);
-
-
-}
+if(gameRunning){
 
 
 
-
-obstacol.style.left=
-xObstacol+"px";
+updateShaorma();
 
 
-obstacol.style.top=
-yObstacol+"px";
+updateDrone();
 
 
+updateIngredient();
 
 
+updateBoost();
 
 
-
-// BOOST BAR
-
-
-boostBar.style.left=
-shaorma.offsetLeft+"px";
-
-
-boostBar.style.top=
-(y+100)+"px";
+updateBoostEffect();
 
 
 
+checkDrone();
 
 
-
-
-
-miscaIngredient();
-
-
-verificaIngredient();
-
-
-verificaColiziune();
-
-
-efectBoost();
+checkIngredient();
 
 
 
@@ -1026,7 +1174,7 @@ efectBoost();
 
 
 
-requestAnimationFrame(joc);
+requestAnimationFrame(gameLoop);
 
 
 
@@ -1034,4 +1182,22 @@ requestAnimationFrame(joc);
 
 
 
-joc();
+
+
+
+
+
+// =====================================
+// START INITIAL
+// =====================================
+
+
+
+startButton.style.display="block";
+
+
+startButton.innerHTML="START";
+
+
+
+gameLoop();
