@@ -7,56 +7,106 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Shaorma Zburătoare</title>
+<title>Shaorma World</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 
+
 <body>
+
 
 <div id="game">
 
-<div id="background"></div>
 
-<div id="hud">
+    <!-- camera vede prin acest container -->
 
-<div id="score">Scor: 0</div>
+    <div id="world">
 
-<div id="record">Record: 0</div>
+
+        <img 
+        id="shaorma"
+        src="images/shaorma.png"
+        >
+
+
+
+        <img
+        id="drone"
+        src="images/drona.png"
+        >
+
+
+
+        <img
+        id="ingredient"
+        src=""
+        >
+
+
+
+    </div>
+
+
+
+
+
+    <!-- INTERFATA -->
+
+
+    <div id="hud">
+
+
+        <div id="score">
+        Scor: 0
+        </div>
+
+
+        <div id="record">
+        Record: 0
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- BOOST -->
+
+
+    <div id="boostBar">
+
+
+        <div id="boostFill"></div>
+
+
+    </div>
+
+
+
+
+
+
+    <button id="startButton">
+
+        START
+
+    </button>
+
+
+
 
 </div>
 
-<div id="boostBar">
 
-<div id="boostFill"></div>
 
-</div>
 
-<img
-id="shaorma"
-src="images/shaorma.png"
-alt="Shaorma">
-
-<img
-id="drone"
-src="images/drona.png"
-alt="Dronă">
-
-<img
-id="ingredient"
-src=""
-alt="Ingredient">
-
-<button id="startButton">
-
-START
-
-</button>
-
-</div>
 
 <script src="game.js"></script>
+
 
 </body>
 
