@@ -1,38 +1,80 @@
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 
 body{
 
-width:100vw;
-height:100vh;
+    width:100vw;
+    height:100vh;
 
-overflow:hidden;
+    overflow:hidden;
 
-background:linear-gradient(
-#35c9ff,
-#dfffff
-);
+    position:relative;
 
-font-family:Arial;
+    font-family:Arial, sans-serif;
 
-position:relative;
+    background:
+    linear-gradient(
+        #35c9ff,
+        #dfffff
+    );
 
 }
 
 
 
-#scor,
-#record{
+/* NORI */
+
+body::before{
+
+content:"☁️      ☁️           ☁️";
 
 position:absolute;
+
+top:40px;
+
+left:0;
+
+font-size:80px;
+
+opacity:0.7;
+
+animation:nori 20s linear infinite;
+
+}
+
+
+@keyframes nori{
+
+from{
+transform:translateX(100vw);
+}
+
+to{
+transform:translateX(-100vw);
+}
+
+}
+
+
+
+
+/* SCOR */
+
+#scor{
+
+position:absolute;
+
+top:20px;
 
 left:20px;
 
 color:white;
+
+font-size:30px;
 
 font-weight:bold;
 
@@ -43,25 +85,34 @@ z-index:50;
 }
 
 
-#scor{
-
-top:20px;
-
-font-size:30px;
-
-}
-
 
 #record{
 
+position:absolute;
+
 top:60px;
 
+left:20px;
+
+color:white;
+
 font-size:25px;
+
+font-weight:bold;
+
+text-shadow:3px 3px 5px black;
+
+z-index:50;
 
 }
 
 
 
+
+
+
+
+/* SHAORMA */
 
 
 #shaorma{
@@ -74,14 +125,20 @@ left:120px;
 
 top:50%;
 
-filter:drop-shadow(0 0 15px orange);
-
 z-index:10;
+
+filter:
+drop-shadow(0 0 15px orange);
 
 }
 
 
 
+
+
+
+
+/* DRONA */
 
 
 #obstacol{
@@ -90,18 +147,20 @@ position:absolute;
 
 width:120px;
 
-left:100%;
-
-top:250px;
-
-filter:drop-shadow(0 0 15px red);
-
 z-index:9;
+
+filter:
+drop-shadow(0 0 15px red);
 
 }
 
 
 
+
+
+
+
+/* INGREDIENT */
 
 
 #ingredient{
@@ -114,10 +173,18 @@ display:none;
 
 z-index:8;
 
+filter:
+drop-shadow(0 0 10px yellow);
+
 }
 
 
 
+
+
+
+
+/* START */
 
 
 #start{
@@ -125,24 +192,37 @@ z-index:8;
 position:absolute;
 
 top:50%;
+
 left:50%;
 
 transform:translate(-50%,-50%);
+
 
 padding:20px 45px;
 
 font-size:28px;
 
-background:linear-gradient(
+font-weight:bold;
+
+
+color:white;
+
+
+background:
+linear-gradient(
 orange,
 red
 );
 
-color:white;
 
-border:0;
+border:none;
 
 border-radius:20px;
+
+
+box-shadow:
+0 0 25px black;
+
 
 z-index:100;
 
@@ -150,6 +230,12 @@ z-index:100;
 
 
 
+
+
+
+
+
+/* BOOST BAR */
 
 
 #boostBar{
@@ -160,15 +246,21 @@ width:170px;
 
 height:18px;
 
+
 background:#222;
+
 
 border:3px solid white;
 
+
 border-radius:20px;
+
+
+overflow:hidden;
+
 
 display:none;
 
-overflow:hidden;
 
 z-index:60;
 
@@ -182,7 +274,10 @@ height:100%;
 
 width:100%;
 
-background:linear-gradient(
+
+background:
+linear-gradient(
+90deg,
 yellow,
 red
 );
@@ -191,34 +286,83 @@ red
 
 
 
+
+
+
+
+/* BOOST SHAORMA */
+
+
 .boost{
+
+animation:boostPulse 0.15s infinite alternate;
+
 
 filter:
 drop-shadow(0 0 25px red)
-drop-shadow(0 0 35px orange);
+drop-shadow(0 0 40px orange)
+drop-shadow(0 0 60px yellow);
 
 }
 
+
+
+@keyframes boostPulse{
+
+
+from{
+
+transform:scale(1);
+
+}
+
+
+to{
+
+transform:scale(1.12);
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* LUAT INGREDIENT */
 
 
 .ia-ingredient{
 
-animation:sarit 0.2s;
+animation:saritura 0.2s;
 
 }
 
 
 
-@keyframes sarit{
+@keyframes saritura{
+
 
 50%{
 
-transform:scale(1.3) rotate(15deg);
+transform:
+scale(1.3)
+rotate(15deg);
 
 }
 
 }
 
+
+
+
+
+
+
+/* PARTICULE */
 
 
 .particula{
