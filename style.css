@@ -4,206 +4,403 @@
     box-sizing:border-box;
 }
 
+
 html,body{
+
     width:100%;
     height:100%;
+
     overflow:hidden;
+
     font-family:Arial,sans-serif;
-    background:#58c8ff;
+
+    background:#5acbff;
+
 }
+
+
 
 #game{
-    position:relative;
+
     width:100vw;
+
     height:100vh;
+
     overflow:hidden;
-    background:linear-gradient(
-        #58c8ff 0%,
-        #8ee2ff 45%,
-        #dff8ff 100%
+
+    position:relative;
+
+    background:
+
+    linear-gradient(
+        #4bc8ff,
+        #dff8ff
     );
+
 }
 
-/* fundal */
 
-#background{
+
+
+
+/* =========================
+   HARTA MARE
+========================= */
+
+
+#world{
+
     position:absolute;
-    inset:0;
-    z-index:0;
+
+    width:5000px;
+
+    height:100vh;
+
+    left:0;
+
+    top:0;
+
+    background:
+
+    linear-gradient(
+        #5acbff,
+        #c9f3ff
+    );
+
 }
 
-/* HUD */
+
+
+
+
+
+/* =========================
+   HUD
+========================= */
+
 
 #hud{
+
     position:absolute;
+
     top:20px;
+
     left:20px;
-    z-index:100;
+
+    z-index:1000;
+
     color:white;
-    text-shadow:2px 2px 5px black;
+
+    text-shadow:
+    3px 3px 5px black;
+
 }
+
+
 
 #score{
+
     font-size:32px;
+
     font-weight:bold;
+
 }
+
+
 
 #record{
+
     margin-top:10px;
+
     font-size:24px;
+
     font-weight:bold;
+
 }
 
-/* boost */
 
-#boostBar{
+
+
+
+
+
+
+/* =========================
+   SHAORMA
+========================= */
+
+
+#shaorma{
+
 
     position:absolute;
 
-    top:20px;
 
-    left:50%;
+    width:140px;
 
-    transform:translateX(-50%);
 
-    width:280px;
+    left:400px;
 
-    height:22px;
 
-    border-radius:20px;
+    top:50%;
 
-    overflow:hidden;
 
-    background:#222;
+    z-index:20;
 
-    border:3px solid white;
+
+    user-select:none;
+
+
+    pointer-events:none;
+
+
+}
+
+
+
+
+
+
+
+
+/* =========================
+   DRONA
+========================= */
+
+
+#drone{
+
+
+    position:absolute;
+
+
+    width:120px;
+
+
+    left:900px;
+
+
+    top:250px;
+
+
+    z-index:15;
+
+
+    user-select:none;
+
+
+    pointer-events:none;
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+   INGREDIENT
+========================= */
+
+
+#ingredient{
+
+
+    position:absolute;
+
+
+    width:55px;
+
 
     display:none;
 
-    z-index:100;
+
+    z-index:10;
+
+
+    user-select:none;
+
+
+    pointer-events:none;
+
 
 }
 
+
+
+
+
+
+
+/* =========================
+   BOOST
+========================= */
+
+
+#boostBar{
+
+
+    position:absolute;
+
+
+    top:20px;
+
+
+    left:50%;
+
+
+    transform:translateX(-50%);
+
+
+    width:280px;
+
+
+    height:22px;
+
+
+    background:#222;
+
+
+    border:3px solid white;
+
+
+    border-radius:20px;
+
+
+    overflow:hidden;
+
+
+    display:none;
+
+
+    z-index:1000;
+
+
+}
+
+
+
 #boostFill{
+
 
     width:100%;
 
+
     height:100%;
 
-    background:linear-gradient(
+
+    background:
+
+    linear-gradient(
         90deg,
         yellow,
         orange,
         red
     );
 
-}
-
-/* shaorma */
-
-#shaorma{
-
-    position:absolute;
-
-    left:120px;
-
-    top:50%;
-
-    width:140px;
-
-    transform:translateY(-50%);
-
-    z-index:10;
-
-    user-select:none;
-
-    pointer-events:none;
 
 }
 
-/* drona */
 
-#drone{
 
-    position:absolute;
 
-    right:-150px;
 
-    top:250px;
 
-    width:120px;
 
-    z-index:9;
 
-    user-select:none;
+/* =========================
+   BUTON
+========================= */
 
-    pointer-events:none;
-
-}
-
-/* ingredient */
-
-#ingredient{
-
-    position:absolute;
-
-    width:55px;
-
-    display:none;
-
-    z-index:8;
-
-    user-select:none;
-
-    pointer-events:none;
-
-}
-
-/* buton */
 
 #startButton{
 
+
     position:absolute;
+
 
     top:50%;
 
+
     left:50%;
 
-    transform:translate(-50%,-50%);
 
-    padding:18px 40px;
+    transform:
+    translate(-50%,-50%);
 
-    border:none;
 
-    border-radius:18px;
+
+    padding:20px 50px;
+
 
     font-size:30px;
 
+
     font-weight:bold;
 
-    cursor:pointer;
+
 
     color:white;
 
-    background:linear-gradient(
+
+    background:
+
+    linear-gradient(
         orange,
         red
     );
 
-    box-shadow:0 10px 30px rgba(0,0,0,.4);
 
-    z-index:200;
+
+    border:none;
+
+
+    border-radius:20px;
+
+
+    z-index:2000;
+
+
+    cursor:pointer;
+
 
 }
+
+
+
+
+
 
 #startButton:hover{
 
-    transform:translate(-50%,-50%) scale(1.05);
+
+    transform:
+    translate(-50%,-50%)
+    scale(1.05);
+
 
 }
 
-.hidden{
 
-    display:none !important;
+
+
+
+
+
+
+/* BOOST EFECT */
+
+
+.boost{
+
+
+filter:
+
+drop-shadow(0 0 20px yellow)
+
+drop-shadow(0 0 40px orange);
+
 
 }
