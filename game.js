@@ -1,28 +1,60 @@
 // =======================================
-// SHAORMA ZBURATOARE
-// GAME.JS NOU - BAZA STABILA
+// SHAORMA WORLD
+// GAME.JS NOU
+// PARTEA 1/5
 // =======================================
 
 
-// ELEMENTE HTML
+// ELEMENTE
+
+const game = document.getElementById("game");
+
+const world = document.getElementById("world");
 
 const shaorma = document.getElementById("shaorma");
+
 const drone = document.getElementById("drone");
+
 const ingredient = document.getElementById("ingredient");
 
-const scoreText = document.getElementById("score");
-const recordText = document.getElementById("record");
 
-const startButton = document.getElementById("startButton");
+const scoreText =
+document.getElementById("score");
 
-const boostBar = document.getElementById("boostBar");
-const boostFill = document.getElementById("boostFill");
+const recordText =
+document.getElementById("record");
+
+
+const startButton =
+document.getElementById("startButton");
+
+
+const boostBar =
+document.getElementById("boostBar");
+
+
+const boostFill =
+document.getElementById("boostFill");
+
+
+
+
+// =======================================
+// LUME
+// =======================================
+
+
+const WORLD_WIDTH = 5000;
+
+
+let cameraX = 0;
 
 
 
 // =======================================
 // JOC
 // =======================================
+
 
 let running = false;
 
@@ -32,25 +64,35 @@ let pressing = false;
 
 
 
+
 // =======================================
-// SHAORMA
+// PLAYER SHAORMA
 // =======================================
 
-let shaormaY = window.innerHeight / 2;
 
-let shaormaVelocity = 0;
+let player = {
+
+x:400,
+
+y:window.innerHeight/2,
+
+speedY:0
+
+};
+
 
 
 const gravity = 0.45;
 
 const jumpPower = -7;
 
-const boostPower = -10;
 
 
-// hitbox shaorma
 
-const shaormaHitbox = {
+
+// HITBOX
+
+const shaormaBox = {
 
 width:96,
 
@@ -61,27 +103,41 @@ height:49
 
 
 
+
 // =======================================
 // DRONA
 // =======================================
 
-let droneX = window.innerWidth;
 
-let droneY = 250;
-
-
-const droneSpeed = 5;
+let droneData = {
 
 
-// hitbox drona
+x:900,
 
-const droneHitbox = {
+y:250,
+
+
+speed:5
+
+
+};
+
+
+
+
+
+const droneBox = {
+
 
 width:93,
 
 height:53
 
+
 };
+
+
+
 
 
 
@@ -90,11 +146,12 @@ height:53
 // SCOR
 // =======================================
 
+
 let score = 0;
 
 
 let record =
-Number(localStorage.getItem("shaormaRecord")) || 0;
+Number(localStorage.getItem("shaormaWorldRecord")) || 0;
 
 
 recordText.innerHTML =
@@ -103,127 +160,38 @@ recordText.innerHTML =
 
 
 
+
+
 // =======================================
 // BOOST
 // =======================================
 
-let boostActive = false;
+
+let boostActive=false;
 
 
-let boostStart = 0;
+let boostStart=0;
 
 
-const boostDuration = 15000;
+const boostDuration=15000;
 
-
-
-
-// =======================================
-// INGREDIENTE
-// =======================================
-
-const ingredients = [
-
-{
-image:"rosie.png",
-points:10
-},
-
-{
-image:"carne.png",
-points:20
-},
-
-{
-image:"cartof.png",
-points:15
-},
-
-{
-image:"varza.png",
-points:5
-},
-
-{
-image:"ceapa.png",
-points:5
-},
-
-{
-image:"sos_iute.png",
-points:30,
-boost:true
-}
-
-];
-
-
-let currentIngredient = null;
-
-
-let ingredientX = 0;
-
-let ingredientY = 0;
-
-
-const ingredientSpeed = 6;
-
-
-
-
-
-function spawnIngredient(){
-
-
-currentIngredient =
-ingredients[
-Math.floor(Math.random()*ingredients.length)
-];
-
-
-
-ingredient.src =
-"images/" + currentIngredient.image;
-
-
-
-ingredient.style.display="block";
-
-
-
-ingredientX = window.innerWidth;
-
-
-ingredientY =
-Math.random() *
-(window.innerHeight-120);
-
-
-
-ingredient.style.left =
-ingredientX+"px";
-
-
-ingredient.style.top =
-ingredientY+"px";
-
-
-}// =======================================
+const boostJump=-10;// =======================================
 // PARTEA 2/5
-// MISCARE + FIZICA
+// MISCARE PLAYER + CAMERA
 // =======================================
 
 
 
-function updateShaorma(){
+function updatePlayer(){
+
 
 
 if(pressing){
 
 
-shaormaVelocity =
+player.speedY =
 boostActive ?
-boostPower :
+boostJump :
 jumpPower;
 
 
@@ -231,33 +199,35 @@ jumpPower;
 
 
 
-shaormaVelocity += gravity;
+player.speedY += gravity;
 
 
-shaormaY += shaormaVelocity;
+player.y += player.speedY;
 
 
 
 
 
-// limite ecran
+// limite verticale
 
-if(shaormaY < 0){
 
-shaormaY = 0;
+if(player.y < 0){
 
-shaormaVelocity = 0;
+player.y=0;
+
+player.speedY=0;
 
 }
 
 
 
-if(shaormaY > window.innerHeight - shaorma.height){
+if(player.y > window.innerHeight-shaorma.height){
 
-shaormaY =
-window.innerHeight - shaorma.height;
+player.y =
+window.innerHeight-shaorma.height;
 
-shaormaVelocity = 0;
+
+player.speedY=0;
 
 }
 
@@ -266,12 +236,65 @@ shaormaVelocity = 0;
 
 
 shaorma.style.top =
-shaormaY + "px";
+player.y+"px";
 
 
 
 }
 
+
+
+
+
+
+
+// =======================================
+// CAMERA
+// =======================================
+
+
+function updateCamera(){
+
+
+
+// camera urmărește shaorma
+
+
+cameraX =
+player.x -
+window.innerWidth/2;
+
+
+
+
+// limite hartă
+
+
+if(cameraX < 0){
+
+cameraX=0;
+
+}
+
+
+
+if(cameraX > WORLD_WIDTH-window.innerWidth){
+
+cameraX =
+WORLD_WIDTH-window.innerWidth;
+
+}
+
+
+
+
+
+world.style.transform =
+`translateX(${-cameraX}px)`;
+
+
+
+}
 
 
 
@@ -288,19 +311,22 @@ function updateDrone(){
 
 
 
-droneX -=
-boostActive ? 9 : droneSpeed;
+droneData.x -=
+boostActive ? 9 : droneData.speed;
 
 
 
-if(droneX < -150){
 
-
-droneX = window.innerWidth;
+if(droneData.x < cameraX-200){
 
 
 
-droneY =
+droneData.x =
+cameraX + window.innerWidth + 300;
+
+
+
+droneData.y =
 Math.random() *
 (window.innerHeight-150);
 
@@ -311,53 +337,146 @@ Math.random() *
 
 
 
+
 drone.style.left =
-droneX+"px";
+droneData.x+"px";
+
 
 
 drone.style.top =
-droneY+"px";
-
-
-}
+droneData.y+"px";
 
 
 
-
-
-
-
-
-// =======================================
-// INGREDIENT
+}// =======================================
+// PARTEA 3/5
+// INGREDIENTE + BOOST
 // =======================================
 
 
-function updateIngredient(){
 
+const foods=[
 
+{
+img:"rosie.png",
+points:10
+},
 
-if(!currentIngredient){
+{
+img:"carne.png",
+points:20
+},
 
-return;
+{
+img:"cartof.png",
+points:15
+},
 
+{
+img:"varza.png",
+points:5
+},
+
+{
+img:"ceapa.png",
+points:5
+},
+
+{
+img:"sos_iute.png",
+points:30,
+boost:true
 }
 
+];
 
 
-ingredientX -= ingredientSpeed;
+
+let currentFood=null;
+
+
+let foodX=1500;
+
+
+let foodY=300;
+
+
+
+
+
+
+function spawnFood(){
+
+
+
+currentFood =
+foods[
+Math.floor(Math.random()*foods.length)
+];
+
+
+
+ingredient.src =
+"images/"+currentFood.img;
+
+
+
+ingredient.style.display="block";
+
+
+
+foodX =
+cameraX +
+window.innerWidth +
+Math.random()*500;
+
+
+
+foodY =
+Math.random()*
+(window.innerHeight-120);
+
+
 
 
 
 ingredient.style.left =
-ingredientX+"px";
+foodX+"px";
+
+
+ingredient.style.top =
+foodY+"px";
 
 
 
-if(ingredientX < -100){
+}
 
 
-spawnIngredient();
+
+
+
+
+
+
+function updateFood(){
+
+
+
+foodX -= 2;
+
+
+
+ingredient.style.left =
+foodX+"px";
+
+
+
+
+
+if(foodX < cameraX-100){
+
+
+spawnFood();
 
 
 }
@@ -371,10 +490,6 @@ spawnIngredient();
 
 
 
-
-// =======================================
-// BOOST
-// =======================================
 
 
 function activateBoost(){
@@ -387,6 +502,7 @@ boostActive=true;
 boostStart=Date.now();
 
 
+
 boostBar.style.display="block";
 
 
@@ -395,6 +511,8 @@ boostFill.style.width="100%";
 
 
 }
+
+
 
 
 
@@ -413,15 +531,13 @@ return;
 
 
 
-let elapsed =
+let time =
 Date.now()-boostStart;
 
 
 
 let percent =
-100 -
-(elapsed/boostDuration*100);
-
+100-(time/boostDuration*100);
 
 
 
@@ -443,6 +559,108 @@ boostActive=false;
 boostBar.style.display="none";
 
 
+}
+
+
+
+}// =======================================
+// PARTEA 4/5
+// COLIZIUNI + SCOR
+// =======================================
+
+
+
+function getShaormaHitbox(){
+
+
+return {
+
+x:player.x + 22,
+
+y:player.y + 25,
+
+width:96,
+
+height:49
+
+};
+
+
+}
+
+
+
+
+
+
+
+function getDroneHitbox(){
+
+
+return {
+
+x:droneData.x + 13,
+
+y:droneData.y + 10,
+
+width:93,
+
+height:53
+
+};
+
+
+}
+
+
+
+
+
+
+
+function collision(a,b){
+
+
+let padding=8;
+
+
+return(
+
+a.x+padding < b.x+b.width &&
+
+a.x+a.width-padding > b.x &&
+
+a.y+padding < b.y+b.height &&
+
+a.y+a.height-padding > b.y
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+function checkDrone(){
+
+
+
+let s=getShaormaHitbox();
+
+let d=getDroneHitbox();
+
+
+
+if(collision(s,d)){
+
+
+endGame();
+
 
 }
 
@@ -456,9 +674,109 @@ boostBar.style.display="none";
 
 
 
+function checkFood(){
 
-function updateBoostVisual(){
 
+
+if(!currentFood){
+
+return;
+
+}
+
+
+
+let s=getShaormaHitbox();
+
+
+
+let f={
+
+
+x:foodX,
+
+y:foodY,
+
+width:55,
+
+height:55
+
+
+};
+
+
+
+
+
+if(collision(s,f)){
+
+
+
+score += currentFood.points;
+
+
+
+scoreText.innerHTML=
+"Scor: "+score;
+
+
+
+
+
+if(score>record){
+
+
+
+record=score;
+
+
+
+localStorage.setItem(
+"shaormaWorldRecord",
+record
+);
+
+
+
+recordText.innerHTML=
+"Record: "+record;
+
+
+}
+
+
+
+
+
+
+
+if(currentFood.boost){
+
+
+activateBoost();
+
+
+}
+
+
+
+spawnFood();
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+function updateBoostEffect(){
 
 
 if(boostActive){
@@ -480,259 +798,8 @@ shaorma.classList.remove("boost");
 
 
 }// =======================================
-// PARTEA 3/5
-// HITBOX + COLIZIUNI
-// =======================================
-
-
-
-
-
-function getShaormaBox(){
-
-
-
-return {
-
-
-x:
-shaorma.offsetLeft + 22,
-
-
-y:
-shaormaY + 25,
-
-
-width:
-shaormaHitbox.width,
-
-
-height:
-shaormaHitbox.height
-
-
-
-};
-
-
-
-}
-
-
-
-
-
-
-
-
-function getDroneBox(){
-
-
-
-return {
-
-
-x:
-droneX + 13,
-
-
-y:
-droneY + 10,
-
-
-width:
-droneHitbox.width,
-
-
-height:
-droneHitbox.height
-
-
-
-};
-
-
-
-}
-
-
-
-
-
-
-
-
-function checkCollision(a,b){
-
-
-
-let padding = 8;
-
-
-
-return (
-
-a.x + padding < b.x+b.width &&
-
-a.x+a.width-padding > b.x &&
-
-a.y + padding < b.y+b.height &&
-
-a.y+a.height-padding > b.y
-
-);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function checkDroneCollision(){
-
-
-
-let s =
-getShaormaBox();
-
-
-let d =
-getDroneBox();
-
-
-
-if(checkCollision(s,d)){
-
-
-
-endGame();
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-function checkIngredientCollision(){
-
-
-
-if(!currentIngredient){
-
-return;
-
-}
-
-
-
-let s =
-getShaormaBox();
-
-
-
-let i = {
-
-
-x:ingredientX,
-
-
-y:ingredientY,
-
-
-width:55,
-
-
-height:55
-
-
-};
-
-
-
-
-
-
-if(checkCollision(s,i)){
-
-
-
-score += currentIngredient.points;
-
-
-
-scoreText.innerHTML =
-"Scor: "+score;
-
-
-
-
-
-if(score > record){
-
-
-
-record=score;
-
-
-
-localStorage.setItem(
-"shaormaRecord",
-record
-);
-
-
-
-recordText.innerHTML =
-"Record: "+record;
-
-
-
-}
-
-
-
-
-
-
-
-if(currentIngredient.boost){
-
-
-activateBoost();
-
-
-}
-
-
-
-
-
-spawnIngredient();
-
-
-
-}
-
-
-
-}// =======================================
-// PARTEA 4/5
-// START + RESTART + CONTROALE
+// PARTEA 5/5
+// START + LOOP
 // =======================================
 
 
@@ -744,7 +811,9 @@ function startGame(){
 
 running=true;
 
+
 gameOver=false;
+
 
 
 startButton.style.display="none";
@@ -759,20 +828,20 @@ scoreText.innerHTML=
 
 
 
-shaormaY =
-window.innerHeight/2;
+player.x=400;
 
 
-shaormaVelocity=0;
+player.y=window.innerHeight/2;
 
 
-
-droneX =
-window.innerWidth;
+player.speedY=0;
 
 
 
-spawnIngredient();
+droneData.x=900;
+
+
+spawnFood();
 
 
 
@@ -816,51 +885,7 @@ startButton.innerHTML=
 function restartGame(){
 
 
-
-score=0;
-
-
-scoreText.innerHTML=
-"Scor: 0";
-
-
-
-boostActive=false;
-
-
-boostBar.style.display="none";
-
-
-shaorma.classList.remove("boost");
-
-
-
-shaormaY =
-window.innerHeight/2;
-
-
-shaormaVelocity=0;
-
-
-
-droneX =
-window.innerWidth;
-
-
-
-spawnIngredient();
-
-
-
-gameOver=false;
-
-
-running=true;
-
-
-
-startButton.style.display="none";
-
+startGame();
 
 
 }
@@ -872,9 +897,7 @@ startButton.style.display="none";
 
 
 
-// =======================================
-// TASTATURA
-// =======================================
+// CONTROALE
 
 
 document.addEventListener(
@@ -883,7 +906,6 @@ document.addEventListener(
 
 
 if(e.code==="Space"){
-
 
 
 pressing=true;
@@ -897,9 +919,7 @@ restartGame();
 }
 
 
-
 }
-
 
 
 });
@@ -923,19 +943,11 @@ pressing=false;
 }
 
 
-
 });
 
 
 
 
-
-
-
-
-// =======================================
-// TOUCH
-// =======================================
 
 
 
@@ -955,9 +967,7 @@ restartGame();
 }
 
 
-
 });
-
 
 
 
@@ -980,13 +990,6 @@ pressing=false;
 
 
 
-
-// =======================================
-// BUTON
-// =======================================
-
-
-
 startButton.addEventListener(
 "click",
 ()=>{
@@ -994,28 +997,29 @@ startButton.addEventListener(
 
 if(gameOver){
 
-
 restartGame();
-
 
 }
 
 else{
 
-
 startGame();
-
 
 }
 
 
-});// =======================================
-// PARTEA 5/5
-// GAME LOOP
-// =======================================
+
+});
 
 
 
+
+
+
+
+
+
+// LOOP 60 FPS
 
 
 function gameLoop(){
@@ -1026,27 +1030,29 @@ if(running){
 
 
 
-updateShaorma();
+updatePlayer();
+
+
+updateCamera();
 
 
 updateDrone();
 
 
-updateIngredient();
-
+updateFood();
 
 
 updateBoost();
 
 
-updateBoostVisual();
+updateBoostEffect();
 
 
 
-checkDroneCollision();
+checkDrone();
 
 
-checkIngredientCollision();
+checkFood();
 
 
 
@@ -1057,7 +1063,6 @@ checkIngredientCollision();
 requestAnimationFrame(gameLoop);
 
 
-
 }
 
 
@@ -1065,18 +1070,7 @@ requestAnimationFrame(gameLoop);
 
 
 
-
-// =======================================
-// INITIALIZARE
-// =======================================
-
-
-
-startButton.style.display="block";
-
-
 startButton.innerHTML="START";
-
 
 
 gameLoop();
