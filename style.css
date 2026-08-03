@@ -14,16 +14,15 @@ body{
 
     position:relative;
 
-    font-family:Arial;
+    font-family:Arial, sans-serif;
 
     background:
     linear-gradient(
         #35c9ff,
-        #bdf5ff
+        #dfffff
     );
 
 }
-
 
 
 
@@ -32,7 +31,7 @@ body{
 
 body::before{
 
-content:"☁️     ☁️          ☁️";
+content:"☁️     ☁️        ☁️        ☁️";
 
 position:absolute;
 
@@ -44,9 +43,7 @@ font-size:80px;
 
 opacity:0.7;
 
-animation:nori 20s linear infinite;
-
-z-index:1;
+animation:nori 25s linear infinite;
 
 }
 
@@ -55,15 +52,11 @@ z-index:1;
 @keyframes nori{
 
 from{
-
 transform:translateX(100vw);
-
 }
 
 to{
-
-transform:translateX(-100vw);
-
+transform:translateX(-120vw);
 }
 
 }
@@ -73,52 +66,47 @@ transform:translateX(-100vw);
 
 
 
-/* SCOR */
+/* HUD */
 
 
-#scor{
+#scor,
+#record{
 
 position:absolute;
-
-top:20px;
 
 left:20px;
 
 color:white;
 
-font-size:30px;
-
 font-weight:bold;
 
-text-shadow:3px 3px 5px black;
+text-shadow:
+3px 3px 5px black;
 
-z-index:50;
+z-index:100;
 
 }
 
 
+
+#scor{
+
+top:20px;
+
+font-size:32px;
+
+}
 
 
 
 #record{
 
-position:absolute;
-
-top:60px;
-
-left:20px;
-
-color:white;
+top:65px;
 
 font-size:25px;
 
-font-weight:bold;
-
-text-shadow:3px 3px 5px black;
-
-z-index:50;
-
 }
+
 
 
 
@@ -138,14 +126,16 @@ left:120px;
 
 top:50%;
 
-z-index:10;
+
+z-index:20;
 
 
 filter:
 
 drop-shadow(0 0 15px orange)
 
-drop-shadow(0 0 25px yellow);
+drop-shadow(0 0 30px yellow);
+
 
 }
 
@@ -164,18 +154,22 @@ position:absolute;
 
 width:120px;
 
+
 left:100%;
+
 
 top:250px;
 
-z-index:9;
+
+z-index:15;
 
 
 filter:
 
-drop-shadow(0 0 15px red)
+drop-shadow(0 0 20px red)
 
-drop-shadow(0 0 25px orange);
+drop-shadow(0 0 35px orange);
+
 
 }
 
@@ -190,20 +184,26 @@ drop-shadow(0 0 25px orange);
 
 #ingredient{
 
+
 position:absolute;
+
 
 width:55px;
 
+
 display:none;
 
-z-index:8;
+
+z-index:10;
 
 
 filter:
 
-drop-shadow(0 0 10px yellow);
+drop-shadow(0 0 15px yellow);
+
 
 }
+
 
 
 
@@ -216,18 +216,23 @@ drop-shadow(0 0 10px yellow);
 
 #start{
 
+
 position:absolute;
+
 
 top:50%;
 
 left:50%;
 
+
 transform:translate(-50%,-50%);
 
 
-padding:20px 45px;
+padding:20px 50px;
 
-font-size:28px;
+
+font-size:30px;
+
 
 font-weight:bold;
 
@@ -243,17 +248,21 @@ red
 );
 
 
+
 border:none;
 
-border-radius:20px;
+
+border-radius:25px;
 
 
 box-shadow:
 
-0 0 25px black;
+0 0 30px black;
 
 
-z-index:100;
+z-index:200;
+
+
 
 }
 
@@ -263,16 +272,20 @@ z-index:100;
 
 
 
-/* BOOST BAR */
+
+/* BOOST */
 
 
 #boostBar{
 
+
 position:absolute;
 
-width:170px;
 
-height:18px;
+width:180px;
+
+
+height:20px;
 
 
 background:#222;
@@ -290,21 +303,23 @@ overflow:hidden;
 display:none;
 
 
-z-index:60;
+z-index:150;
 
 
 box-shadow:
 
-0 0 15px red;
+0 0 20px red;
+
 
 }
 
 
 
-
 #boostProgress{
 
+
 height:100%;
+
 
 width:100%;
 
@@ -314,69 +329,19 @@ background:
 linear-gradient(
 90deg,
 yellow,
+orange,
 red
 );
 
 
 box-shadow:
 
-0 0 20px yellow;
-
-}
-
-
-
-
-
-
-
-
-/* ANIMATIE INGREDIENT */
-
-
-.ia-ingredient{
-
-animation:
-
-iaIngredient 0.25s;
-
-}
-
-
-
-@keyframes iaIngredient{
-
-
-0%{
-
-transform:scale(1);
-
-}
-
-
-50%{
-
-transform:
-
-scale(1.35)
-
-rotate(15deg);
-
-filter:
-
-drop-shadow(0 0 30px yellow);
-
-}
-
-
-100%{
-
-transform:scale(1);
-
-}
+0 0 30px yellow;
 
 
 }
+
+
 
 
 
@@ -392,19 +357,10 @@ transform:scale(1);
 
 animation:
 
-boostPulse 0.4s infinite alternate;
+boostPulse .3s infinite alternate;
 
-
-filter:
-
-drop-shadow(0 0 25px red)
-
-drop-shadow(0 0 45px orange)
-
-drop-shadow(0 0 60px yellow);
 
 }
-
 
 
 
@@ -421,12 +377,55 @@ transform:scale(1);
 
 to{
 
-transform:scale(1.1);
+transform:scale(1.15);
 
 }
 
 
 }
+
+
+
+
+
+
+
+
+
+/* INGREDIENT */
+
+
+.ia-ingredient{
+
+
+animation:
+
+ingredient 0.25s;
+
+
+}
+
+
+
+@keyframes ingredient{
+
+
+50%{
+
+transform:
+
+scale(1.4)
+
+rotate(20deg);
+
+
+}
+
+
+}
+
+
+
 
 
 
@@ -439,28 +438,46 @@ transform:scale(1.1);
 
 .particula{
 
+
 position:absolute;
 
-width:14px;
-
-height:14px;
 
 border-radius:50%;
 
 
-background:orange;
-
-
-box-shadow:
-
-0 0 10px orange,
-
-0 0 25px red;
-
-
-z-index:200;
+z-index:500;
 
 
 pointer-events:none;
 
+
+box-shadow:
+
+0 0 20px orange;
+
+
 }
+
+
+
+
+
+
+/* EXPLOZIE */
+
+
+.explozie{
+
+
+position:absolute;
+
+
+border-radius:50%;
+
+
+z-index:600;
+
+
+}
+
+
