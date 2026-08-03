@@ -9,6 +9,7 @@ box-sizing:border-box;
 }
 
 
+
 body{
 
 overflow:hidden;
@@ -16,6 +17,8 @@ overflow:hidden;
 background:black;
 
 }
+
+
 
 
 
@@ -30,6 +33,9 @@ position:relative;
 overflow:hidden;
 
 }
+
+
+
 
 
 
@@ -57,6 +63,9 @@ z-index:0;
 
 
 
+
+
+
 /* SHAORMA */
 
 #shaorma{
@@ -74,6 +83,8 @@ transform:translateY(-50%);
 z-index:10;
 
 }
+
+
 
 
 
@@ -99,6 +110,8 @@ z-index:9;
 
 
 
+
+
 /* INGREDIENT */
 
 #ingredient{
@@ -114,6 +127,8 @@ z-index:15;
 display:none;
 
 }
+
+
 
 
 
@@ -147,7 +162,9 @@ text-shadow:2px 2px 5px black;
 
 
 
-/* START */
+
+
+/* START / GAME OVER */
 
 #start{
 
@@ -181,7 +198,9 @@ text-shadow:3px 3px 5px black;
 
 
 
-/* CONTAINER PARTICULE */
+
+
+/* PARTICULE */
 
 #particule{
 
@@ -200,8 +219,6 @@ z-index:50;
 
 
 
-
-/* PARTICULE */
 
 .particula{
 
@@ -243,8 +260,9 @@ opacity:0;
 
 }
 
-
 }
+
+
 
 
 
@@ -285,8 +303,9 @@ transform:translateY(-50%) scale(1);
 
 }
 
-
 }
+
+
 
 
 
@@ -296,13 +315,50 @@ transform:translateY(-50%) scale(1);
 
 .boost{
 
-filter:drop-shadow(0 0 20px red);
+
+filter:drop-shadow(0 0 25px red);
+
+animation:focBoost 0.15s infinite alternate;
 
 }
 
 
 
 
+
+@keyframes focBoost{
+
+
+0%{
+
+
+transform:translateY(-50%) scale(1);
+
+filter:drop-shadow(0 0 15px red);
+
+}
+
+
+
+100%{
+
+
+transform:translateY(-50%) scale(1.12);
+
+filter:drop-shadow(0 0 35px orange);
+
+}
+
+
+}
+
+
+
+
+
+
+
+/* BUTON MOBIL */
 
 @media(max-width:600px){
 
