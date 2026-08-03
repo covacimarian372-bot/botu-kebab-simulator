@@ -1,18 +1,20 @@
-let shaorma=document.getElementById("shaorma");
-let obstacol=document.getElementById("obstacol");
-let ingredient=document.getElementById("ingredient");
+let shaorma = document.getElementById("shaorma");
+let obstacol = document.getElementById("obstacol");
+let ingredient = document.getElementById("ingredient");
 
-let start=document.getElementById("start");
+let start = document.getElementById("start");
 
-let scorText=document.getElementById("scor");
-let recordText=document.getElementById("record");
+let scorText = document.getElementById("scor");
+let recordText = document.getElementById("record");
 
-let boostBar=document.getElementById("boostBar");
-let boostProgress=document.getElementById("boostProgress");
+let boostBar = document.getElementById("boostBar");
+let boostProgress = document.getElementById("boostProgress");
 
 
 
+// =====================
 // AUDIO
+// =====================
 
 let audioCtx;
 
@@ -21,14 +23,14 @@ function sunet(freq,timp,volum){
 
 if(!audioCtx){
 
-audioCtx=new AudioContext();
+audioCtx = new AudioContext();
 
 }
 
 
-let osc=audioCtx.createOscillator();
+let osc = audioCtx.createOscillator();
 
-let gain=audioCtx.createGain();
+let gain = audioCtx.createGain();
 
 
 osc.frequency.value=freq;
@@ -55,7 +57,6 @@ osc.stop();
 
 
 
-
 function vibratie(t){
 
 if(navigator.vibrate){
@@ -72,7 +73,9 @@ navigator.vibrate(t);
 
 
 
-// STARE JOC
+// =====================
+// JOC
+// =====================
 
 
 let pornit=false;
@@ -80,7 +83,6 @@ let pornit=false;
 let terminat=false;
 
 let apasat=false;
-
 
 
 
@@ -125,11 +127,12 @@ let fortaBoost=-10;
 let scor=0;
 
 
-let record=
+let record =
 Number(localStorage.getItem("recordShaorma")) || 0;
 
 
-recordText.innerHTML="Record: "+record;
+recordText.innerHTML=
+"Record: "+record;
 
 
 
@@ -143,7 +146,6 @@ recordText.innerHTML="Record: "+record;
 let xObstacol=window.innerWidth;
 
 let yObstacol=250;
-
 
 let vitezaObstacol=5;
 
@@ -217,14 +219,11 @@ Math.floor(Math.random()*ingrediente.length)
 ];
 
 
-
-ingredient.src=
+ingredient.src =
 "images/"+ingredientActual.nume;
 
 
-
 ingredient.style.display="block";
-
 
 
 xIngredient=window.innerWidth;
@@ -234,11 +233,12 @@ yIngredient=
 Math.random()*(window.innerHeight-100);
 
 
+ingredient.style.left=
+xIngredient+"px";
 
-ingredient.style.left=xIngredient+"px";
 
-
-ingredient.style.top=yIngredient+"px";
+ingredient.style.top=
+yIngredient+"px";
 
 
 }
@@ -255,7 +255,8 @@ function miscaIngredient(){
 xIngredient-=vitezaIngredient;
 
 
-ingredient.style.left=xIngredient+"px";
+ingredient.style.left=
+xIngredient+"px";
 
 
 
@@ -266,9 +267,9 @@ creeazaIngredient();
 }
 
 
-}// ==========================
-// EFECTE + BOOST
-// ==========================
+}// =====================
+// EFECTE
+// =====================
 
 
 function particuleExplozie(x,y,c="orange"){
@@ -304,6 +305,7 @@ let dy=Math.random()*300-150;
 p.animate(
 
 [
+
 {
 transform:"translate(0,0)",
 opacity:1
@@ -317,7 +319,9 @@ opacity:0
 ],
 
 {
+
 duration:800
+
 }
 
 );
@@ -342,6 +346,9 @@ p.remove();
 
 
 
+// =====================
+// FOC BOOST
+// =====================
 
 
 function efectBoost(){
@@ -352,6 +359,7 @@ if(!boostActiv)return;
 
 
 let foc=document.createElement("div");
+
 
 
 foc.style.position="absolute";
@@ -365,6 +373,7 @@ foc.style.top=
 y+50+"px";
 
 
+
 foc.style.width="35px";
 
 
@@ -372,6 +381,7 @@ foc.style.height="35px";
 
 
 foc.style.borderRadius="50%";
+
 
 
 foc.style.background=
@@ -407,7 +417,9 @@ opacity:0
 ],
 
 {
+
 duration:400
+
 }
 
 );
@@ -421,7 +433,6 @@ foc.remove();
 },400);
 
 
-
 }
 
 
@@ -430,6 +441,10 @@ foc.remove();
 
 
 
+
+// =====================
+// INGREDIENTE
+// =====================
 
 
 function verificaIngredient(){
@@ -455,27 +470,34 @@ s.bottom>i.top
 scor+=ingredientActual.puncte;
 
 
-scorText.innerHTML="Scor: "+scor;
+scorText.innerHTML=
+"Scor: "+scor;
 
 
 
 if(scor>record){
 
+
 record=scor;
+
 
 localStorage.setItem(
 "recordShaorma",
 record
 );
 
+
 }
 
 
-recordText.innerHTML="Record: "+record;
+recordText.innerHTML=
+"Record: "+record;
+
 
 
 
 sunet(700,120,0.1);
+
 
 vibratie(40);
 
@@ -485,6 +507,9 @@ particuleExplozie(
 s.left+50,
 s.top+40
 );
+
+
+
 
 
 
@@ -516,11 +541,13 @@ shaorma.classList.remove("boost");
 boostBar.style.display="none";
 
 
+
 },timpBoost);
 
 
 
 }
+
 
 
 
@@ -539,7 +566,6 @@ shaorma.classList.remove("ia-ingredient");
 creeazaIngredient();
 
 
-
 }
 
 
@@ -551,6 +577,10 @@ creeazaIngredient();
 
 
 
+
+// =====================
+// EXPLOZIE DRONA
+// =====================
 
 
 function explozieDrona(){
@@ -568,8 +598,8 @@ vibratie([200,100,300]);
 
 
 particuleExplozie(
-d.left+55,
-d.top+23,
+d.left+50,
+d.top+40,
 "red"
 );
 
@@ -600,8 +630,11 @@ obstacol.style.transform=
 
 
 
-
-// HITBOX DRONA 110x46
+// =====================
+// COLIZIUNE
+// SHAORMA 96x49
+// DRONA 93x53
+// =====================
 
 
 function verificaColiziune(){
@@ -613,17 +646,38 @@ let d=obstacol.getBoundingClientRect();
 
 
 
-// hitbox fix drona
+
+// HITBOX SHAORMA
+
+let shaormaX =
+s.left+(s.width-96)/2;
 
 
-let dronaX=d.left;
+let shaormaY =
+s.top+(s.height-49)/2;
 
-let dronaY=d.top+(d.height-46)/2;
+
+let shaormaW=96;
+
+let shaormaH=49;
 
 
-let dronaW=110;
 
-let dronaH=46;
+
+
+// HITBOX DRONA
+
+let dronaX =
+d.left+(d.width-93)/2;
+
+
+let dronaY =
+d.top+(d.height-53)/2;
+
+
+let dronaW=93;
+
+let dronaH=53;
 
 
 
@@ -631,13 +685,13 @@ let dronaH=46;
 
 if(
 
-s.left < dronaX+dronaW &&
+shaormaX < dronaX+dronaW &&
 
-s.right > dronaX &&
+shaormaX+shaormaW > dronaX &&
 
-s.top < dronaY+dronaH &&
+shaormaY < dronaY+dronaH &&
 
-s.bottom > dronaY
+shaormaY+shaormaH > dronaY
 
 ){
 
@@ -651,10 +705,9 @@ gameOver();
 }
 
 
-}// ==========================
-// RESTART + CONTROALE + JOC
-// ==========================
-
+}// =====================
+// GAME OVER + RESTART
+// =====================
 
 
 function gameOver(){
@@ -674,8 +727,6 @@ start.innerHTML=
 
 
 }
-
-
 
 
 
@@ -724,8 +775,6 @@ creeazaIngredient();
 
 
 
-
-
 function incepe(){
 
 
@@ -738,7 +787,7 @@ pornit=true;
 start.style.display="none";
 
 
-creeazaIngredient();
+creeazaIngredient";
 
 
 }
@@ -753,15 +802,16 @@ creeazaIngredient();
 
 
 
+// =====================
+// CONTROALE
+// =====================
 
-// TASTATURA
 
 
 document.addEventListener("keydown",e=>{
 
 
 if(e.code=="Space"){
-
 
 
 if(terminat){
@@ -771,9 +821,7 @@ restart();
 }
 
 
-
 incepe();
-
 
 
 apasat=true;
@@ -783,8 +831,6 @@ apasat=true;
 
 
 });
-
-
 
 
 
@@ -810,10 +856,6 @@ apasat=false;
 
 
 
-
-// TELEFON / TOUCH
-
-
 document.addEventListener("touchstart",()=>{
 
 
@@ -824,6 +866,8 @@ apasat=true;
 
 
 });
+
+
 
 
 
@@ -872,12 +916,12 @@ incepe();
 
 
 
-
+// =====================
 // BUCLE JOC
+// =====================
 
 
 function joc(){
-
 
 
 if(pornit){
@@ -948,7 +992,6 @@ yObstacol+"px";
 
 
 
-
 // BOOST BAR
 
 
@@ -958,6 +1001,8 @@ shaorma.offsetLeft+"px";
 
 boostBar.style.top=
 (y+100)+"px";
+
+
 
 
 
