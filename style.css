@@ -4,377 +4,206 @@
     box-sizing:border-box;
 }
 
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:#58c8ff;
+}
 
-body{
-
+#game{
+    position:relative;
     width:100vw;
     height:100vh;
+    overflow:hidden;
+    background:linear-gradient(
+        #58c8ff 0%,
+        #8ee2ff 45%,
+        #dff8ff 100%
+    );
+}
+
+/* fundal */
+
+#background{
+    position:absolute;
+    inset:0;
+    z-index:0;
+}
+
+/* HUD */
+
+#hud{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:100;
+    color:white;
+    text-shadow:2px 2px 5px black;
+}
+
+#score{
+    font-size:32px;
+    font-weight:bold;
+}
+
+#record{
+    margin-top:10px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+/* boost */
+
+#boostBar{
+
+    position:absolute;
+
+    top:20px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:280px;
+
+    height:22px;
+
+    border-radius:20px;
 
     overflow:hidden;
 
-    position:relative;
+    background:#222;
 
-    font-family:Arial, sans-serif;
+    border:3px solid white;
 
-    background:
-    linear-gradient(
-        #35c9ff,
-        #dfffff
+    display:none;
+
+    z-index:100;
+
+}
+
+#boostFill{
+
+    width:100%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        yellow,
+        orange,
+        red
     );
 
 }
 
-
-
-/* NORI */
-
-body::before{
-
-content:"☁️      ☁️           ☁️";
-
-position:absolute;
-
-top:40px;
-
-left:0;
-
-font-size:80px;
-
-opacity:0.7;
-
-animation:nori 20s linear infinite;
-
-}
-
-
-@keyframes nori{
-
-from{
-transform:translateX(100vw);
-}
-
-to{
-transform:translateX(-100vw);
-}
-
-}
-
-
-
-
-/* SCOR */
-
-#scor{
-
-position:absolute;
-
-top:20px;
-
-left:20px;
-
-color:white;
-
-font-size:30px;
-
-font-weight:bold;
-
-text-shadow:3px 3px 5px black;
-
-z-index:50;
-
-}
-
-
-
-#record{
-
-position:absolute;
-
-top:60px;
-
-left:20px;
-
-color:white;
-
-font-size:25px;
-
-font-weight:bold;
-
-text-shadow:3px 3px 5px black;
-
-z-index:50;
-
-}
-
-
-
-
-
-
-
-/* SHAORMA */
-
+/* shaorma */
 
 #shaorma{
 
-position:absolute;
+    position:absolute;
 
-width:140px;
+    left:120px;
 
-left:120px;
+    top:50%;
 
-top:50%;
+    width:140px;
 
-z-index:10;
+    transform:translateY(-50%);
 
-filter:
-drop-shadow(0 0 15px orange);
+    z-index:10;
 
-}
+    user-select:none;
 
-
-
-
-
-
-
-/* DRONA */
-
-
-#obstacol{
-
-position:absolute;
-
-width:120px;
-
-z-index:9;
-
-filter:
-drop-shadow(0 0 15px red);
+    pointer-events:none;
 
 }
 
+/* drona */
 
+#drone{
 
+    position:absolute;
 
+    right:-150px;
 
+    top:250px;
 
+    width:120px;
 
-/* INGREDIENT */
+    z-index:9;
 
+    user-select:none;
+
+    pointer-events:none;
+
+}
+
+/* ingredient */
 
 #ingredient{
 
-position:absolute;
+    position:absolute;
 
-width:55px;
+    width:55px;
 
-display:none;
+    display:none;
 
-z-index:8;
+    z-index:8;
 
-filter:
-drop-shadow(0 0 10px yellow);
+    user-select:none;
 
-}
-
-
-
-
-
-
-
-/* START */
-
-
-#start{
-
-position:absolute;
-
-top:50%;
-
-left:50%;
-
-transform:translate(-50%,-50%);
-
-
-padding:20px 45px;
-
-font-size:28px;
-
-font-weight:bold;
-
-
-color:white;
-
-
-background:
-linear-gradient(
-orange,
-red
-);
-
-
-border:none;
-
-border-radius:20px;
-
-
-box-shadow:
-0 0 25px black;
-
-
-z-index:100;
+    pointer-events:none;
 
 }
 
+/* buton */
 
+#startButton{
 
+    position:absolute;
 
+    top:50%;
 
+    left:50%;
 
+    transform:translate(-50%,-50%);
 
+    padding:18px 40px;
 
-/* BOOST BAR */
+    border:none;
 
+    border-radius:18px;
 
-#boostBar{
+    font-size:30px;
 
-position:absolute;
+    font-weight:bold;
 
-width:170px;
+    cursor:pointer;
 
-height:18px;
+    color:white;
 
+    background:linear-gradient(
+        orange,
+        red
+    );
 
-background:#222;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
 
-
-border:3px solid white;
-
-
-border-radius:20px;
-
-
-overflow:hidden;
-
-
-display:none;
-
-
-z-index:60;
-
-}
-
-
-
-#boostProgress{
-
-height:100%;
-
-width:100%;
-
-
-background:
-linear-gradient(
-90deg,
-yellow,
-red
-);
+    z-index:200;
 
 }
 
+#startButton:hover{
 
-
-
-
-
-
-/* BOOST SHAORMA */
-
-
-.boost{
-
-animation:boostPulse 0.15s infinite alternate;
-
-
-filter:
-drop-shadow(0 0 25px red)
-drop-shadow(0 0 40px orange)
-drop-shadow(0 0 60px yellow);
+    transform:translate(-50%,-50%) scale(1.05);
 
 }
 
+.hidden{
 
-
-@keyframes boostPulse{
-
-
-from{
-
-transform:scale(1);
-
-}
-
-
-to{
-
-transform:scale(1.12);
-
-}
-
-
-}
-
-
-
-
-
-
-
-/* LUAT INGREDIENT */
-
-
-.ia-ingredient{
-
-animation:saritura 0.2s;
-
-}
-
-
-
-@keyframes saritura{
-
-
-50%{
-
-transform:
-scale(1.3)
-rotate(15deg);
-
-}
-
-}
-
-
-
-
-
-
-
-/* PARTICULE */
-
-
-.particula{
-
-position:absolute;
-
-width:12px;
-
-height:12px;
-
-border-radius:50%;
-
-z-index:200;
+    display:none !important;
 
 }
