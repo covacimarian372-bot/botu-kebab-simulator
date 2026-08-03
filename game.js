@@ -1,65 +1,54 @@
-// =====================================
-// SHAORMA ZBURATOARE - GAME ENGINE
-// PARTEA 1/5
-// CONFIG + VARIABILE
-// =====================================
-
+// =======================================
+// SHAORMA ZBURATOARE
+// GAME.JS NOU - BAZA STABILA
+// =======================================
 
 
 // ELEMENTE HTML
 
 const shaorma = document.getElementById("shaorma");
-
 const drone = document.getElementById("drone");
-
 const ingredient = document.getElementById("ingredient");
 
 const scoreText = document.getElementById("score");
-
 const recordText = document.getElementById("record");
 
 const startButton = document.getElementById("startButton");
 
 const boostBar = document.getElementById("boostBar");
-
 const boostFill = document.getElementById("boostFill");
 
 
 
+// =======================================
+// JOC
+// =======================================
 
-// =====================================
-// STARE JOC
-// =====================================
+let running = false;
 
-
-let gameRunning = false;
-
-let gameOverState = false;
+let gameOver = false;
 
 let pressing = false;
 
 
 
-// =====================================
-// SHAORMA FIZICA
-// =====================================
-
+// =======================================
+// SHAORMA
+// =======================================
 
 let shaormaY = window.innerHeight / 2;
-
 
 let shaormaVelocity = 0;
 
 
 const gravity = 0.45;
 
-
 const jumpPower = -7;
 
+const boostPower = -10;
 
 
-
-// HITBOX SHAORMA
+// hitbox shaorma
 
 const shaormaHitbox = {
 
@@ -72,15 +61,11 @@ height:49
 
 
 
-
-
-// =====================================
+// =======================================
 // DRONA
-// =====================================
-
+// =======================================
 
 let droneX = window.innerWidth;
-
 
 let droneY = 250;
 
@@ -88,8 +73,7 @@ let droneY = 250;
 const droneSpeed = 5;
 
 
-
-// HITBOX DRONA
+// hitbox drona
 
 const droneHitbox = {
 
@@ -102,12 +86,9 @@ height:53
 
 
 
-
-
-// =====================================
+// =======================================
 // SCOR
-// =====================================
-
+// =======================================
 
 let score = 0;
 
@@ -116,76 +97,57 @@ let record =
 Number(localStorage.getItem("shaormaRecord")) || 0;
 
 
-
 recordText.innerHTML =
 "Record: " + record;
 
 
 
 
-
-
-
-// =====================================
+// =======================================
 // BOOST
-// =====================================
-
+// =======================================
 
 let boostActive = false;
-
-
-let boostTime = 15000;
 
 
 let boostStart = 0;
 
 
-const boostPower = -10;
+const boostDuration = 15000;
 
 
 
 
-
-
-
-// =====================================
+// =======================================
 // INGREDIENTE
-// =====================================
-
-
+// =======================================
 
 const ingredients = [
-
 
 {
 image:"rosie.png",
 points:10
 },
 
-
 {
 image:"carne.png",
 points:20
 },
-
 
 {
 image:"cartof.png",
 points:15
 },
 
-
 {
 image:"varza.png",
 points:5
 },
 
-
 {
 image:"ceapa.png",
 points:5
 },
-
 
 {
 image:"sos_iute.png",
@@ -193,20 +155,15 @@ points:30,
 boost:true
 }
 
-
 ];
 
 
-
-
-
-let currentIngredient;
+let currentIngredient = null;
 
 
 let ingredientX = 0;
 
-
-let ingredientY = 300;
+let ingredientY = 0;
 
 
 const ingredientSpeed = 6;
@@ -215,19 +172,12 @@ const ingredientSpeed = 6;
 
 
 
-// =====================================
-// FUNCTIE START INGREDIENT
-// =====================================
-
-
 function spawnIngredient(){
 
 
 currentIngredient =
 ingredients[
-Math.floor(
-Math.random()*ingredients.length
-)
+Math.floor(Math.random()*ingredients.length)
 ];
 
 
@@ -246,30 +196,23 @@ ingredientX = window.innerWidth;
 
 ingredientY =
 Math.random() *
-(window.innerHeight-100);
+(window.innerHeight-120);
 
 
 
 ingredient.style.left =
-ingredientX + "px";
+ingredientX+"px";
 
 
 ingredient.style.top =
-ingredientY + "px";
+ingredientY+"px";
 
 
-}// =====================================
+}// =======================================
 // PARTEA 2/5
-// FIZICA + MISCAREA OBIECTELOR
-// =====================================
+// MISCARE + FIZICA
+// =======================================
 
-
-
-
-
-// =====================================
-// MISCARE SHAORMA
-// =====================================
 
 
 function updateShaorma(){
@@ -295,8 +238,9 @@ shaormaY += shaormaVelocity;
 
 
 
-// limite ecran
 
+
+// limite ecran
 
 if(shaormaY < 0){
 
@@ -308,10 +252,10 @@ shaormaVelocity = 0;
 
 
 
-if(shaormaY > window.innerHeight-80){
+if(shaormaY > window.innerHeight - shaorma.height){
 
 shaormaY =
-window.innerHeight-80;
+window.innerHeight - shaorma.height;
 
 shaormaVelocity = 0;
 
@@ -335,10 +279,9 @@ shaormaY + "px";
 
 
 
-
-// =====================================
-// MISCARE DRONA
-// =====================================
+// =======================================
+// DRONA
+// =======================================
 
 
 function updateDrone(){
@@ -353,9 +296,7 @@ boostActive ? 9 : droneSpeed;
 if(droneX < -150){
 
 
-
-droneX =
-window.innerWidth;
+droneX = window.innerWidth;
 
 
 
@@ -369,13 +310,13 @@ Math.random() *
 
 
 
+
 drone.style.left =
-droneX + "px";
+droneX+"px";
 
 
 drone.style.top =
-droneY + "px";
-
+droneY+"px";
 
 
 }
@@ -387,10 +328,9 @@ droneY + "px";
 
 
 
-
-// =====================================
-// MISCARE INGREDIENT
-// =====================================
+// =======================================
+// INGREDIENT
+// =======================================
 
 
 function updateIngredient(){
@@ -410,9 +350,7 @@ ingredientX -= ingredientSpeed;
 
 
 ingredient.style.left =
-ingredientX + "px";
-
-
+ingredientX+"px";
 
 
 
@@ -434,11 +372,33 @@ spawnIngredient();
 
 
 
+// =======================================
+// BOOST
+// =======================================
 
 
-// =====================================
-// BOOST UPDATE
-// =====================================
+function activateBoost(){
+
+
+
+boostActive=true;
+
+
+boostStart=Date.now();
+
+
+boostBar.style.display="block";
+
+
+boostFill.style.width="100%";
+
+
+
+}
+
+
+
+
 
 
 function updateBoost(){
@@ -460,7 +420,9 @@ Date.now()-boostStart;
 
 let percent =
 100 -
-(elapsed/boostTime*100);
+(elapsed/boostDuration*100);
+
+
 
 
 
@@ -495,58 +457,50 @@ boostBar.style.display="none";
 
 
 
-
-// =====================================
-// PORNIRE BOOST
-// =====================================
-
-
-function activateBoost(){
+function updateBoostVisual(){
 
 
 
-boostActive=true;
+if(boostActive){
 
 
-boostStart=Date.now();
+shaorma.classList.add("boost");
+
+
+}
+
+else{
+
+
+shaorma.classList.remove("boost");
+
+
+}
 
 
 
-boostBar.style.display="block";
-
-
-boostFill.style.width="100%";
-
-
-
-}// =====================================
+}// =======================================
 // PARTEA 3/5
-// COLIZIUNI + INGREDIENTE + BOOST
-// =====================================
+// HITBOX + COLIZIUNI
+// =======================================
 
 
 
-
-
-
-// =====================================
-// HITBOX SHAORMA
-// =====================================
 
 
 function getShaormaBox(){
 
 
+
 return {
 
+
 x:
-shaorma.offsetLeft +
-(shaorma.width-shaormaHitbox.width)/2,
+shaorma.offsetLeft + 22,
 
 
 y:
-shaormaY +
-(shaorma.height-shaormaHitbox.height)/2,
+shaormaY + 25,
 
 
 width:
@@ -557,7 +511,9 @@ height:
 shaormaHitbox.height
 
 
+
 };
+
 
 
 }
@@ -569,12 +525,6 @@ shaormaHitbox.height
 
 
 
-
-// =====================================
-// HITBOX DRONA
-// =====================================
-
-
 function getDroneBox(){
 
 
@@ -583,13 +533,11 @@ return {
 
 
 x:
-droneX+
-(drone.width-droneHitbox.width)/2,
+droneX + 13,
 
 
 y:
-droneY+
-(drone.height-droneHitbox.height)/2,
+droneY + 10,
 
 
 width:
@@ -604,6 +552,7 @@ droneHitbox.height
 };
 
 
+
 }
 
 
@@ -613,25 +562,23 @@ droneHitbox.height
 
 
 
-
-// =====================================
-// COLIZIUNE GENERALA
-// =====================================
-
-
 function checkCollision(a,b){
+
+
+
+let padding = 8;
 
 
 
 return (
 
-a.x < b.x+b.width &&
+a.x + padding < b.x+b.width &&
 
-a.x+a.width > b.x &&
+a.x+a.width-padding > b.x &&
 
-a.y < b.y+b.height &&
+a.y + padding < b.y+b.height &&
 
-a.y+a.height > b.y
+a.y+a.height-padding > b.y
 
 );
 
@@ -647,18 +594,12 @@ a.y+a.height > b.y
 
 
 
-// =====================================
-// VERIFICA DRONA
-// =====================================
-
-
-function checkDrone(){
+function checkDroneCollision(){
 
 
 
 let s =
 getShaormaBox();
-
 
 
 let d =
@@ -673,26 +614,21 @@ if(checkCollision(s,d)){
 endGame();
 
 
-}
-
-
 
 }
 
 
 
+}
 
 
 
 
 
 
-// =====================================
-// HITBOX INGREDIENT
-// =====================================
 
 
-function checkIngredient(){
+function checkIngredientCollision(){
 
 
 
@@ -724,8 +660,8 @@ width:55,
 height:55
 
 
-
 };
+
 
 
 
@@ -735,8 +671,7 @@ if(checkCollision(s,i)){
 
 
 
-score +=
-currentIngredient.points;
+score += currentIngredient.points;
 
 
 
@@ -747,8 +682,7 @@ scoreText.innerHTML =
 
 
 
-
-if(score>record){
+if(score > record){
 
 
 
@@ -775,8 +709,6 @@ recordText.innerHTML =
 
 
 
-// BOOST LA SOS IUTE
-
 
 if(currentIngredient.boost){
 
@@ -790,7 +722,6 @@ activateBoost();
 
 
 
-
 spawnIngredient();
 
 
@@ -799,46 +730,10 @@ spawnIngredient();
 
 
 
-}
-
-
-
-
-
-
-
-
-// =====================================
-// BOOST SHAORMA CLASA CSS
-// =====================================
-
-
-function updateBoostEffect(){
-
-
-
-if(boostActive){
-
-
-shaorma.classList.add("boost");
-
-
-}
-
-else{
-
-
-shaorma.classList.remove("boost");
-
-
-}
-
-
-}// =====================================
+}// =======================================
 // PARTEA 4/5
-// START + GAME OVER + CONTROALE
-// =====================================
-
+// START + RESTART + CONTROALE
+// =======================================
 
 
 
@@ -847,12 +742,9 @@ shaorma.classList.remove("boost");
 function startGame(){
 
 
+running=true;
 
-gameRunning=true;
-
-
-gameOverState=false;
-
+gameOver=false;
 
 
 startButton.style.display="none";
@@ -862,13 +754,13 @@ startButton.style.display="none";
 score=0;
 
 
-scoreText.innerHTML="Scor: 0";
+scoreText.innerHTML=
+"Scor: 0";
 
 
 
 shaormaY =
 window.innerHeight/2;
-
 
 
 shaormaVelocity=0;
@@ -897,15 +789,14 @@ function endGame(){
 
 
 
-gameRunning=false;
+running=false;
 
 
-gameOverState=true;
+gameOver=true;
 
 
 
 startButton.style.display="block";
-
 
 
 startButton.innerHTML=
@@ -919,12 +810,14 @@ startButton.innerHTML=
 
 
 
+
+
+
 function restartGame(){
 
 
 
 score=0;
-
 
 
 scoreText.innerHTML=
@@ -935,12 +828,18 @@ scoreText.innerHTML=
 boostActive=false;
 
 
-
 boostBar.style.display="none";
 
 
-
 shaorma.classList.remove("boost");
+
+
+
+shaormaY =
+window.innerHeight/2;
+
+
+shaormaVelocity=0;
 
 
 
@@ -949,24 +848,14 @@ window.innerWidth;
 
 
 
-shaormaY =
-window.innerHeight/2;
-
-
-
-shaormaVelocity=0;
-
-
-
 spawnIngredient();
 
 
 
-gameRunning=true;
+gameOver=false;
 
 
-
-gameOverState=false;
+running=true;
 
 
 
@@ -983,17 +872,14 @@ startButton.style.display="none";
 
 
 
-
-// =====================================
-// CONTROALE PC
-// =====================================
-
+// =======================================
+// TASTATURA
+// =======================================
 
 
 document.addEventListener(
 "keydown",
-function(e){
-
+(e)=>{
 
 
 if(e.code==="Space"){
@@ -1004,7 +890,7 @@ pressing=true;
 
 
 
-if(gameOverState){
+if(gameOver){
 
 restartGame();
 
@@ -1017,7 +903,6 @@ restartGame();
 
 
 });
-
 
 
 
@@ -1026,8 +911,7 @@ restartGame();
 
 document.addEventListener(
 "keyup",
-function(e){
-
+(e)=>{
 
 
 if(e.code==="Space"){
@@ -1049,24 +933,22 @@ pressing=false;
 
 
 
-
-// =====================================
-// CONTROALE TELEFON
-// =====================================
+// =======================================
+// TOUCH
+// =======================================
 
 
 
 document.addEventListener(
 "touchstart",
-function(){
-
+()=>{
 
 
 pressing=true;
 
 
 
-if(gameOverState){
+if(gameOver){
 
 restartGame();
 
@@ -1081,10 +963,9 @@ restartGame();
 
 
 
-
 document.addEventListener(
 "touchend",
-function(){
+()=>{
 
 
 pressing=false;
@@ -1100,19 +981,18 @@ pressing=false;
 
 
 
-// =====================================
-// BUTON START
-// =====================================
+// =======================================
+// BUTON
+// =======================================
 
 
 
 startButton.addEventListener(
 "click",
-function(){
+()=>{
 
 
-
-if(gameOverState){
+if(gameOver){
 
 
 restartGame();
@@ -1129,11 +1009,10 @@ startGame();
 }
 
 
-
-});// =====================================
+});// =======================================
 // PARTEA 5/5
-// GAME LOOP + PORNIRE
-// =====================================
+// GAME LOOP
+// =======================================
 
 
 
@@ -1143,7 +1022,7 @@ function gameLoop(){
 
 
 
-if(gameRunning){
+if(running){
 
 
 
@@ -1156,17 +1035,18 @@ updateDrone();
 updateIngredient();
 
 
+
 updateBoost();
 
 
-updateBoostEffect();
+updateBoostVisual();
 
 
 
-checkDrone();
+checkDroneCollision();
 
 
-checkIngredient();
+checkIngredientCollision();
 
 
 
@@ -1186,10 +1066,9 @@ requestAnimationFrame(gameLoop);
 
 
 
-
-// =====================================
-// START INITIAL
-// =====================================
+// =======================================
+// INITIALIZARE
+// =======================================
 
 
 
